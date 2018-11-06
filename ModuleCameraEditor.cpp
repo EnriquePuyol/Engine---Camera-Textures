@@ -148,53 +148,64 @@ void ModuleCameraEditor::Move()
 {
 	float speed = cameraSpeed * App->deltaTime;
 
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed *= 2;
-
-	// Up & Down
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
-	{
-		eye += up * speed;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
-	{
-		eye -= up * speed;
-	}
-	//Left & Right
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		eye -= right * speed;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		eye += right * speed;
-	}
-	// Foward & Back
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		eye += forward * speed;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		eye -= forward * speed;
-	}
-
-	// Mouse controls
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
-		// ToDo: Mouse controls
+
+		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+			speed *= 2;
+
+		// Up & Down
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
+		{
+			eye += up * speed;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+		{
+			eye -= up * speed;
+		}
+		//Left & Right
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			eye -= right * speed;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			eye += right * speed;
+		}
+		// Foward & Back
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			eye += forward * speed;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			eye -= forward * speed;
+		}
+
+		// Mouse controls
 		if (App->input->moving)
 		{
 			iPoint mouseMotion = App->input->mouseMotion;
 			Pitch(-mouseMotion.y * sens);
 			Yaw(-mouseMotion.x * sens);
 		}
+
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		//SDL_SetRelativeMouseMode(SDL_TRUE);
+	}
+	else
 	{
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 	}
+
+	if (App->input->scrolling)
+	{
+		eye += forward * zoomSpeed * App->input->mouseScroll;
+	}
+
 }
 
 void ModuleCameraEditor::DrawCoords()

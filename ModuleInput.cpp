@@ -39,6 +39,7 @@ bool ModuleInput::Init()
 update_status ModuleInput::Update()
 {
 	moving = false;
+	scrolling = false;
 
 	SDL_PumpEvents();
 	static SDL_Event event;
@@ -118,6 +119,11 @@ update_status ModuleInput::Update()
 			mouse.x = event.motion.x;
 			mouse.y = event.motion.y;
 
+			break;
+
+		case SDL_MOUSEWHEEL:
+			scrolling = true;
+			mouseScroll = event.wheel.y;
 			break;
 		}
 	}

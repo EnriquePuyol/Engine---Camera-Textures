@@ -52,9 +52,11 @@ public:
 public:
 
 	bool moving = false;
+	bool scrolling = false;
 
 	iPoint mouseMotion;
 	iPoint mouse;
+	int mouseScroll;
 
 private:
 	bool		windowEvents[WE_COUNT];

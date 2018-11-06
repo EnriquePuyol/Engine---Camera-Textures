@@ -30,6 +30,7 @@ private:
 
 public:
 	float cameraSpeed = 2.0f;
+	float zoomSpeed = 2.0f;
 	float sens = 0.03f;
 
 private:
