@@ -43,8 +43,6 @@ bool ModuleCameraEditor::Init()
 		 1.0f, 1.0f
 	};
 
-
-	// Projection matrix
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = float3::zero;
 	frustum.front = -float3::unitZ;
@@ -65,9 +63,10 @@ bool ModuleCameraEditor::Init()
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer_data), vertex_buffer_data, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	texture0 = App->textures->Load("pikachuFace.png", false);
+
+	App->programs->LoadShader("default.vs", "default.fs");
 
 	return vbo;
 }
@@ -85,12 +84,16 @@ update_status ModuleCameraEditor::Update()
 	LookAt(eye, eye + forward);
 
 	// ---------------------
-	glUseProgram(App->programs->def_program);
+	//glUseProgram(App->programs->def_program);
 
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "view"), 1, GL_TRUE, &view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "proj"), 1, GL_TRUE, &proj[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "view"), 1, GL_TRUE, &view[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "proj"), 1, GL_TRUE, &proj[0][0]);
 	
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, texture0);
+	//glUniform1i(glGetUniformLocation(App->programs->def_program, "texture0"), 0); // 0 is related to GL_TEXTURE0
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture0);
 	glUniform1i(glGetUniformLocation(App->programs->def_program, "texture0"), 0); // 0 is related to GL_TEXTURE0
@@ -115,7 +118,22 @@ update_status ModuleCameraEditor::Update()
 		(void*)(sizeof(float) * 3 * 6)    // 3 float 6 vertices for jump positions
 	);
 
+	glUseProgram(App->programs->def_program);
+
 	DrawCoords();
+
+	int fragUnifLocation = glGetUniformLocation(program, "newColor");
+	float color[4] = { 0.651f, 0.008f, 0.008f, 1.0f };
+	glUniform4fv(fragUnifLocation, 1, color);
+
+	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "view"), 1, GL_TRUE, &view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "proj"), 1, GL_TRUE, &proj[0][0]);
+
+	/*glUseProgram(App->programs->tex_program);
+	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "view"), 1, GL_TRUE, &view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "proj"), 1, GL_TRUE, &proj[0][0]);*/
 
 	glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 3 vertices total -> 1 triangle
 
@@ -186,6 +204,7 @@ void ModuleCameraEditor::Move()
 		// Mouse controls
 		if (App->input->moving)
 		{
+
 			iPoint mouseMotion = App->input->mouseMotion;
 			Pitch(-mouseMotion.y * sens);
 			Yaw(-mouseMotion.x * sens);
@@ -232,6 +251,10 @@ void ModuleCameraEditor::DrawCoords()
 	glLineWidth(2.0f);
 
 	// red X
+	int xAxis = glGetUniformLocation(App->programs->def_program, "newColor");
+	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	glUniform4fv(xAxis, 1, red);
+
 	glBegin(GL_LINES);
 	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
