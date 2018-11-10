@@ -211,9 +211,15 @@ void ModuleCameraEditor::Move()
 		}
 
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
 	{
-		//SDL_SetRelativeMouseMode(SDL_TRUE);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		if (App->input->moving)
+		{
+			iPoint mov = App->input->mouseMotion;
+
+			eye += (right * speed * mov.x) + (up * speed * -mov.y);
+		}
 	}
 	else
 	{
