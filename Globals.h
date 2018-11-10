@@ -16,11 +16,13 @@ enum update_status
 #define degreesToRadians(x) x*(3.141592f/180.0f)
 
 // Configuration -----------
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 960
 #define FULLSCREEN false
+#define BORDERLESS false
+#define	RESIZABLE false
 #define VSYNC true
-#define TITLE "Super Awesome Engine"
+#define TITLE "SAG Engine"
 
 // Deletes an array of buffers
 #define RELEASE_ARRAY( x ) \

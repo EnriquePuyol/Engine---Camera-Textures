@@ -24,7 +24,7 @@ bool ModuleCameraEditor::Init()
 {
 	// https://github.com/d0n3val/Edu-Game-Engine/blob/master/Source/ModuleEditorCamera.cpp
 
-	float vertex_buffer_data[] = {
+	/*float vertex_buffer_data[] = {
 		// positions of 1st triangle
 		-1.0f, -1.0f, 0.0f,
 		 1.0f, -1.0f, 0.0f,
@@ -41,7 +41,7 @@ bool ModuleCameraEditor::Init()
 		 0.0f, 1.0f,
 		 1.0f, 0.0f,
 		 1.0f, 1.0f
-	};
+	};*/
 
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = float3::zero;
@@ -58,7 +58,7 @@ bool ModuleCameraEditor::Init()
 	up = float3(0.0f, 1.0f, 0.0f);
 	LookAt(eye, target);
 
-	tri_model = math::float4x4::identity;
+	/*tri_model = math::float4x4::identity;
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -66,9 +66,9 @@ bool ModuleCameraEditor::Init()
 
 	texture0 = App->textures->Load("pikachuFace.png", false);
 
-	App->programs->LoadShader("default.vs", "default.fs");
+	App->programs->LoadShader("default.vs", "default.fs");*/
 
-	return vbo;
+	return true;
 }
 
 update_status ModuleCameraEditor::PreUpdate()
@@ -94,7 +94,7 @@ update_status ModuleCameraEditor::Update()
 	//glBindTexture(GL_TEXTURE_2D, texture0);
 	//glUniform1i(glGetUniformLocation(App->programs->def_program, "texture0"), 0); // 0 is related to GL_TEXTURE0
 
-	glActiveTexture(GL_TEXTURE0);
+	/*glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture0);
 	glUniform1i(glGetUniformLocation(App->programs->def_program, "texture0"), 0); // 0 is related to GL_TEXTURE0
 
@@ -135,13 +135,13 @@ update_status ModuleCameraEditor::Update()
 	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "view"), 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "proj"), 1, GL_TRUE, &proj[0][0]);*/
 
-	glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 3 vertices total -> 1 triangle
+	/*glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 3 vertices total -> 1 triangle
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(0);
+	glUseProgram(0);*/
 
 	return UPDATE_CONTINUE;
 }
@@ -233,7 +233,7 @@ void ModuleCameraEditor::Move()
 
 }
 
-void ModuleCameraEditor::DrawCoords()
+/*void ModuleCameraEditor::DrawCoords()
 {
 
 	glLineWidth(1.0f);
@@ -287,7 +287,7 @@ void ModuleCameraEditor::DrawCoords()
 	glEnd();
 
 	glLineWidth(1.0f);
-}
+}*/
 
 void ModuleCameraEditor::Yaw(float angle)
 {

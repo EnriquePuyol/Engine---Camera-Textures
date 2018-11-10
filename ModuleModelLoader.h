@@ -7,6 +7,7 @@
 #include <assimp/scene.h>
 #include <assimp/material.h>
 #include <assimp/mesh.h>
+#include "MathGeoLib.h"
 
 #include <GL/glew.h>
 
@@ -19,8 +20,23 @@ public:
 	bool Init();
 	update_status Update();
 
-	void GenerateMeshData(aiMesh* mesh);
-	void GenerateMaterialData(aiMaterial* material);
+	bool Load(char* path);
+
+	void GenerateMeshData(const aiScene* myScene);
+	void GenerateMaterialData(const aiScene* myScene);
+
+public:
+	unsigned* vbo = nullptr;
+	unsigned* ibo = nullptr;
+	unsigned* textures = nullptr;
+	unsigned* materials = nullptr;
+	unsigned* numVerticesMesh = nullptr;
+	unsigned* numIndexesMesh = nullptr;
+
+	unsigned numMeshes;
+	//unsigned numMaterials;
+
+	const aiScene* scene;
 
 };
 

@@ -10,6 +10,14 @@ ModulePrograms::~ModulePrograms()
 {
 }
 
+bool ModulePrograms::Init()
+{
+	def_program = LoadShader("default.vs", "default.fs");
+	tex_program = LoadShader("texture.vs", "texture.fs");
+
+	return true;
+}
+
 bool ModulePrograms::CleanUp()
 {
 	if (def_program != 0)
@@ -51,7 +59,7 @@ bool ModulePrograms::Compile(unsigned id, char* data)
 	return true;
 }
 
-bool ModulePrograms::LoadShader(const char * vsPath, const char * fsPath)
+GLuint ModulePrograms::LoadShader(const char * vsPath, const char * fsPath)
 {
 	unsigned vertex_id = glCreateShader(GL_VERTEX_SHADER);
 	unsigned fragment_id = glCreateShader(GL_FRAGMENT_SHADER);
@@ -64,23 +72,25 @@ bool ModulePrograms::LoadShader(const char * vsPath, const char * fsPath)
 	free(vertex_data);
 	free(fragment_data);
 
+	GLuint program;
+
 	if (ok)
 	{
-		def_program = glCreateProgram();
+		program = glCreateProgram();
 
-		glAttachShader(def_program, vertex_id);
-		glAttachShader(def_program, fragment_id);
+		glAttachShader(program, vertex_id);
+		glAttachShader(program, fragment_id);
 
-		glLinkProgram(def_program);
+		glLinkProgram(program);
 
 		int len = 0;
-		glGetProgramiv(def_program, GL_INFO_LOG_LENGTH, &len);
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
 		if (len > 0)
 		{
 			int written = 0;
 			char* info = (char*)malloc(len);
 
-			glGetProgramInfoLog(def_program, len, &written, info);
+			glGetProgramInfoLog(program, len, &written, info);
 
 			LOG("Program Log Info: %s", info);
 
@@ -92,7 +102,7 @@ bool ModulePrograms::LoadShader(const char * vsPath, const char * fsPath)
 	glDeleteShader(vertex_id);
 	glDeleteShader(fragment_id);
 
-	return ok;
+	return program;
 }
 
 char* ModulePrograms::LoadFile(const char* file_name)

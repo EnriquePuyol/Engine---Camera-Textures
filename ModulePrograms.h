@@ -10,9 +10,10 @@ public:
 	ModulePrograms();
 	~ModulePrograms();
 
+	bool Init();
 	bool CleanUp();
 
-	bool LoadShader(const char* vsPath, const char* fsPath);
+	GLuint LoadShader(const char* vsPath, const char* fsPath);
 
 private:
 	char* LoadFile(const char* file_name);
@@ -20,7 +21,7 @@ private:
 
 public:
 	GLuint def_program;
-	//unsigned tex_program = 0;
+	GLuint tex_program;
 };
 
 #endif
