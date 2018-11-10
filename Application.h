@@ -12,6 +12,7 @@ class ModulePrograms;
 class ModuleRenderExercise;
 class ModuleCameraEditor;
 class ModuleModelLoader;
+class ModuleUI;
 class MsTimer;
 
 class Application
@@ -36,6 +37,7 @@ public:
     ModuleRenderExercise* exercise = nullptr;
 	ModuleCameraEditor* camera = nullptr;
 	ModuleModelLoader* modelLoader = nullptr;
+	ModuleUI* ui = nullptr;
 
 	MsTimer* timer;
 
