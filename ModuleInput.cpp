@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "SDL/include/SDL.h"
 #include "ModuleCameraEditor.h"
+#include "ModuleModelLoader.h"
 
 #define MAX_KEYS 300
 
@@ -107,6 +108,10 @@ update_status ModuleInput::Update()
 
 		case SDL_MOUSEBUTTONUP:
 			mouse_buttons[event.button.button - 1] = KEY_UP;
+			break;
+
+		case SDL_DROPFILE:
+			App->modelLoader->Load(event.drop.file);
 			break;
 
 		case SDL_MOUSEMOTION:

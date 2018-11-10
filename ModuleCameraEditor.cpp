@@ -114,7 +114,7 @@ void ModuleCameraEditor::Move()
 		{
 			iPoint mov = App->input->mouseMotion;
 
-			eye += (right * speed * mov.x) + (up * speed * -mov.y);
+			eye += (-right * speed * mov.x) + (up * speed * mov.y);
 		}
 	}
 	else
