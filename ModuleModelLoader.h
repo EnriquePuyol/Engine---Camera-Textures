@@ -25,6 +25,8 @@ public:
 	void GenerateMeshData(const aiScene* myScene);
 	void GenerateMaterialData(const aiScene* myScene);
 
+	void DeleteModel();
+
 public:
 	unsigned* vbo = nullptr;
 	unsigned* ibo = nullptr;
@@ -37,6 +39,8 @@ public:
 	//unsigned numMaterials;
 
 	const aiScene* scene;
+
+	bool model;
 
 };
 

@@ -17,10 +17,8 @@ public:
 	update_status	PreUpdate();
 	update_status   Update();
 	update_status	PostUpdate();
-	bool            CleanUp();
 
 	void Move();
-	//void DrawCoords();
 
 	void Yaw(float angle);
 	void Pitch(float angle);
@@ -37,8 +35,6 @@ public:
 	float4x4 view = float4x4::identity;
 
 private:
-	unsigned vbo	  = 0;
-	unsigned texture0 = 0;
 
 	GLuint program = GL_FALSE;
 
@@ -46,7 +42,6 @@ private:
 	float aspect = 16 / 9;
 
 	float3 eye	  = { 0.0f, 5.0f, 10.0f };
-	//float3 target = { 0.0f, 0.0f, 0.0f };
 	float3 forward;
 	float3 up;
 	float3 right;
@@ -54,8 +49,6 @@ private:
 	float pitch;
 
 	float4x4 view_matrix;
-
-	//float4x4 tri_model = float4x4::identity;
 };
 
 #endif

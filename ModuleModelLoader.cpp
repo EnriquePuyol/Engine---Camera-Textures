@@ -1,6 +1,7 @@
 #include "ModuleModelLoader.h"
 #include "Application.h"
 #include "ModuleTextures.h"
+#include "SDL/include/SDL.h"
 
 ModuleModelLoader::ModuleModelLoader()
 {
@@ -26,11 +27,13 @@ update_status ModuleModelLoader::Update()
 
 bool ModuleModelLoader::Load(char * path)
 {
+	if (model)
+	{
+		DeleteModel();
+	}
+
 	bool ok = true;
 
-	/*unsigned int flags;
-	flags |= aiProcess_Triangulate;
-	flags |= aiProcess_FixInfacingNormals;*/
 	scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality | aiProcess_FixInfacingNormals);
 
 	if (scene == NULL)
@@ -48,6 +51,7 @@ bool ModuleModelLoader::Load(char * path)
 	GenerateMeshData(scene);
 	GenerateMaterialData(scene);
 
+	model = true;
 	return ok;
 }
 
@@ -125,4 +129,16 @@ void ModuleModelLoader::GenerateMaterialData(const aiScene* myScene)
 
 		materials[i] = dstMaterial;
 	}
+}
+
+void ModuleModelLoader::DeleteModel()
+{
+	delete vbo;
+	delete ibo;
+	delete textures;
+	delete materials;
+	delete numVerticesMesh;
+	delete numIndexesMesh;
+
+	model = false;
 }

@@ -22,27 +22,6 @@ ModuleCameraEditor::~ModuleCameraEditor()
 
 bool ModuleCameraEditor::Init()
 {
-	// https://github.com/d0n3val/Edu-Game-Engine/blob/master/Source/ModuleEditorCamera.cpp
-
-	/*float vertex_buffer_data[] = {
-		// positions of 1st triangle
-		-1.0f, -1.0f, 0.0f,
-		 1.0f, -1.0f, 0.0f,
-		-1.0f,  1.0f, 0.0f,
-		// positions of 2nd triangle
-		-1.0f,  1.0f, 0.0f,
-		 1.0f, -1.0f, 0.0f,
-		 1.0f,  1.0f, 0.0f,
-		 // uvs
-		 0.0f, 0.0f,
-		 1.0f, 0.0f,
-		 0.0f, 1.0f,
-
-		 0.0f, 1.0f,
-		 1.0f, 0.0f,
-		 1.0f, 1.0f
-	};*/
-
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = float3::zero;
 	frustum.front = -float3::unitZ;
@@ -58,16 +37,6 @@ bool ModuleCameraEditor::Init()
 	up = float3(0.0f, 1.0f, 0.0f);
 	LookAt(eye, target);
 
-	/*tri_model = math::float4x4::identity;
-
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer_data), vertex_buffer_data, GL_STATIC_DRAW);
-
-	texture0 = App->textures->Load("pikachuFace.png", false);
-
-	App->programs->LoadShader("default.vs", "default.fs");*/
-
 	return true;
 }
 
@@ -80,86 +49,13 @@ update_status ModuleCameraEditor::PreUpdate()
 update_status ModuleCameraEditor::Update()
 {
 	Move();
-	//LookAt(view, eye, target, math::float3(0.0f, 1.0f, 0.0f));
-	LookAt(eye, eye + forward);
-
-	// ---------------------
-	//glUseProgram(App->programs->def_program);
-
-	//glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
-	//glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "view"), 1, GL_TRUE, &view[0][0]);
-	//glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "proj"), 1, GL_TRUE, &proj[0][0]);
-	
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, texture0);
-	//glUniform1i(glGetUniformLocation(App->programs->def_program, "texture0"), 0); // 0 is related to GL_TEXTURE0
-
-	/*glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture0);
-	glUniform1i(glGetUniformLocation(App->programs->def_program, "texture0"), 0); // 0 is related to GL_TEXTURE0
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(
-		0,                  // attribute 0
-		3,                  // number of componentes (3 floats)
-		GL_FLOAT,           // data type
-		GL_FALSE,           // should be normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
-	glVertexAttribPointer(
-		1,
-		2,
-		GL_FLOAT,
-		GL_FALSE,
-		0,
-		(void*)(sizeof(float) * 3 * 6)    // 3 float 6 vertices for jump positions
-	);
-
-	glUseProgram(App->programs->def_program);
-
-	DrawCoords();
-
-	int fragUnifLocation = glGetUniformLocation(program, "newColor");
-	float color[4] = { 0.651f, 0.008f, 0.008f, 1.0f };
-	glUniform4fv(fragUnifLocation, 1, color);
-
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "view"), 1, GL_TRUE, &view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "proj"), 1, GL_TRUE, &proj[0][0]);
-
-	/*glUseProgram(App->programs->tex_program);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "view"), 1, GL_TRUE, &view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "proj"), 1, GL_TRUE, &proj[0][0]);*/
-
-	/*glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 3 vertices total -> 1 triangle
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(0);*/
-
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleCameraEditor::PostUpdate()
 {
-
+	LookAt(eye, eye + forward);
 	return UPDATE_CONTINUE;
-}
-
-bool ModuleCameraEditor::CleanUp()
-{
-	if (vbo != 0)
-	{
-		glDeleteBuffers(1, &vbo);
-	}
-
-	return true;
 }
 
 void ModuleCameraEditor::Move()
@@ -233,62 +129,6 @@ void ModuleCameraEditor::Move()
 
 }
 
-/*void ModuleCameraEditor::DrawCoords()
-{
-
-	glLineWidth(1.0f);
-	//int grid = glGetUniformLocation(program, "newColor");
-	//float cream[4] = { 0.988f, 0.918f, 0.592f, 1.0f };
-	//glUniform4fv(grid, 1, cream);
-
-	glBegin(GL_LINES);
-
-	float d = 200.0f;
-
-	for (float i = -d; i <= d; i += 1.0f)
-	{
-		glVertex3f(i, 0.0f, -d);
-		glVertex3f(i, 0.0f, d);
-		glVertex3f(-d, 0.0f, i);
-		glVertex3f(d, 0.0f, i);
-	}
-	glEnd();
-
-	glLineWidth(2.0f);
-
-	// red X
-	int xAxis = glGetUniformLocation(App->programs->def_program, "newColor");
-	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	glUniform4fv(xAxis, 1, red);
-
-	glBegin(GL_LINES);
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-	glEnd();
-
-	// green Y
-	glBegin(GL_LINES);
-	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
-	glEnd();
-
-	// blue Z
-	glBegin(GL_LINES);
-	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
-	glEnd();
-
-	glLineWidth(1.0f);
-}*/
-
 void ModuleCameraEditor::Yaw(float angle)
 {
 	Quat rotMat = math::Quat::RotateY(angle);
@@ -317,7 +157,6 @@ void ModuleCameraEditor::LookAt(const math::float3 & eye, const math::float3 & t
 	right.Normalize();
 	up = math::float3(right.Cross(forward));
 
-	// axis in rows to do inverse
 	view[0][0] = right.x;    view[0][1] = right.y;    view[0][2] = right.z;    view[0][3] = -right.Dot(eye);
 	view[1][0] = up.x;       view[1][1] = up.y;       view[1][2] = up.z;       view[1][3] = -up.Dot(eye);
 	view[2][0] = -forward.x; view[2][1] = -forward.y; view[2][2] = -forward.z; view[2][3] = forward.Dot(eye);
