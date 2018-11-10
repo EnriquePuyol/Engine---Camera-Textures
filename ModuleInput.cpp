@@ -78,8 +78,7 @@ update_status ModuleInput::Update()
 		switch (event.type)
 		{
 		case SDL_QUIT:
-			windowEvents[WE_QUIT] = true;
-			break;
+			return UPDATE_STOP;
 
 		case SDL_WINDOWEVENT:
 			switch (event.window.event)
