@@ -39,7 +39,7 @@ private:
 	GLuint program = GL_FALSE;
 
 	Frustum frustum;
-	float aspect = 16 / 9;
+	//float aspect = 16 / 9;
 
 	float3 eye	  = { 0.0f, 5.0f, 10.0f };
 	float3 forward;

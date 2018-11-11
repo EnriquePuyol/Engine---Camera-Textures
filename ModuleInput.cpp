@@ -39,6 +39,9 @@ bool ModuleInput::Init()
 // Called every draw update
 update_status ModuleInput::Update()
 {
+	if (quit)
+		return UPDATE_STOP;
+
 	moving = false;
 	scrolling = false;
 

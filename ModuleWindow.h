@@ -21,12 +21,23 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void SetResolution(int w, int h);
+
 public:
+
+	int width, height;
+	bool fullscreen = false;
+	bool borderless = false;
+	bool resizable = false;
+	bool vsync = false;
+
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
+
+	SDL_DisplayMode display;
 };
 
 #endif // __ModuleWindow_H__

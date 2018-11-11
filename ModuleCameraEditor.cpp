@@ -29,7 +29,7 @@ bool ModuleCameraEditor::Init()
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 100.0f;
 	frustum.verticalFov = math::pi / 4.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) * aspect;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) * (App->window->width / App->window->height);
 
 	proj = frustum.ProjectionMatrix();
 

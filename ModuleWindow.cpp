@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleRender.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -25,13 +26,33 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
+		SDL_GetCurrentDisplayMode(0, &display);
+		display.w = SCREEN_WIDTH; 
+		display.h = SCREEN_HEIGHT;
+		width = display.w;
+		height = display.h;
+
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
-		if(FULLSCREEN == true)
+		if(FULLSCREEN)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
+			fullscreen = true;
+		}
+		if (BORDERLESS)
+		{
+			flags |= SDL_WINDOW_BORDERLESS;
+			borderless = true;
+		}
+		if (RESIZABLE)
+		{
+			flags |= SDL_WINDOW_RESIZABLE;
+			resizable = true;
+		}
+		if (VSYNC)
+		{
+			SDL_GL_SetSwapInterval(vsync);
+			vsync = true;
 		}
 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
@@ -44,7 +65,6 @@ bool ModuleWindow::Init()
 		else
 		{
 			//Get window surface
-			
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
@@ -66,5 +86,17 @@ bool ModuleWindow::CleanUp()
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
+}
+
+void ModuleWindow::SetResolution(int w, int h)
+{
+	display.w = w;
+	display.h = h;
+
+	width = w;
+	height = h;
+
+	SDL_SetWindowSize(window, width, height);
+	App->renderer->WindowResized(width, height);
 }
 

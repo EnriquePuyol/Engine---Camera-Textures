@@ -50,6 +50,7 @@ public:
 	bool GetWindowEvent(EventWindow code) const;
 
 public:
+	bool quit = false;
 
 	bool moving = false;
 	bool scrolling = false;

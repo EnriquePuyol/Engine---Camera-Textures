@@ -2,6 +2,9 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleInput.h"
+
+static void MainBar();
 
 ModuleUI::ModuleUI()
 {
@@ -21,9 +24,9 @@ bool ModuleUI::Init()
 	ImGui::CreateContext();
 	io = ImGui::GetIO(); (void)io;
 
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Window
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Window
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init("#version 130");
@@ -45,6 +48,8 @@ update_status ModuleUI::PreUpdate()
 
 update_status ModuleUI::Update()
 {
+	MainBar();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -65,4 +70,35 @@ bool ModuleUI::CleanUp()
 void ModuleUI::Events(SDL_Event & event)
 {
 	ImGui_ImplSDL2_ProcessEvent(&event);
+}
+
+void MainBar()
+{
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Hello")) {}
+			if (ImGui::MenuItem("Exit")) { App->input->quit = true; }
+
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Window"))
+		{
+			if (ImGui::BeginMenu("Resolution"))
+			{
+				if (ImGui::MenuItem("Fullscreen")) {}
+				if (ImGui::MenuItem("1920x1080")) { App->window->SetResolution(1920, 1080); }
+				if(ImGui::MenuItem("1280x720")) { App->window->SetResolution(1280, 720); }
+				if (ImGui::MenuItem("960x540")) { App->window->SetResolution(960, 540); }
+				if (ImGui::Checkbox("Borderless", &App->window->borderless)) {}
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
+	}
 }
