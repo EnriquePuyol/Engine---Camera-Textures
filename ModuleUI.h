@@ -48,6 +48,8 @@ public:
 
 	void Events(SDL_Event& event);
 
+	void updateFramerates();
+
 public:
 	ImGuiIO io;
 	ConsoleLog console;
@@ -56,6 +58,13 @@ public:
 	bool showConsole = true;
 	bool showPerformace = false;
 
+	int frames;
+	double lastFrameTime;
+	double lastSecondTime;
+	int logMSIterator;
+	int logFPSIterator;
+	float* fps_log = NULL;
+	float* ms_log = NULL;
 };
 
 #endif

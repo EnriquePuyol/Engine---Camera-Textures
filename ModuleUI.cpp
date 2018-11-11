@@ -37,6 +37,14 @@ bool ModuleUI::Init()
 	// Setup style
 	ImGui::StyleColorsDark();
 
+	logMSIterator = 0;
+	logFPSIterator = 0;
+	lastFrameTime = SDL_GetTicks();
+	lastSecondTime = SDL_GetTicks();
+
+	fps_log = new float[50];
+	ms_log = new float[50];
+
 	return true;
 }
 
@@ -166,5 +174,33 @@ void Console()
 
 void Performance()
 {
+	ImGui::SetNextWindowSize(ImVec2(300, App->window->height - 120), ImGuiCond_Always);
+	ImGui::SetNextWindowPos(ImVec2(App->window->width - 300, 20), ImGuiCond_Always);
 
+	ImGui::Begin("Performance", &App->ui->showPerformace);
+
+	ImGui::Text("App Lifetime = %d seconds", SDL_GetTicks() / 1000);
+	char* title = new char[50];
+	App->ui->updateFramerates();
+	sprintf_s(title, 50, "Framerate %.1f", App->ui->fps_log[App->ui->logFPSIterator]);
+	ImGui::PlotHistogram("", App->ui->fps_log, 50, 0, title, 0.0f, 100.0f, ImVec2(350, 100));
+	sprintf_s(title, 50, "Milliseconds %.1f", App->ui->ms_log[App->ui->logMSIterator]);
+	ImGui::PlotHistogram("", App->ui->ms_log, 50, 0, title, 0.0f, 100.0f, ImVec2(350, 100));
+
+	ImGui::End();
+}
+
+void ModuleUI::updateFramerates() {
+	double timeElapsed = SDL_GetTicks() - lastSecondTime;
+	//fps calculation
+	lastSecondTime = SDL_GetTicks();
+	fps_log[logFPSIterator] = 1000 / timeElapsed;
+	++logFPSIterator;
+	if (logFPSIterator > 49) logFPSIterator = 0;
+	//ms calculation
+	ms_log[logMSIterator] = timeElapsed;
+	lastFrameTime = SDL_GetTicks();
+	//iterator increase
+	++logMSIterator;
+	if (logMSIterator > 49) logMSIterator = 0;
 }
