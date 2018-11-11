@@ -56,12 +56,12 @@ void ModuleCameraEditor::Move()
 {
 	float speed = cameraSpeed * App->deltaTime;
 
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		speed *= 2;
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
-
-		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-			speed *= 2;
 
 		// Up & Down
 		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
