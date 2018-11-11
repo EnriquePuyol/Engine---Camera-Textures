@@ -40,12 +40,6 @@ bool ModuleCameraEditor::Init()
 	return true;
 }
 
-update_status ModuleCameraEditor::PreUpdate()
-{
-
-	return UPDATE_CONTINUE;
-}
-
 update_status ModuleCameraEditor::Update()
 {
 	Move();
@@ -100,7 +94,6 @@ void ModuleCameraEditor::Move()
 		// Mouse controls
 		if (App->input->moving)
 		{
-
 			iPoint mouseMotion = App->input->mouseMotion;
 			Pitch(-mouseMotion.y * sens);
 			Yaw(-mouseMotion.x * sens);
@@ -113,8 +106,27 @@ void ModuleCameraEditor::Move()
 		if (App->input->moving)
 		{
 			iPoint mov = App->input->mouseMotion;
-
 			eye += (-right * speed * mov.x) + (up * speed * mov.y);
+		}
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+	{
+		up = float3(0.0f, 1.0f, 0.0f);
+		LookAt(eye, float3(0.0f, 0.0f, 0.0f));
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			Quat yawRotMat = Quat::RotateY(-speed);
+			eye = yawRotMat * eye;
+			forward = yawRotMat * forward;
+			up = yawRotMat * up;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			Quat yawRotMat = Quat::RotateY(speed);
+			eye = yawRotMat * eye;
+			forward = yawRotMat * forward;
+			up = yawRotMat * up;
 		}
 	}
 	else
