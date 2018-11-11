@@ -90,6 +90,8 @@ bool ModuleWindow::CleanUp()
 
 void ModuleWindow::SetResolution(int w, int h)
 {
+	//fullscreen = fs;
+
 	display.w = w;
 	display.h = h;
 
@@ -98,5 +100,30 @@ void ModuleWindow::SetResolution(int w, int h)
 
 	SDL_SetWindowSize(window, width, height);
 	App->renderer->WindowResized(width, height);
+}
+
+void ModuleWindow::SetFullScreen()
+{
+
+	Uint32 fullscreenFlag = SDL_WINDOW_FULLSCREEN;
+	bool isFullscreen = SDL_GetWindowFlags(window) & fullscreenFlag;
+	SDL_SetWindowFullscreen(window, isFullscreen ? 0 : fullscreenFlag);
+	SDL_ShowCursor(isFullscreen);
+
+	SDL_GetCurrentDisplayMode(0, &display);
+
+	SetResolution(display.w, display.h);
+
+}
+
+void ModuleWindow::SetBorderless()
+{
+
+	SDL_bool isBorderless = SDL_TRUE;
+
+	if (borderless)
+		isBorderless = SDL_FALSE;
+
+	SDL_SetWindowBordered(window, isBorderless);
 }
 

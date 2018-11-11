@@ -22,6 +22,11 @@ public:
 
 public:
 	ImGuiIO io;
+
+	bool showInfo = false;
+	bool showConsole = true;
+	bool showPerformace = false;
+
 };
 
 #endif

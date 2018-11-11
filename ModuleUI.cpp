@@ -5,6 +5,9 @@
 #include "ModuleInput.h"
 
 static void MainBar();
+static void Info();
+static void Console();
+static void Performance();
 
 ModuleUI::ModuleUI()
 {
@@ -50,6 +53,13 @@ update_status ModuleUI::Update()
 {
 	MainBar();
 
+	if (showInfo)
+		Info();
+	if (showConsole)
+		Console();
+	if (showPerformace)
+		Performance();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -83,22 +93,74 @@ void MainBar()
 
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			if (ImGui::MenuItem("Undo")) {}
+			if (ImGui::MenuItem("Redo")) {}
+			if (ImGui::MenuItem("Preferences")) {}
+
+			ImGui::EndMenu();
+		}
 		if (ImGui::BeginMenu("Window"))
 		{
-			if (ImGui::BeginMenu("Resolution"))
+			if (ImGui::BeginMenu("Display"))
 			{
-				if (ImGui::MenuItem("Fullscreen")) {}
-				if (ImGui::MenuItem("1920x1080")) { App->window->SetResolution(1920, 1080); }
-				if(ImGui::MenuItem("1280x720")) { App->window->SetResolution(1280, 720); }
-				if (ImGui::MenuItem("960x540")) { App->window->SetResolution(960, 540); }
-				if (ImGui::Checkbox("Borderless", &App->window->borderless)) {}
+				if (ImGui::MenuItem("1920x1080"))	{ App->window->SetResolution(1920, 1080); }
+				if(ImGui::MenuItem("1280x720"))		{ App->window->SetResolution(1280, 720); }
+				if (ImGui::MenuItem("960x540"))		{ App->window->SetResolution(960, 540); }
+				if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen)) { App->window->SetFullScreen(); }
+				if (ImGui::Checkbox("Borderless", &App->window->borderless)) { App->window->SetBorderless(); }
+
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("View"))
+			{
+				if (ImGui::Checkbox("Console", &App->ui->showConsole)) {}
+				if (ImGui::Checkbox("Performance", &App->ui->showPerformace)) {}
 
 				ImGui::EndMenu();
 			}
 
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("About"))
+		{
+			if (ImGui::MenuItem("SAG Engine...")) { App->ui->showInfo = true; }
+			if (ImGui::MenuItem("Github...")) { ShellExecute(0, 0, "https://github.com/EnriquePuyol/Engine---Camera-Textures", 0, 0, SW_SHOW); }
+
+			ImGui::EndMenu();
+		}
 
 		ImGui::EndMainMenuBar();
 	}
+}
+
+void Info()
+{
+	ImGui::SetNextWindowPos(ImVec2(App->window->width/2 - 200, App->window->height/2 - 200));
+	ImGui::Begin("About", &App->ui->showInfo);
+
+	ImGui::Text(TITLE);
+	ImGui::Text("Version: 1.0");
+	ImGui::Text("3D game engine developed by Enrique Puyol Martín");
+	ImGui::Text("Libraries: ");
+	ImGui::Text("	- glew-2.1.0");
+	ImGui::Text("	- Imgui");
+	ImGui::Text("	- DevIL");
+	ImGui::Text("	- OpenGL 3.0");
+	ImGui::Text("	- MathGeoLib");
+	ImGui::Text("	- SDL 2.0");
+	ImGui::Text("MIT License Copyright (c) [2018] [Enrique Puyol]");
+
+	ImGui::End();
+}
+
+void Console()
+{
+
+}
+
+void Performance()
+{
+
 }

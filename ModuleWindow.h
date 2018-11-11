@@ -22,6 +22,8 @@ public:
 	bool CleanUp();
 
 	void SetResolution(int w, int h);
+	void SetFullScreen();
+	void SetBorderless();
 
 public:
 
