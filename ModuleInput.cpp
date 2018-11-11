@@ -4,6 +4,7 @@
 #include "SDL/include/SDL.h"
 #include "ModuleCameraEditor.h"
 #include "ModuleModelLoader.h"
+#include "ModuleUI.h"
 
 #define MAX_KEYS 300
 
@@ -23,13 +24,15 @@ ModuleInput::~ModuleInput()
 // Called before render is available
 bool ModuleInput::Init()
 {
-	LOG("Init SDL input event system");
+	//LOG("Init SDL input event system");
+	App->ui->console.AddLog("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
-		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		//LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		App->ui->console.AddLog("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
@@ -144,7 +147,8 @@ update_status ModuleInput::Update()
 // Called before quitting
 bool ModuleInput::CleanUp()
 {
-	LOG("Quitting SDL input event subsystem");
+	//LOG("Quitting SDL input event subsystem");
+	App->ui->console.AddLog("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

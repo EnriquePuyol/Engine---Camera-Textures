@@ -1,6 +1,7 @@
 #include "ModuleModelLoader.h"
 #include "Application.h"
 #include "ModuleTextures.h"
+#include "ModuleUI.h"
 #include "SDL/include/SDL.h"
 
 ModuleModelLoader::ModuleModelLoader()
@@ -52,6 +53,7 @@ bool ModuleModelLoader::Load(char * path)
 	GenerateMaterialData(scene);
 
 	model = true;
+	App->ui->console.AddLog("Model loaded correcty");
 	return ok;
 }
 

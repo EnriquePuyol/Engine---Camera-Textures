@@ -1,4 +1,6 @@
 #include "ModulePrograms.h"
+#include "Application.h"
+#include "ModuleUI.h"
 
 #include "GL/glew.h"
 
@@ -48,7 +50,8 @@ bool ModulePrograms::Compile(unsigned id, char* data)
 
 			glGetShaderInfoLog(id, len, &written, info);
 
-			LOG("Log Info: %s", info);
+			//LOG("Log Info: %s", info);
+			App->ui->console.AddLog("Log Info: %s", info);
 
 			free(info);
 		}
@@ -92,7 +95,8 @@ GLuint ModulePrograms::LoadShader(const char * vsPath, const char * fsPath)
 
 			glGetProgramInfoLog(program, len, &written, info);
 
-			LOG("Program Log Info: %s", info);
+			//LOG("Program Log Info: %s", info);
+			App->ui->console.AddLog("Program Log Info: %s", info);
 
 			free(info);
 		}

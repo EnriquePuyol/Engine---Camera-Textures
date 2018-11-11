@@ -26,7 +26,8 @@ ModuleRender::~ModuleRender()
 // Called before render is available
 bool ModuleRender::Init()
 {
-	LOG("Creating Renderer context");
+	//LOG("Creating Renderer context");
+	App->ui->console.AddLog("Creating Renderer context");
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
@@ -145,7 +146,8 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-	LOG("Destroying renderer");
+	//LOG("Destroying renderer");
+	App->ui->console.AddLog("Destroying renderer");
 	SDL_GL_DeleteContext(context);
 	//Destroy window
 

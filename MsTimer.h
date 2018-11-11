@@ -3,6 +3,8 @@
 
 #include "SDL.h"
 #include <list>
+#include "Application.h"
+#include "ModuleUI.h"
 
 class MsTimer
 {
@@ -27,6 +29,7 @@ public:
 	{
 		Uint32 time = (SDL_GetTicks() - timer);
 		LOG("Timer ended. Result = %lu ms", time);
+		//App->ui->console.AddLog("Timer ended. Result = %i ms", time);
 	}
 
 	void Reset()

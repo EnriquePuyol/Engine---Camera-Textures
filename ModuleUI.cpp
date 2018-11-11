@@ -157,6 +157,10 @@ void Info()
 
 void Console()
 {
+	ImGui::SetNextWindowPos(ImVec2(0, App->window->height - 100), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(App->window->width, 100), ImGuiCond_Always);
+
+	App->ui->console.Draw("Console");
 
 }
 

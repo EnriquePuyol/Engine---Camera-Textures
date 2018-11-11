@@ -51,6 +51,8 @@ bool Application::Init()
 
 	timer->Stop();
 
+	App->ui->console.AddLog("--- Welcome to SAG Engine! ---");
+
 	return ret;
 }
 
