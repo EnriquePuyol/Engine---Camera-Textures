@@ -61,7 +61,7 @@ public:
 
 private:
 	bool		windowEvents[WE_COUNT];
-	KeyState*	keyboard;
+	KeyState*	keyboard = NULL;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
 
 };

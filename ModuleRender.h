@@ -25,5 +25,5 @@ public:
 public:
 	float4x4 tri_model = float4x4::identity;
 
-	void* context;
+	void* context = NULL;
 };

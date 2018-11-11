@@ -38,7 +38,7 @@ public:
 	unsigned numMeshes;
 	//unsigned numMaterials;
 
-	const aiScene* scene;
+	const aiScene* scene = NULL;
 
 	bool model;
 

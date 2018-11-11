@@ -39,7 +39,7 @@ public:
 	ModuleModelLoader* modelLoader = nullptr;
 	ModuleUI* ui = nullptr;
 
-	MsTimer* timer;
+	MsTimer* timer = nullptr;
 
 public:
 	float prevTicks;
