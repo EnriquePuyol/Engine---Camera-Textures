@@ -94,9 +94,9 @@ void ModuleCameraEditor::Move()
 		// Mouse controls
 		if (App->input->moving)
 		{
-			iPoint mouseMotion = App->input->mouseMotion;
-			Pitch(-mouseMotion.y * sens);
-			Yaw(-mouseMotion.x * sens);
+			fPoint mouseMotion = App->input->mouseMotion;
+			Pitch(-mouseMotion.y * smooth);
+			Yaw(-mouseMotion.x * smooth);
 		}
 
 	}
@@ -105,7 +105,7 @@ void ModuleCameraEditor::Move()
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		if (App->input->moving)
 		{
-			iPoint mov = App->input->mouseMotion;
+			fPoint mov = App->input->mouseMotion;
 			eye += (-right * speed * mov.x) + (up * speed * mov.y);
 		}
 	}
@@ -143,16 +143,16 @@ void ModuleCameraEditor::Move()
 
 void ModuleCameraEditor::Yaw(float angle)
 {
-	Quat rotMat = math::Quat::RotateY(angle);
+	Quat rotMat = math::Quat::RotateY(angle * sens/100.0f);
 	forward = rotMat * forward;
 	up = rotMat * up;
 }
 
 void ModuleCameraEditor::Pitch(float angle)
 {
-	Quat rotMat = Quat::RotateAxisAngle(right, angle * up.AngleBetweenNorm(float3(up.x, 0.f, up.z).Normalized()));
+	Quat rotMat = Quat::RotateAxisAngle(right, angle * sens/100.0f * up.AngleBetweenNorm(float3(up.x, 0.f, up.z).Normalized()));
 	float3 newForward = rotMat * forward;
-	float newPitch = (newForward.AngleBetweenNorm(float3(newForward.x, 0.f, newForward.z).Normalized())) * 0.5f;
+	float newPitch = (newForward.AngleBetweenNorm(float3(newForward.x, 0.f, newForward.z).Normalized()));
 	if (newPitch < 1.2f)
 	{
 		forward = newForward;

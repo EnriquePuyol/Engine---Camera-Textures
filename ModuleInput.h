@@ -55,8 +55,8 @@ public:
 	bool moving = false;
 	bool scrolling = false;
 
-	iPoint mouseMotion;
-	iPoint mouse;
+	fPoint mouseMotion;
+	fPoint mouse;
 	int mouseScroll;
 
 private:
