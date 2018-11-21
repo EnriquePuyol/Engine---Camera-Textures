@@ -30,8 +30,9 @@ private:
 
 public:
 	float cameraSpeed = 2.0f;
-	float zoomSpeed = 2.0f;
-	float sens = 0.03f;
+	float zoomSpeed   = 2.0f;
+	float sens		  = 50.0f;
+	float smooth	  = 0.005f;
 
 	float4x4 proj = float4x4::identity;
 	float4x4 view = float4x4::identity;

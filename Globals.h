@@ -20,7 +20,7 @@ enum update_status
 #define SCREEN_HEIGHT 960
 #define FULLSCREEN false
 #define BORDERLESS false
-#define	RESIZABLE true
+#define	RESIZABLE false
 #define VSYNC true
 #define TITLE "SAG Engine"
 
