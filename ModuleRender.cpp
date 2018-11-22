@@ -63,6 +63,11 @@ update_status ModuleRender::PreUpdate()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	int width, height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+	glViewport(0, 0, width, height);
+	App->camera->UpdateFoV(width,height);
+
 	return UPDATE_CONTINUE;
 }
 
@@ -128,6 +133,7 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
+	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -137,6 +143,7 @@ update_status ModuleRender::PostUpdate()
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
 	}
+	
 
 	SDL_GL_SwapWindow(App->window->window);
 

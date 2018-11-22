@@ -13,7 +13,7 @@ enum update_status
 	UPDATE_ERROR
 };
 
-#define degreesToRadians(x) x*(3.141592f/180.0f)
+//#define degreesToRadians(x) x*(3.141592f/180.0f)
 
 // Configuration -----------
 #define SCREEN_WIDTH 1280

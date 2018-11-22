@@ -91,9 +91,6 @@ update_status ModuleInput::Update()
 			return UPDATE_STOP;
 
 		case SDL_WINDOWEVENT:
-			/*if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-				App->window->WindowChanged();*/
-
 			switch (event.window.event)
 			{
 				//case SDL_WINDOWEVENT_LEAVE:

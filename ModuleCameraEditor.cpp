@@ -56,7 +56,7 @@ update_status ModuleCameraEditor::PostUpdate()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleCameraEditor::UpdateFoV(unsigned & w, unsigned & h)
+void ModuleCameraEditor::UpdateFoV(unsigned w, unsigned h)
 {
 	float aspect = (float)w / (float)h;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect);

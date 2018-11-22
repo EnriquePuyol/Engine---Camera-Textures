@@ -78,6 +78,8 @@ update_status ModuleUI::PostUpdate()
 
 bool ModuleUI::CleanUp()
 {
+	ImGui::EndFrame();
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
