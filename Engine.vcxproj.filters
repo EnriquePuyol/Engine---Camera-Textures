@@ -129,6 +129,9 @@
       <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="ModuleDebugDraw.cpp" />
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -327,6 +330,12 @@
     <ClInclude Include="debugdraw.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>GameObject\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utils">
@@ -337,6 +346,12 @@
     </Filter>
     <Filter Include="Imgui">
       <UniqueIdentifier>{fd11c1d9-dad8-4acd-9495-fb4ecd1072ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{57304cda-6ee9-498d-b0df-3741fe600b39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Component">
+      <UniqueIdentifier>{14b7bcb9-b625-47ab-ab28-a795175795a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

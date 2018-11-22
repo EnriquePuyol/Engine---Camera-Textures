@@ -1,8 +1,8 @@
 #ifndef __GameObject_h__
 #define __GameObject_h__
 
-#include <vector>
 #include "Component.h"
+#include <vector>
 
 using namespace std;
 
@@ -13,18 +13,17 @@ public:
 	~GameObject();
 
 	void Update();
-	Component* AddComponent(Type type)
-	{
-
-	}
+	Component* AddComponent(Type type);
 
 public:
 
-	char* name;
+	string name;
 
 	GameObject* parent;
 	vector<GameObject*> childs;
+
 	vector<Component*> components;
+
 };
 
-#endif
+#endif // !__GameObject_h__
