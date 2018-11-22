@@ -17,6 +17,9 @@ public:
 	update_status   Update();
 	update_status	PostUpdate();
 
+	void UpdateFoV(unsigned & w, unsigned & h);
+	void UpdateFrustum();
+
 	void Move();
 
 	void Yaw(float angle);

@@ -29,7 +29,8 @@ bool ModuleCameraEditor::Init()
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 100.0f;
 	frustum.verticalFov = math::pi / 4.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) * (App->window->width / App->window->height);
+	float aspect = App->window->width / App->window->height;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) * aspect;
 
 	proj = frustum.ProjectionMatrix();
 
@@ -50,6 +51,26 @@ update_status ModuleCameraEditor::PostUpdate()
 {
 	LookAt(eye, eye + forward);
 	return UPDATE_CONTINUE;
+}
+
+void ModuleCameraEditor::UpdateFoV(unsigned & w, unsigned & h)
+{
+	float aspect = (float)w / (float)h;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect);
+	UpdateFrustum();
+	//screenWidth = w;
+	//screenHeight = h;
+}
+
+void ModuleCameraEditor::UpdateFrustum()
+{
+	frustum.pos = eye;
+	frustum.front = forward.Normalized();
+	frustum.up = up.Normalized();
+
+
+	view = frustum.ViewMatrix();
+	proj = frustum.ProjectionMatrix();
 }
 
 void ModuleCameraEditor::Move()
