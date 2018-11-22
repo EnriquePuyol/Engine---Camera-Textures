@@ -204,3 +204,10 @@ void ModuleUI::updateFramerates() {
 	++logMSIterator;
 	if (logMSIterator > 49) logMSIterator = 0;
 }
+
+void ModuleUI::ResizeUI()
+{
+
+
+
+}

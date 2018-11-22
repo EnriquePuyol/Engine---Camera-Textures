@@ -50,6 +50,8 @@ public:
 
 	void updateFramerates();
 
+	void ResizeUI();
+
 public:
 	ImGuiIO io;
 	ConsoleLog console;
