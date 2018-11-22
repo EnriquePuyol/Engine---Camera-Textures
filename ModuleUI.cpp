@@ -32,7 +32,7 @@ bool ModuleUI::Init()
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Window
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
-	ImGui_ImplOpenGL3_Init("#version 130");
+	ImGui_ImplOpenGL3_Init("#version 330");
 
 	// Setup style
 	ImGui::StyleColorsDark();
@@ -165,7 +165,7 @@ void Info()
 
 void Console()
 {
-	ImGui::SetNextWindowPos(ImVec2(0, App->window->height - 100), ImGuiCond_Always);
+	ImGui::SetNextWindowPos(ImVec2(0, App->window->height - 100), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(App->window->width, 100), ImGuiCond_Always);
 
 	App->ui->console.Draw("Console");
@@ -174,8 +174,8 @@ void Console()
 
 void Performance()
 {
+	ImGui::SetNextWindowPos(ImVec2(App->window->width - 300, 20), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(300, App->window->height - 120), ImGuiCond_Always);
-	ImGui::SetNextWindowPos(ImVec2(App->window->width - 300, 20), ImGuiCond_Always);
 
 	ImGui::Begin("Performance", &App->ui->showPerformace);
 

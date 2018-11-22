@@ -82,6 +82,8 @@ update_status ModuleInput::Update()
 
 	while (SDL_PollEvent(&event) != 0)
 	{
+		App->ui->Events(event);
+
 		switch (event.type)
 		{
 		case SDL_QUIT:
