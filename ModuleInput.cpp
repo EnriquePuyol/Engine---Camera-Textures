@@ -5,6 +5,7 @@
 #include "ModuleCameraEditor.h"
 #include "ModuleModelLoader.h"
 #include "ModuleUI.h"
+#include "ModuleWindow.h"
 
 #define MAX_KEYS 300
 
@@ -90,6 +91,9 @@ update_status ModuleInput::Update()
 			return UPDATE_STOP;
 
 		case SDL_WINDOWEVENT:
+			/*if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+				App->window->WindowChanged();*/
+
 			switch (event.window.event)
 			{
 				//case SDL_WINDOWEVENT_LEAVE:

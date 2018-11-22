@@ -132,3 +132,11 @@ void ModuleWindow::SetBorderless()
 	SDL_SetWindowBordered(window, isBorderless);
 }
 
+void ModuleWindow::WindowChanged()
+{
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+
+	SetResolution(DM.w, DM.h);
+}
+

@@ -24,6 +24,7 @@ public:
 	void SetResolution(int w = SCREEN_WIDTH, int h = SCREEN_HEIGHT);
 	void SetFullScreen();
 	void SetBorderless();
+	void WindowChanged();
 
 public:
 

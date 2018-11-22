@@ -16,11 +16,11 @@ enum update_status
 #define degreesToRadians(x) x*(3.141592f/180.0f)
 
 // Configuration -----------
-#define SCREEN_WIDTH 1600
-#define SCREEN_HEIGHT 960
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 #define FULLSCREEN false
 #define BORDERLESS false
-#define	RESIZABLE false
+#define	RESIZABLE true
 #define VSYNC true
 #define TITLE "SAG Engine"
 

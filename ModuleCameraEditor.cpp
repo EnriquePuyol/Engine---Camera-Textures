@@ -61,8 +61,6 @@ void ModuleCameraEditor::UpdateFoV(unsigned & w, unsigned & h)
 	float aspect = (float)w / (float)h;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect);
 	UpdateFrustum();
-	//screenWidth = w;
-	//screenHeight = h;
 }
 
 void ModuleCameraEditor::UpdateFrustum()
