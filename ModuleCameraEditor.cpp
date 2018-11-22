@@ -36,7 +36,10 @@ bool ModuleCameraEditor::Init()
 
 	float3 target(0.0f, 0.0f, 0.0f);
 	up = float3(0.0f, 1.0f, 0.0f);
+
 	LookAt(eye, target);
+
+	App->window->SetResolution();
 
 	return true;
 }
@@ -164,14 +167,14 @@ void ModuleCameraEditor::Move()
 
 void ModuleCameraEditor::Yaw(float angle)
 {
-	Quat rotMat = math::Quat::RotateY(angle * sens/100.0f);
+	Quat rotMat = math::Quat::RotateY(angle * sens / 100.0f);
 	forward = rotMat * forward;
 	up = rotMat * up;
 }
 
 void ModuleCameraEditor::Pitch(float angle)
 {
-	Quat rotMat = Quat::RotateAxisAngle(right, angle * sens/100.0f * up.AngleBetweenNorm(float3(up.x, 0.f, up.z).Normalized()));
+	Quat rotMat = Quat::RotateAxisAngle(right, angle * sens / 100.0f * up.AngleBetweenNorm(float3(up.x, 0.f, up.z).Normalized()));
 	float3 newForward = rotMat * forward;
 	float newPitch = (newForward.AngleBetweenNorm(float3(newForward.x, 0.f, newForward.z).Normalized()));
 	if (newPitch < 1.2f)
@@ -184,9 +187,9 @@ void ModuleCameraEditor::Pitch(float angle)
 
 void ModuleCameraEditor::LookAt(const math::float3 & eye, const math::float3 & target)
 {
-	forward = math::float3(target - eye); 
+	forward = math::float3(target - eye);
 	forward.Normalize();
-	right = math::float3(forward.Cross(up)); 
+	right = math::float3(forward.Cross(up));
 	right.Normalize();
 	up = math::float3(right.Cross(forward));
 

@@ -157,6 +157,7 @@ bool ModuleRender::CleanUp()
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
+	App->camera->UpdateFoV(width, height);
 }
 
 void ModuleRender::DrawCoords()

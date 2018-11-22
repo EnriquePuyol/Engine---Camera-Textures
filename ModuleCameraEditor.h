@@ -30,9 +30,9 @@ private:
 
 public:
 	float cameraSpeed = 2.0f;
-	float zoomSpeed   = 2.0f;
-	float sens		  = 50.0f;
-	float smooth	  = 0.005f;
+	float zoomSpeed = 2.0f;
+	float sens = 50.0f;
+	float smooth = 0.005f;
 
 	float4x4 proj = float4x4::identity;
 	float4x4 view = float4x4::identity;
@@ -44,7 +44,7 @@ private:
 	Frustum frustum;
 	//float aspect = 16 / 9;
 
-	float3 eye	  = { 0.0f, 5.0f, 10.0f };
+	float3 eye = { 0.0f, 5.0f, 10.0f };
 	float3 forward;
 	float3 up;
 	float3 right;

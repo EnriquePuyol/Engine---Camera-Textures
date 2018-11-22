@@ -21,7 +21,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void SetResolution(int w, int h);
+	void SetResolution(int w = SCREEN_WIDTH, int h = SCREEN_HEIGHT);
 	void SetFullScreen();
 	void SetBorderless();
 
