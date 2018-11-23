@@ -1,6 +1,8 @@
 #ifndef __Component_h__
 #define __Component_h__
 
+class GameObject;
+
 enum Type
 {
 	Transform,
