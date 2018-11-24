@@ -132,6 +132,15 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="UI_About.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Performance.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Console.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -336,6 +345,18 @@
     <ClInclude Include="Component.h">
       <Filter>GameObject\Component</Filter>
     </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_About.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Performance.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Console.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utils">
@@ -352,6 +373,9 @@
     </Filter>
     <Filter Include="GameObject\Component">
       <UniqueIdentifier>{14b7bcb9-b625-47ab-ab28-a795175795a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{afc10da9-1046-4e4d-a8dc-892a3abfad66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

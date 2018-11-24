@@ -53,7 +53,7 @@ bool ModuleModelLoader::Load(char * path)
 	GenerateMaterialData(scene);
 
 	model = true;
-	App->ui->console.AddLog("Model loaded correcty");
+	App->ui->uiConsole->console.AddLog("Model loaded correcty");
 	return ok;
 }
 

@@ -152,6 +152,10 @@
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="MsTimer.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="UI_About.h" />
+    <ClInclude Include="UI_Console.h" />
+    <ClInclude Include="UI_Performance.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -205,6 +209,9 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="UI_About.cpp" />
+    <ClCompile Include="UI_Console.cpp" />
+    <ClCompile Include="UI_Performance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\default.fs" />
