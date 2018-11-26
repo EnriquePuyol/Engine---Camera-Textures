@@ -56,7 +56,8 @@ void ModuleUI::Draw()
 {
 	MainBar();
 
-	ImGui::ShowDemoWindow();
+	// Ventana de ejemplo de ImGui
+	//ImGui::ShowDemoWindow();
 
 	for (list<UI*>::iterator it = uiWindows.begin(); it != uiWindows.end(); ++it)
 	{
@@ -158,6 +159,9 @@ void ModuleUI::Docking()
 {
 	ImGui::SetNextWindowPos({ 0,0 });
 	ImGui::SetNextWindowSize({ (float)App->window->width, (float)App->window->height });
+	
+	// ToDo: Cuando coja la imagen y la guarde como textura, se tendrá que poner a 1
+	//ImGui::SetNextWindowBgAlpha(1.0f);
 	ImGui::SetNextWindowBgAlpha(0.0f);
 
 	//TODO: change this to a simple define
