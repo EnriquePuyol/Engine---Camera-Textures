@@ -5,7 +5,7 @@
 
 UI_Performance::UI_Performance(char* name) : UI(name)
 {
-	active = false;
+	//active = false;
 
 	logMSIterator = 0;
 	logFPSIterator = 0;
@@ -23,7 +23,6 @@ UI_Performance::~UI_Performance()
 
 void UI_Performance::Draw()
 {
-	ImGui::SetNextWindowPos(ImVec2(App->window->width - 300, 20), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(300, App->window->height - 120), ImGuiCond_Always);
 
 	ImGui::Begin(name, &active);

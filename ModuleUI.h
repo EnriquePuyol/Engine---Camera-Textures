@@ -12,6 +12,8 @@
 #include "UI_About.h"
 #include "UI_Performance.h"
 #include "UI_Console.h"
+#include "UI_Scene.h"
+#include "UI_Hierarchy.h"
 
 using namespace std;
 
@@ -23,7 +25,7 @@ public:
 	~ModuleUI();
 	bool Init();
 	update_status PreUpdate();
-	update_status Update();
+	void Draw();
 	update_status PostUpdate();
 	bool CleanUp();
 
@@ -36,11 +38,13 @@ private:
 	list<UI*> uiWindows;
 
 public:
-	UI_About* uiAbout = nullptr;
+	UI_About*		uiAbout		  = nullptr;
 	UI_Performance* uiPerformance = nullptr;
-	UI_Console* uiConsole = nullptr;
+	UI_Console*		uiConsole	  = nullptr;
+	UI_Scene*		uiScene		  = nullptr;
+	UI_Hierarchy*	uiHierarchy	  = nullptr;
 
-	ImGuiIO io;
+	//ImGuiIO io;
 
 	bool showInfo = false;
 	bool showConsole = true;

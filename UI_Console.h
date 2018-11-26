@@ -39,7 +39,7 @@ public:
 	UI_Console(char* name);
 	~UI_Console();
 
-	void Draw();
+	void Draw() override;
 
 public:
 	ConsoleLog console;

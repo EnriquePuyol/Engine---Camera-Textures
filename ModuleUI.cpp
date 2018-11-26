@@ -20,11 +20,11 @@ bool ModuleUI::Init()
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Window
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Window
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init("#version 330");
@@ -35,6 +35,8 @@ bool ModuleUI::Init()
 	uiWindows.push_back(uiAbout = new UI_About("About"));
 	uiWindows.push_back(uiPerformance = new UI_Performance("Performance"));
 	uiWindows.push_back(uiConsole = new UI_Console("Console"));
+	uiWindows.push_back(uiScene = new UI_Scene("Scene"));
+	uiWindows.push_back(uiHierarchy = new UI_Hierarchy("Hierarchy"));
 
 	return true;
 }
@@ -50,9 +52,11 @@ update_status ModuleUI::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleUI::Update()
+void ModuleUI::Draw()
 {
 	MainBar();
+
+	ImGui::ShowDemoWindow();
 
 	for (list<UI*>::iterator it = uiWindows.begin(); it != uiWindows.end(); ++it)
 	{
@@ -63,7 +67,9 @@ update_status ModuleUI::Update()
 		}
 	}
 
-	return UPDATE_CONTINUE;
+	ImGui::End();
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 update_status ModuleUI::PostUpdate()
@@ -129,6 +135,7 @@ void ModuleUI::MainBar()
 			{
 				if (ImGui::Checkbox("Console", &uiConsole->active)) {}
 				if (ImGui::Checkbox("Performance", &uiPerformance->active)) {}
+				if (ImGui::Checkbox("Hierarchy", &uiHierarchy->active)) {}
 
 				ImGui::EndMenu();
 			}

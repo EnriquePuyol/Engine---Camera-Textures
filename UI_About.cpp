@@ -17,7 +17,6 @@ UI_About::~UI_About()
 
 void UI_About::Draw()
 {
-	ImGui::SetNextWindowPos(ImVec2(App->window->width / 2 - 200, App->window->height / 2 - 200));
 	ImGui::Begin(name, &active);
 
 	ImGui::Text(TITLE);

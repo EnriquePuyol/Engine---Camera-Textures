@@ -9,7 +9,7 @@ public:
 	UI_About(char* name);
 	~UI_About();
 
-	void Draw();
+	void Draw() override;
 };
 
 #endif //__UI_About_h__

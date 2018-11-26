@@ -156,7 +156,9 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="UI_About.h" />
     <ClInclude Include="UI_Console.h" />
+    <ClInclude Include="UI_Hierarchy.h" />
     <ClInclude Include="UI_Performance.h" />
+    <ClInclude Include="UI_Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -213,7 +215,9 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="UI_About.cpp" />
     <ClCompile Include="UI_Console.cpp" />
+    <ClCompile Include="UI_Hierarchy.cpp" />
     <ClCompile Include="UI_Performance.cpp" />
+    <ClCompile Include="UI_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\default.fs" />

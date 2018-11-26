@@ -144,6 +144,10 @@
     <ClCompile Include="ComponentTransform.cpp">
       <Filter>GameObject\Component</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Scene.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Hierarchy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -362,6 +366,12 @@
     </ClInclude>
     <ClInclude Include="ComponentTransform.h">
       <Filter>GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Hierarchy.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Scene.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
