@@ -17,9 +17,10 @@ UI_About::~UI_About()
 
 void UI_About::Draw()
 {
-	ImGui::Begin(name, &active);
+	ImGui::Begin(name, &active, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize);
 
 	ImGui::Text(TITLE);
+	ImGui::NewLine();
 	ImGui::Text("Version: 1.0");
 	ImGui::Text("3D game engine developed by Enrique Puyol Martín");
 	ImGui::Text("Libraries: ");
@@ -29,6 +30,7 @@ void UI_About::Draw()
 	ImGui::Text("	- OpenGL 3.0");
 	ImGui::Text("	- MathGeoLib");
 	ImGui::Text("	- SDL 2.0");
+	ImGui::Text("	- Brofiler 1.1.2");
 	ImGui::Text("MIT License Copyright (c) [2018] [Enrique Puyol]");
 
 	ImGui::End();
