@@ -14,7 +14,7 @@ class Component
 {
 
 public:
-	Component() {}
+	Component(GameObject* parent) :parent(parent) {}
 	virtual ~Component() {}
 
 	virtual void Enable() {}

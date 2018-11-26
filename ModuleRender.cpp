@@ -133,7 +133,7 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
-	
+	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -153,8 +153,8 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-	//LOG("Destroying renderer");
-	App->ui->uiConsole->console.AddLog("Destroying renderer");
+	LOG("Destroying renderer");
+	//App->ui->uiConsole->console.AddLog("Destroying renderer");
 	SDL_GL_DeleteContext(context);
 	//Destroy window
 

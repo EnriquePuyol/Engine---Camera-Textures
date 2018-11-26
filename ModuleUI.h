@@ -30,6 +30,7 @@ public:
 	void Events(SDL_Event& event);
 
 	void MainBar();
+	void Docking();
 
 private:
 	list<UI*> uiWindows;

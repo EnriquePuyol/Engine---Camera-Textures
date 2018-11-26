@@ -45,19 +45,14 @@ update_status ModuleUI::PreUpdate()
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
+	Docking();
+
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleUI::Update()
 {
 	MainBar();
-
-	/*if (uiAbout->active)
-		uiAbout->Draw();
-	if (uiConsole->active)
-		uiConsole->Draw();
-	if (uiPerformance->active)
-		uiPerformance->Draw();*/
 
 	for (list<UI*>::iterator it = uiWindows.begin(); it != uiWindows.end(); ++it)
 	{
@@ -78,7 +73,14 @@ update_status ModuleUI::PostUpdate()
 
 bool ModuleUI::CleanUp()
 {
-	ImGui::EndFrame();
+	//ImGui::EndFrame();
+
+	for (std::list<UI*>::iterator it = uiWindows.begin(); it != uiWindows.end(); ++it)
+	{
+		RELEASE((*it));
+	}
+
+	uiWindows.clear();
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
@@ -143,4 +145,25 @@ void ModuleUI::MainBar()
 
 		ImGui::EndMainMenuBar();
 	}
+}
+
+void ModuleUI::Docking()
+{
+	ImGui::SetNextWindowPos({ 0,0 });
+	ImGui::SetNextWindowSize({ (float)App->window->width, (float)App->window->height });
+	ImGui::SetNextWindowBgAlpha(0.0f);
+
+	//TODO: change this to a simple define
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+	windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::Begin("DockSpace", 0, windowFlags);
+	ImGui::PopStyleVar(3);
+
+	ImGuiID dockspaceId = ImGui::GetID("DockSpace");
+	ImGui::DockSpace(dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 }

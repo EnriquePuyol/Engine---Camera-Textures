@@ -150,8 +150,8 @@ update_status ModuleInput::Update()
 // Called before quitting
 bool ModuleInput::CleanUp()
 {
-	//LOG("Quitting SDL input event subsystem");
-	App->ui->uiConsole->console.AddLog("Quitting SDL input event subsystem");
+	LOG("Quitting SDL input event subsystem");
+	//App->ui->uiConsole->console.AddLog("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
