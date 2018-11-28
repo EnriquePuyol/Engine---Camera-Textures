@@ -16,8 +16,8 @@ enum update_status
 //#define degreesToRadians(x) x*(3.141592f/180.0f)
 
 // Configuration -----------
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
+#define SCREEN_WIDTH 1536
+#define SCREEN_HEIGHT 864
 #define FULLSCREEN false
 #define BORDERLESS false
 #define	RESIZABLE true

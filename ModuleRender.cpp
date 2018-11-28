@@ -183,6 +183,8 @@ void ModuleRender::DrawCoords()
 
 	glLineWidth(3.0f);
 
+	glClear(GL_DEPTH_BUFFER_BIT);
+
 	// red X
 	int xAxis = glGetUniformLocation(App->programs->def_program, "newColor");
 	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };

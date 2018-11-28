@@ -124,10 +124,18 @@ void ModuleUI::MainBar()
 		{
 			if (ImGui::BeginMenu("Display"))
 			{
-				if (ImGui::MenuItem("1920x1080"))	{ App->window->SetResolution(1920, 1080); }
-				if(ImGui::MenuItem("1280x720"))		{ App->window->SetResolution(1280, 720); }
-				if (ImGui::MenuItem("960x540"))		{ App->window->SetResolution(960, 540); }
+				if (ImGui::MenuItem("1920 x 1080"))	{ App->window->SetResolution(1920, 1080); }
+				if (ImGui::MenuItem("1920 x 864"))	{ App->window->SetResolution(1920, 864); }
+				if (ImGui::MenuItem("1920 x 720"))	{ App->window->SetResolution(1920, 720); }
+				if (ImGui::MenuItem("1536 x 864"))	{ App->window->SetResolution(1536, 864); }
+				if (ImGui::MenuItem("1536 x 720"))	{ App->window->SetResolution(1536, 864); }
+				if (ImGui::MenuItem("1280 x 720"))	{ App->window->SetResolution(1280, 720); }
+				if (ImGui::MenuItem("1280 x 540"))	{ App->window->SetResolution(1280, 720); }
+				if (ImGui::MenuItem("960 x 720"))	{ App->window->SetResolution(960, 720); }
+				if (ImGui::MenuItem("960 x 540"))	{ App->window->SetResolution(960, 540); }
+				ImGui::Spacing();
 				if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen)) { App->window->SetFullScreen(); }
+				ImGui::SameLine(110.0f);
 				if (ImGui::Checkbox("Borderless", &App->window->borderless)) { App->window->SetBorderless(); }
 
 				ImGui::EndMenu();
@@ -161,8 +169,8 @@ void ModuleUI::Docking()
 	ImGui::SetNextWindowSize({ (float)App->window->width, (float)App->window->height });
 	
 	// ToDo: Cuando coja la imagen y la guarde como textura, se tendrá que poner a 1
-	//ImGui::SetNextWindowBgAlpha(1.0f);
-	ImGui::SetNextWindowBgAlpha(0.0f);
+	ImGui::SetNextWindowBgAlpha(1.0f);
+	//ImGui::SetNextWindowBgAlpha(0.0f);
 
 	//TODO: change this to a simple define
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
