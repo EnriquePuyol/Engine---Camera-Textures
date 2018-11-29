@@ -14,6 +14,7 @@
 #include "UI_Console.h"
 #include "UI_Scene.h"
 #include "UI_Hierarchy.h"
+#include "UI_Inspector.h"
 
 using namespace std;
 
@@ -43,6 +44,7 @@ public:
 	UI_Console*		uiConsole	  = nullptr;
 	UI_Scene*		uiScene		  = nullptr;
 	UI_Hierarchy*	uiHierarchy	  = nullptr;
+	UI_Inspector*	uiInspector	  = nullptr;
 
 	//ImGuiIO io;
 

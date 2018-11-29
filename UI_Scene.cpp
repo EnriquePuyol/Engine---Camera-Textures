@@ -6,7 +6,7 @@
 
 UI_Scene::UI_Scene(char* name) : UI(name)
 {
-	//active = true;
+	active = true;
 }
 
 

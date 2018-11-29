@@ -5,7 +5,7 @@
 
 UI_Performance::UI_Performance(char* name) : UI(name)
 {
-	//active = false;
+	active = false;
 
 	logMSIterator = 0;
 	logFPSIterator = 0;

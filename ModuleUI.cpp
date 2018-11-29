@@ -37,6 +37,7 @@ bool ModuleUI::Init()
 	uiWindows.push_back(uiConsole = new UI_Console("Console"));
 	uiWindows.push_back(uiScene = new UI_Scene("Scene"));
 	uiWindows.push_back(uiHierarchy = new UI_Hierarchy("Hierarchy"));
+	uiWindows.push_back(uiInspector = new UI_Inspector("Inspector"));
 
 	return true;
 }
@@ -107,7 +108,6 @@ void ModuleUI::MainBar()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
-			if (ImGui::MenuItem("Hello")) {}
 			if (ImGui::MenuItem("Exit")) { App->input->quit = true; }
 
 			ImGui::EndMenu();
@@ -142,9 +142,13 @@ void ModuleUI::MainBar()
 			}
 			if (ImGui::BeginMenu("View"))
 			{
+				if (ImGui::Checkbox("Scene", &uiScene->active)) {}
+				ImGui::Separator();
+				if (ImGui::Checkbox("Hierarchy", &uiHierarchy->active)) {}
+				if (ImGui::Checkbox("Inspector", &uiScene->active)) {}
+				ImGui::Separator();
 				if (ImGui::Checkbox("Console", &uiConsole->active)) {}
 				if (ImGui::Checkbox("Performance", &uiPerformance->active)) {}
-				if (ImGui::Checkbox("Hierarchy", &uiHierarchy->active)) {}
 
 				ImGui::EndMenu();
 			}

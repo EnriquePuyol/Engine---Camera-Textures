@@ -147,7 +147,12 @@
     <ClCompile Include="UI_Scene.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="UI_Hierarchy.cpp" />
+    <ClCompile Include="UI_Hierarchy.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Inspector.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -371,6 +376,9 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="UI_Scene.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Inspector.h">
       <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>

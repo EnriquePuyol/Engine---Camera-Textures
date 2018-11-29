@@ -2,7 +2,7 @@
 
 UI_Console::UI_Console(char* name) : UI(name)
 {
-	//active = true;
+	active = true;
 }
 
 
