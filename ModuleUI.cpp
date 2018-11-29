@@ -133,7 +133,7 @@ void ModuleUI::MainBar()
 				if (ImGui::MenuItem("1280 x 540"))	{ App->window->SetResolution(1280, 720); }
 				if (ImGui::MenuItem("960 x 720"))	{ App->window->SetResolution(960, 720); }
 				if (ImGui::MenuItem("960 x 540"))	{ App->window->SetResolution(960, 540); }
-				ImGui::Spacing();
+				ImGui::Separator();
 				if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen)) { App->window->SetFullScreen(); }
 				ImGui::SameLine(110.0f);
 				if (ImGui::Checkbox("Borderless", &App->window->borderless)) { App->window->SetBorderless(); }

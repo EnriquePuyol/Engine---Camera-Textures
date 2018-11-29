@@ -6,6 +6,7 @@
 #include "ModuleModelLoader.h"
 #include "ModuleUI.h"
 #include "ModuleWindow.h"
+#include "ModuleRender.h"
 
 #define MAX_KEYS 300
 
@@ -106,6 +107,10 @@ update_status ModuleInput::Update()
 			case SDL_WINDOWEVENT_MAXIMIZED:
 			case SDL_WINDOWEVENT_RESTORED:
 				windowEvents[WE_SHOW] = true;
+				break;
+			case SDL_WINDOWEVENT_RESIZED:
+			case SDL_WINDOWEVENT_SIZE_CHANGED:
+				App->renderer->WindowResized(event.window.data1, event.window.data2);
 				break;
 			}
 			break;

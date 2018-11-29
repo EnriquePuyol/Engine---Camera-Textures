@@ -2,14 +2,13 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
-#include "SDL.h"
-#include "GL/glew.h"
-#include "Application.h"
 #include "ModulePrograms.h"
 #include "ModuleCameraEditor.h"
 #include "ModuleModelLoader.h"
 #include "ModuleUI.h"
 
+#include "SDL.h"
+#include "GL/glew.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
@@ -157,10 +156,12 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
+	App->window->width = width;
+	App->window->height = height;
 	glViewport(0, 0, width, height);
-	CreateSceneImage();
 	// ToDo: Change FoV to take Scene window size
 	App->camera->UpdateFoV(width, height);
+	CreateSceneImage();
 }
 
 void ModuleRender::CreateSceneImage()
