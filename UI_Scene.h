@@ -10,6 +10,9 @@ public:
 	~UI_Scene();
 
 	void Draw() override;
+
+public:
+	bool focused = false;
 };
 
 #endif // !__UI_Scene_h__

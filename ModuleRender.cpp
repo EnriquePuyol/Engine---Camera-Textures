@@ -56,6 +56,8 @@ bool ModuleRender::Init()
 
 	tri_model = math::float4x4::identity;
 
+	CreateSceneImage();
+
 	return true;
 }
 
@@ -73,6 +75,9 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glUseProgram(App->programs->tex_program);
 
 	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
@@ -132,6 +137,7 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	App->ui->Draw();
 	SDL_GL_SwapWindow(App->window->window);
 
@@ -153,6 +159,43 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
 	App->camera->UpdateFoV(width, height);
+	CreateSceneImage();
+}
+
+void ModuleRender::CreateSceneImage()
+{
+	glDeleteFramebuffers(1, &fbo);
+	glDeleteTextures(1, &renderedTexture);
+	glDeleteRenderbuffers(1, &rbo);
+
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+	glGenTextures(1, &renderedTexture);
+	glBindTexture(GL_TEXTURE_2D, renderedTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->window->width, App->window->height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		LOG("Error: Framebuffer issue");
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
 void ModuleRender::DrawCoords()

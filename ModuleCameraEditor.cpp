@@ -5,6 +5,8 @@
 #include "ModulePrograms.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
+#include "ModuleUI.h"
+#include "UI_Scene.h"
 
 #include "GL/glew.h"
 #include "SDL.h"
@@ -46,7 +48,8 @@ bool ModuleCameraEditor::Init()
 
 update_status ModuleCameraEditor::Update()
 {
-	Move();
+	if (App->ui->uiScene->focused)
+		Move();
 	return UPDATE_CONTINUE;
 }
 
