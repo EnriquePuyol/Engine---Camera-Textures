@@ -28,8 +28,8 @@ public:
 	void Stop()
 	{
 		Uint32 time = (SDL_GetTicks() - timer);
-		LOG("Timer ended. Result = %lu ms", time);
-		//App->ui->console.AddLog("Timer ended. Result = %i ms", time);
+		//LOG("Timer ended. Result = %lu ms", time);
+		App->ui->uiConsole->console.AddLog("Timer ended. Result = %i ms", time);
 	}
 
 	void Reset()

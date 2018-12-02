@@ -4,6 +4,11 @@
 
 ModuleScene::ModuleScene()
 {
+	GameObject* helloWorld = new GameObject("Test");
+	GameObject* child = new GameObject("Test Child");
+
+	helloWorld->childs.push_back(child);
+	gameobjects.push_back(helloWorld);
 }
 
 

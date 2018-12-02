@@ -20,6 +20,7 @@ public:
 
 public:
 	list<GameObject*> gameobjects;
+	GameObject* selectedGO = nullptr;
 
 };
 

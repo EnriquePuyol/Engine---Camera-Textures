@@ -43,3 +43,5 @@ enum update_status
 	       x = nullptr;\
 		 }\
 	 }
+
+#define ARRAYSIZE(_ARR)          ((int)(sizeof(_ARR)/sizeof(*_ARR)))

@@ -9,16 +9,21 @@ using namespace std;
 class GameObject
 {
 public:
-	GameObject();
+	GameObject(const char name[40] = "Empty");
 	~GameObject();
 
 	void Update();
 	void CleanUp();
 	Component* AddComponent(Type type);
 
+	void Draw();
+	void DrawComponents();
+
 public:
 
-	string name;
+	char name[40] = "";
+	bool selected = false;
+	bool enable;
 
 	GameObject* parent;
 	list<GameObject*> childs;

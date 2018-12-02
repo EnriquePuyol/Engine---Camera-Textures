@@ -12,9 +12,6 @@ public:
 
 	void Draw() override;
 
-public:
-	GameObject * selectedGameObject = nullptr;
-
 };
 
 #endif
