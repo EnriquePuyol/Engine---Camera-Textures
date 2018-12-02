@@ -153,6 +153,7 @@
     <ClCompile Include="UI_Inspector.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -381,6 +382,7 @@
     <ClInclude Include="UI_Inspector.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utils">

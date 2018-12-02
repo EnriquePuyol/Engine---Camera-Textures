@@ -2,7 +2,7 @@
 #define __GameObject_h__
 
 #include "Component.h"
-#include <vector>
+#include <list>
 
 using namespace std;
 
@@ -13,6 +13,7 @@ public:
 	~GameObject();
 
 	void Update();
+	void CleanUp();
 	Component* AddComponent(Type type);
 
 public:
@@ -20,9 +21,9 @@ public:
 	string name;
 
 	GameObject* parent;
-	vector<GameObject*> childs;
+	list<GameObject*> childs;
 
-	vector<Component*> components;
+	list<Component*> components;
 
 };
 

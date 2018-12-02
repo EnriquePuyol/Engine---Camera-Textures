@@ -10,6 +10,10 @@ public:
 	ComponentTransform(GameObject* parent);
 	~ComponentTransform();
 
+	void Update() override;
+	void CleanUp() override;
+	void Draw() override;
+
 public:
 	float3 position;
 	float3 rotation;

@@ -13,9 +13,9 @@ public:
 	ModuleDebugDraw();
 	~ModuleDebugDraw();
 
-	bool            Init();
-	update_status   Update();
-	bool            CleanUp();
+	bool            Init() override;
+	update_status   Update() override;
+	bool            CleanUp() override;
 
 	void            Draw(unsigned fbo, unsigned fb_width, unsigned fb_height);
 private:

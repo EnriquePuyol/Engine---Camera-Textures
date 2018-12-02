@@ -17,8 +17,8 @@ public:
 	ModuleModelLoader();
 	~ModuleModelLoader();
 
-	bool Init();
-	update_status Update();
+	bool Init() override;
+	update_status Update() override;
 
 	bool Load(char* path);
 

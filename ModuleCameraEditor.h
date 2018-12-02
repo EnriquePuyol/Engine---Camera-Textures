@@ -13,9 +13,9 @@ public:
 	ModuleCameraEditor();
 	~ModuleCameraEditor();
 
-	bool            Init();
-	update_status   Update();
-	update_status	PostUpdate();
+	bool            Init() override;
+	update_status   Update() override;
+	update_status	PostUpdate() override;
 
 	void UpdateFoV(unsigned w, unsigned h);
 	void UpdateFrustum();

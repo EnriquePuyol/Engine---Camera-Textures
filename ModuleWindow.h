@@ -16,10 +16,10 @@ public:
 	virtual ~ModuleWindow();
 
 	// Called before quitting
-	bool Init();
+	bool Init() override;
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp() override;
 
 	void SetResolution(int w = SCREEN_WIDTH, int h = SCREEN_HEIGHT);
 	void SetFullScreen();

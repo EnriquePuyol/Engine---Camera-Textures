@@ -24,11 +24,13 @@ class ModuleUI : public Module
 public:
 	ModuleUI();
 	~ModuleUI();
-	bool Init();
-	update_status PreUpdate();
+
+	bool Init() override;
+	update_status PreUpdate() override;
+	update_status PostUpdate() override;
+	bool CleanUp() override;
+
 	void Draw();
-	update_status PostUpdate();
-	bool CleanUp();
 
 	void Events(SDL_Event& event);
 

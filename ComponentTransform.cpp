@@ -16,3 +16,18 @@ ComponentTransform::ComponentTransform(GameObject* parent) : Component(parent)
 ComponentTransform::~ComponentTransform()
 {
 }
+
+void ComponentTransform::Update()
+{
+
+}
+
+void ComponentTransform::CleanUp()
+{
+
+}
+
+void ComponentTransform::Draw()
+{
+
+}

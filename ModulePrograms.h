@@ -10,8 +10,8 @@ public:
 	ModulePrograms();
 	~ModulePrograms();
 
-	bool Init();
-	bool CleanUp();
+	bool Init() override;
+	bool CleanUp() override;
 
 	GLuint LoadShader(const char* vsPath, const char* fsPath);
 

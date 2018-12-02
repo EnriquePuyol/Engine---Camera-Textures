@@ -8,6 +8,7 @@
 #include "ModuleCameraEditor.h"
 #include "ModuleModelLoader.h"
 #include "ModuleUI.h"
+#include "ModuleScene.h"
 #include "MsTimer.h"
 
 using namespace std;
@@ -23,6 +24,7 @@ Application::Application()
     modules.push_back(programs	  = new ModulePrograms());
 	modules.push_back(camera	  = new ModuleCameraEditor());
 	modules.push_back(modelLoader = new ModuleModelLoader());
+	modules.push_back(scene		  = new ModuleScene());
 	timer = new MsTimer();
 }
 
