@@ -1,11 +1,13 @@
 #include "ModuleScene.h"
-
+#include "ComponentTransform.h"
 
 
 ModuleScene::ModuleScene()
 {
+	// ToDo: Borrar algun dia
 	GameObject* helloWorld = new GameObject("Test");
 	GameObject* child = new GameObject("Test Child");
+	helloWorld->components.push_back(new ComponentTransform(helloWorld));
 
 	helloWorld->childs.push_back(child);
 	gameobjects.push_back(helloWorld);

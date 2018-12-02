@@ -62,9 +62,8 @@ void GameObject::Draw()
 	{
 		node_open = ImGui::TreeNodeEx(name, flags);
 	}
-	
-
-	if (ImGui::IsItemClicked())
+	// When is clicked but no when the arrow is clicked
+	if (ImGui::IsItemClicked() && (ImGui::GetMousePos().x - ImGui::GetItemRectMin().x) > ImGui::GetTreeNodeToLabelSpacing())
 	{
 		selected = !selected;
 		if (selected && this != App->scene->selectedGO)
@@ -95,11 +94,12 @@ void GameObject::DrawComponents()
 	if (ImGui::Checkbox(" ", &enable)) {}
 	ImGui::SameLine();
 	ImGui::InputText("Name", name, ARRAYSIZE(name));
+	ImGui::Spacing();
 	ImGui::Separator();
 
 	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->Draw();
+		ImGui::Separator();
 	}
-	ImGui::Separator();
 }

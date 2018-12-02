@@ -16,8 +16,8 @@ enum update_status
 //#define degreesToRadians(x) x*(3.141592f/180.0f)
 
 // Configuration -----------
-#define SCREEN_WIDTH 960
-#define SCREEN_HEIGHT 540
+#define SCREEN_WIDTH 1536
+#define SCREEN_HEIGHT 864
 #define FULLSCREEN false
 #define BORDERLESS false
 #define	RESIZABLE true
@@ -45,3 +45,7 @@ enum update_status
 	 }
 
 #define ARRAYSIZE(_ARR)          ((int)(sizeof(_ARR)/sizeof(*_ARR)))
+
+#define MAX_TRANSFORM_COMP 1
+#define MAX_RENDER_COMP 1
+#define MAX_MESH_COMP 1

@@ -29,5 +29,14 @@ void ComponentTransform::CleanUp()
 
 void ComponentTransform::Draw()
 {
+	
+	ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("TRANSFORM").x / 2);
+	ImGui::Text("TRANSFORM");
+	ImGui::Spacing();
+	
+	ImGui::DragFloat3("Position", position.ptr(), 0.1f);
+	ImGui::DragFloat3("Rotation", rotation.ptr(), 0.1f);
+	ImGui::DragFloat3("Scale",	  scale.ptr(),    0.1f);
 
+	
 }

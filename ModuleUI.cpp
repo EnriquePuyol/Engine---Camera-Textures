@@ -58,7 +58,7 @@ void ModuleUI::Draw()
 	MainBar();
 
 	// Ventana de ejemplo de ImGui
-	//ImGui::ShowDemoWindow();
+	// ImGui::ShowDemoWindow();
 
 	for (list<UI*>::iterator it = uiWindows.begin(); it != uiWindows.end(); ++it)
 	{
