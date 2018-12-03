@@ -1,6 +1,8 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleUI.h"
+#include "UI_Hierarchy.h"
 
 GameObject::GameObject(const char name[40])
 {
@@ -63,17 +65,22 @@ void GameObject::Draw()
 		node_open = ImGui::TreeNodeEx(name, flags);
 	}
 	// When is clicked but no when the arrow is clicked
-	if (ImGui::IsItemClicked() && (ImGui::GetMousePos().x - ImGui::GetItemRectMin().x) > ImGui::GetTreeNodeToLabelSpacing())
+	if (ImGui::IsItemClicked())
 	{
-		selected = !selected;
-		if (selected && this != App->scene->selectedGO)
+		App->ui->uiHierarchy->isItemClicked = true;
+
+		if ((ImGui::GetMousePos().x - ImGui::GetItemRectMin().x) > ImGui::GetTreeNodeToLabelSpacing())
 		{
-			App->scene->selectedGO != nullptr ? App->scene->selectedGO->selected = false : 1;
-			App->scene->selectedGO = this;
-		}
-		else if (!this->selected && App->scene->selectedGO == this)
-		{
-			App->scene->selectedGO = nullptr;
+			selected = !selected;
+			if (selected && this != App->scene->selectedGO)
+			{
+				App->scene->selectedGO != nullptr ? App->scene->selectedGO->selected = false : 1;
+				App->scene->selectedGO = this;
+			}
+			else if (!this->selected && App->scene->selectedGO == this)
+			{
+				App->scene->selectedGO = nullptr;
+			}
 		}
 	}
 	if (node_open)

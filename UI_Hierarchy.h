@@ -10,6 +10,10 @@ public:
 	~UI_Hierarchy();
 
 	void Draw() override;
+
+public:
+	bool isItemClicked = false;
+
 };
 
 #endif // !__UI_Hierarchy_h__

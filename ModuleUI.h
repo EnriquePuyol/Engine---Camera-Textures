@@ -35,6 +35,7 @@ public:
 	void Events(SDL_Event& event);
 
 	void MainBar();
+	void DrawDisplay();
 	void Docking();
 
 private:

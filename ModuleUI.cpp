@@ -124,16 +124,10 @@ void ModuleUI::MainBar()
 		{
 			if (ImGui::BeginMenu("Display"))
 			{
-				if (ImGui::MenuItem("1920 x 1080"))	{ App->window->SetResolution(1920, 1080); }
-				if (ImGui::MenuItem("1920 x 864"))	{ App->window->SetResolution(1920, 864); }
-				if (ImGui::MenuItem("1920 x 720"))	{ App->window->SetResolution(1920, 720); }
-				if (ImGui::MenuItem("1536 x 864"))	{ App->window->SetResolution(1536, 864); }
-				if (ImGui::MenuItem("1536 x 720"))	{ App->window->SetResolution(1536, 864); }
-				if (ImGui::MenuItem("1280 x 720"))	{ App->window->SetResolution(1280, 720); }
-				if (ImGui::MenuItem("1280 x 540"))	{ App->window->SetResolution(1280, 720); }
-				if (ImGui::MenuItem("960 x 720"))	{ App->window->SetResolution(960, 720); }
-				if (ImGui::MenuItem("960 x 540"))	{ App->window->SetResolution(960, 540); }
+				DrawDisplay();
+
 				ImGui::Separator();
+				ImGui::Spacing();
 				if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen)) { App->window->SetFullScreen(); }
 				ImGui::SameLine(110.0f);
 				if (ImGui::Checkbox("Borderless", &App->window->borderless)) { App->window->SetBorderless(); }
@@ -165,6 +159,93 @@ void ModuleUI::MainBar()
 
 		ImGui::EndMainMenuBar();
 	}
+}
+
+void ModuleUI::DrawDisplay()
+{
+	int w = App->window->width;
+	int h = App->window->height;
+
+	if (w == 1920 && h == 1080)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.6f, 0.2f, 1));
+		if (ImGui::MenuItem("1920 x 1080")) { App->window->SetResolution(1920, 1080); }
+		ImGui::PopStyleColor();
+	}
+	else
+		if (ImGui::MenuItem("1920 x 1080")) { App->window->SetResolution(1920, 1080); }
+
+	if (w == 1920 && h == 864)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.6f, 0.2f, 1));
+		if (ImGui::MenuItem("1920 x 864")) { App->window->SetResolution(1920, 864); }
+		ImGui::PopStyleColor();
+	}
+	else
+		if (ImGui::MenuItem("1920 x 864")) { App->window->SetResolution(1920, 864); }
+
+	if (w == 1920 && h == 720)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.6f, 0.2f, 1));
+		if (ImGui::MenuItem("1920 x 720")) { App->window->SetResolution(1920, 720); }
+		ImGui::PopStyleColor();
+	}
+	else
+		if (ImGui::MenuItem("1920 x 720")) { App->window->SetResolution(1920, 720); }
+
+	if (w == 1536 && h == 864)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.6f, 0.2f, 1));
+		if (ImGui::MenuItem("1536 x 864")) { App->window->SetResolution(1536, 864); }
+		ImGui::PopStyleColor();
+	}
+	else
+		if (ImGui::MenuItem("1536 x 864")) { App->window->SetResolution(1536, 864); }
+
+	if (w == 1536 && h == 720)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.6f, 0.2f, 1));
+		if (ImGui::MenuItem("1536 x 720")) { App->window->SetResolution(1536, 864); }
+		ImGui::PopStyleColor();
+	}
+	else
+		if (ImGui::MenuItem("1536 x 720")) { App->window->SetResolution(1536, 720); }
+
+	if (w == 1280 && h == 720)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.6f, 0.2f, 1));
+		if (ImGui::MenuItem("1280 x 720")) { App->window->SetResolution(1280, 720); }
+		ImGui::PopStyleColor();
+	}
+	else
+		if (ImGui::MenuItem("1280 x 720")) { App->window->SetResolution(1280, 720); }
+
+	if (w == 1280 && h == 540)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.6f, 0.2f, 1));
+		if (ImGui::MenuItem("1280 x 540")) { App->window->SetResolution(1280, 720); }
+		ImGui::PopStyleColor();
+	}
+	else
+		if (ImGui::MenuItem("1280 x 540")) { App->window->SetResolution(1280, 540); }
+
+	if (w == 960 && h == 720)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.6f, 0.2f, 1));
+		if (ImGui::MenuItem("960 x 720")) { App->window->SetResolution(960, 720); }
+		ImGui::PopStyleColor();
+	}
+	else
+		if (ImGui::MenuItem("960 x 720")) { App->window->SetResolution(960, 720); }
+
+	if (w == 960 && h == 540)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.6f, 0.2f, 1));
+		if (ImGui::MenuItem("960 x 540")) { App->window->SetResolution(960, 540); }
+		ImGui::PopStyleColor();
+	}
+	else
+		if (ImGui::MenuItem("960 x 540")) { App->window->SetResolution(960, 540); }
 }
 
 void ModuleUI::Docking()

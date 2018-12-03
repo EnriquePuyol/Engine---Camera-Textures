@@ -14,7 +14,7 @@ UI_Inspector::~UI_Inspector()
 
 void UI_Inspector::Draw()
 {
-	ImGui::Begin(name, &active);
+	ImGui::Begin(name, &active, ImGuiWindowFlags_HorizontalScrollbar);
 
 	if (nullptr == App->scene->selectedGO)
 	{
