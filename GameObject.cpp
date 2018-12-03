@@ -101,7 +101,7 @@ void GameObject::Draw()
 		node_open = ImGui::TreeNodeEx(name, flags);
 	}
 	// When is clicked but no when the arrow is clicked
-	if (ImGui::IsItemClicked())
+	if (ImGui::IsItemClicked() || ImGui::IsItemClicked(1))
 	{
 		App->ui->uiHierarchy->isItemClicked = true;
 
