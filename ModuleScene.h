@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "GameObject.h"
-#include <list>
+#include <vector>
 
 using namespace std;
 
@@ -13,13 +13,15 @@ public:
 	ModuleScene();
 	~ModuleScene();
 
+	update_status PreUpdate() override;
 	update_status Update() override;
 	bool CleanUp() override;
 
 	void CreateGameObject();
+	void DeleteGameObject();
 
 public:
-	list<GameObject*> gameobjects;
+	vector<GameObject*> gameobjects;
 	GameObject* selectedGO = nullptr;
 
 };

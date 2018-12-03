@@ -22,7 +22,7 @@ void UI_Hierarchy::Draw()
 
 	ImGui::Begin(name, &active, ImGuiWindowFlags_HorizontalScrollbar);
 
-	for (list<GameObject*>::iterator it = App->scene->gameobjects.begin(); it != App->scene->gameobjects.end(); ++it)
+	for (vector<GameObject*>::iterator it = App->scene->gameobjects.begin(); it != App->scene->gameobjects.end(); ++it)
 	{
 		(*it)->Draw();
 	}
@@ -46,7 +46,7 @@ void UI_Hierarchy::Draw()
 		if (nullptr != App->scene->selectedGO)
 		{
 			ImGui::Separator();
-			if (ImGui::MenuItem("Delete")) {}
+			if (ImGui::MenuItem("Delete")) { App->scene->DeleteGameObject(); }
 		}
 
 		ImGui::EndPopup();

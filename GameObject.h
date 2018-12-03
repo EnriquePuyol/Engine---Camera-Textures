@@ -2,9 +2,18 @@
 #define __GameObject_h__
 
 #include "Component.h"
-#include <list>
+#include <vector>
 
 using namespace std;
+
+enum NextPreReturn
+{
+	NONE,
+	DELETED,
+	COPY,
+	CUT,
+	PASTE
+};
 
 class GameObject
 {
@@ -12,8 +21,10 @@ public:
 	GameObject(const char name[40] = "Empty");
 	~GameObject();
 
+	NextPreReturn PreUpdate();
 	void Update();
 	void CleanUp();
+	void Delete();
 	Component* AddComponent(Type type);
 
 	void Draw();
@@ -21,14 +32,21 @@ public:
 
 public:
 
+	// General info
 	char name[40] = "";
 	bool selected = false;
 	bool enable;
+	NextPreReturn nextPreReturn = NONE;
 
+	// ImGui property
+	bool openNode = false;
+
+	// Hierarchy info
 	GameObject* parent;
-	list<GameObject*> childs;
+	vector<GameObject*> childs;
 
-	list<Component*> components;
+	// Inspector info
+	vector<Component*> components;
 
 };
 

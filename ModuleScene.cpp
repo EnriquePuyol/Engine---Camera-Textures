@@ -18,10 +18,19 @@ ModuleScene::~ModuleScene()
 {
 }
 
+update_status ModuleScene::PreUpdate()
+{
+	for (vector<GameObject*>::iterator it = gameobjects.begin(); it != gameobjects.end(); ++it)
+	{
+		// ToDo: Simular el bucle de pre de GameObject
+		(*it)->PreUpdate();
+	}
+	return UPDATE_CONTINUE;
+}
+
 update_status ModuleScene::Update()
 {
-
-	for (list<GameObject*>::iterator it = gameobjects.begin(); it != gameobjects.end(); ++it)
+	for (vector<GameObject*>::iterator it = gameobjects.begin(); it != gameobjects.end(); ++it)
 	{
 		(*it)->Update();
 	}
@@ -44,8 +53,16 @@ void  ModuleScene::CreateGameObject()
 	}
 	else
 	{
+		selectedGO->openNode = true;
+		selectedGO->selected = !selectedGO->selected;
 		selectedGO->childs.push_back(myGO);
 	}
 
 	selectedGO = myGO;
+	selectedGO->selected = true;
+}
+
+void ModuleScene::DeleteGameObject()
+{
+	selectedGO->nextPreReturn = DELETED;
 }

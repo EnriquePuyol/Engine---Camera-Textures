@@ -1,7 +1,7 @@
 #include "GameObject.h"
 #include "Application.h"
-#include "ModuleScene.h"
 #include "ModuleUI.h"
+#include "ModuleScene.h"
 #include "UI_Hierarchy.h"
 
 GameObject::GameObject(const char name[40])
@@ -15,15 +15,34 @@ GameObject::~GameObject()
 
 }
 
+NextPreReturn GameObject::PreUpdate()
+{
+	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end();)
+	{
+		
+		if ((*it)->PreUpdate() == DELETED)
+		{
+			// ToDo: Delete
+		}
+		else
+		{
+			++it;
+		}
+		
+		
+	}
+	return nextPreReturn;
+}
+
 void GameObject::Update()
 {
 	// Update the components
-	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->Update();
 	}
 	// Update the childs
-	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
 	{
 		(*it)->Update();
 	}
@@ -34,6 +53,17 @@ void GameObject::CleanUp()
 
 }
 
+void GameObject::Delete()
+{
+
+	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+	{
+		(*it)->Delete();
+	}
+
+	delete this;
+}
+
 Component * GameObject::AddComponent(Type type)
 {
 	return nullptr;
@@ -41,6 +71,12 @@ Component * GameObject::AddComponent(Type type)
 
 void GameObject::Draw()
 {
+	if (openNode)
+	{
+		ImGui::SetNextTreeNodeOpen(true);
+		openNode = false;
+	}
+
 	ImGuiTreeNodeFlags	flags;
 
 	if (childs.size() == 0)
@@ -87,7 +123,7 @@ void GameObject::Draw()
 	{
 		if (childs.size() > 0)
 		{
-			for (std::list<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+			for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
 				(*it)->Draw();
 		}
 		ImGui::TreePop();
@@ -104,7 +140,7 @@ void GameObject::DrawComponents()
 	ImGui::Spacing();
 	ImGui::Separator();
 
-	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->Draw();
 		ImGui::Separator();
