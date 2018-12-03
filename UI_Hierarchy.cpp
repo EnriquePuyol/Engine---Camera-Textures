@@ -29,7 +29,7 @@ void UI_Hierarchy::Draw()
 
 	if (ImGui::BeginPopupContextWindow())
 	{
-		if (ImGui::MenuItem("Create Empty")) {}
+		if (ImGui::MenuItem("Create Empty")) { App->scene->CreateGameObject(); }
 
 		if (nullptr != App->scene->selectedGO)
 		{

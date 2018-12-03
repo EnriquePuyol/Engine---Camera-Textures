@@ -34,14 +34,18 @@ bool ModuleScene::CleanUp()
 	return true;
 }
 
-GameObject * ModuleScene::CreateGameObject(bool hasParent)
+void  ModuleScene::CreateGameObject()
 {
 	GameObject* myGO = new GameObject();
 
-	if (!hasParent)
+	if (nullptr == selectedGO)
 	{
 		gameobjects.push_back(myGO);
 	}
+	else
+	{
+		selectedGO->childs.push_back(myGO);
+	}
 
-	return myGO;
+	selectedGO = myGO;
 }

@@ -16,7 +16,7 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
-	GameObject* CreateGameObject(bool hasParent = false);
+	void CreateGameObject();
 
 public:
 	list<GameObject*> gameobjects;
