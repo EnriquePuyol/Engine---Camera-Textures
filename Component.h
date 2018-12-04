@@ -27,6 +27,7 @@ public:
 	virtual void Update() {}
 	virtual void CleanUp() {}
 	virtual void Draw() {}
+	virtual void Delete() {}
 
 public:
 	Type type;

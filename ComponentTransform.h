@@ -13,6 +13,7 @@ public:
 	void Update() override;
 	void CleanUp() override;
 	void Draw() override;
+	void Delete() override;
 
 public:
 	float3 position;

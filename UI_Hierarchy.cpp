@@ -22,7 +22,7 @@ void UI_Hierarchy::Draw()
 
 	ImGui::Begin(name, &active, ImGuiWindowFlags_HorizontalScrollbar);
 
-	for (vector<GameObject*>::iterator it = App->scene->gameobjects.begin(); it != App->scene->gameobjects.end(); ++it)
+	for (list<GameObject*>::iterator it = App->scene->root->childs.begin(); it != App->scene->root->childs.end(); ++it)
 	{
 		(*it)->Draw();
 	}

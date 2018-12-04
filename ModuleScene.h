@@ -3,9 +3,6 @@
 
 #include "Module.h"
 #include "GameObject.h"
-#include <vector>
-
-using namespace std;
 
 class ModuleScene : public Module
 {
@@ -21,7 +18,7 @@ public:
 	void DeleteGameObject();
 
 public:
-	vector<GameObject*> gameobjects;
+	GameObject* root;
 	GameObject* selectedGO = nullptr;
 
 };

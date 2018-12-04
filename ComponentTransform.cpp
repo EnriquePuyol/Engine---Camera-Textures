@@ -46,3 +46,8 @@ void ComponentTransform::Draw()
 
 	
 }
+
+void ComponentTransform::Delete()
+{
+	delete this;
+}

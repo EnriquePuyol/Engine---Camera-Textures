@@ -4,13 +4,14 @@
 
 ModuleScene::ModuleScene()
 {
+	root = new GameObject("Root");
 	// ToDo: Borrar algun dia
 	GameObject* helloWorld = new GameObject("Test");
 	GameObject* child = new GameObject("Test Child");
 	helloWorld->components.push_back(new ComponentTransform(helloWorld));
 
 	helloWorld->childs.push_back(child);
-	gameobjects.push_back(helloWorld);
+	root->childs.push_back(helloWorld);
 }
 
 
@@ -20,17 +21,21 @@ ModuleScene::~ModuleScene()
 
 update_status ModuleScene::PreUpdate()
 {
-	for (vector<GameObject*>::iterator it = gameobjects.begin(); it != gameobjects.end(); ++it)
+	for (list<GameObject*>::iterator it = root->childs.begin(); it != root->childs.end();)
 	{
-		// ToDo: Simular el bucle de pre de GameObject
-		(*it)->PreUpdate();
+		if ((*it)->PreUpdate() != DELETED)
+			++it;
+		else
+		{
+			root->childs.erase(it++);
+		}
 	}
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleScene::Update()
 {
-	for (vector<GameObject*>::iterator it = gameobjects.begin(); it != gameobjects.end(); ++it)
+	for (list<GameObject*>::iterator it = root->childs.begin(); it != root->childs.end(); ++it)
 	{
 		(*it)->Update();
 	}
@@ -49,7 +54,7 @@ void  ModuleScene::CreateGameObject()
 
 	if (nullptr == selectedGO)
 	{
-		gameobjects.push_back(myGO);
+		root->childs.push_back(myGO);
 	}
 	else
 	{

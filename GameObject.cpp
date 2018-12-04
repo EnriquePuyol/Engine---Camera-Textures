@@ -17,32 +17,36 @@ GameObject::~GameObject()
 
 NextPreReturn GameObject::PreUpdate()
 {
-	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end();)
+
+	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end();)
 	{
 		
-		if ((*it)->PreUpdate() == DELETED)
-		{
-			// ToDo: Delete
-		}
+		if ((*it)->PreUpdate() != DELETED)
+			++it;
 		else
 		{
-			++it;
+			childs.erase(it++);
 		}
 		
-		
 	}
-	return nextPreReturn;
+
+	if (nextPreReturn == DELETED)
+	{
+		Delete();
+		return DELETED;
+	}
+	return NONE;
 }
 
 void GameObject::Update()
 {
 	// Update the components
-	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->Update();
 	}
 	// Update the childs
-	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
 	{
 		(*it)->Update();
 	}
@@ -56,12 +60,17 @@ void GameObject::CleanUp()
 void GameObject::Delete()
 {
 
-	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+	for (auto &component : components)
 	{
-		(*it)->Delete();
+		RELEASE(component);
 	}
 
-	delete this;
+	for (auto &child : childs)
+	{
+		RELEASE(child);
+	}
+
+	App->scene->selectedGO = nullptr;
 }
 
 Component * GameObject::AddComponent(Type type)
@@ -101,7 +110,9 @@ void GameObject::Draw()
 		node_open = ImGui::TreeNodeEx(name, flags);
 	}
 	// When is clicked but no when the arrow is clicked
-	if (ImGui::IsItemClicked() || ImGui::IsItemClicked(1))
+	if (ImGui::IsItemClicked() || 
+		ImGui::IsItemClicked(1) && nullptr == App->scene->selectedGO ||
+		ImGui::IsItemClicked(1) && this != App->scene->selectedGO)
 	{
 		App->ui->uiHierarchy->isItemClicked = true;
 
@@ -123,7 +134,7 @@ void GameObject::Draw()
 	{
 		if (childs.size() > 0)
 		{
-			for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+			for (list<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
 				(*it)->Draw();
 		}
 		ImGui::TreePop();
@@ -140,7 +151,7 @@ void GameObject::DrawComponents()
 	ImGui::Spacing();
 	ImGui::Separator();
 
-	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->Draw();
 		ImGui::Separator();

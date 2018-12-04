@@ -2,7 +2,7 @@
 #define __GameObject_h__
 
 #include "Component.h"
-#include <vector>
+#include <list>
 
 using namespace std;
 
@@ -43,10 +43,10 @@ public:
 
 	// Hierarchy info
 	GameObject* parent;
-	vector<GameObject*> childs;
+	list<GameObject*> childs;
 
 	// Inspector info
-	vector<Component*> components;
+	list<Component*> components;
 
 };
 
