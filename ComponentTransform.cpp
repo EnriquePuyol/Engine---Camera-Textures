@@ -32,6 +32,12 @@ void ComponentTransform::Draw()
 	
 	ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("TRANSFORM").x / 2);
 	ImGui::Text("TRANSFORM");
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize("     X     ").x / 2);
+	if (ImGui::Button("X"))
+	{
+
+	}
 	ImGui::Spacing();
 	
 	ImGui::DragFloat3("Position", position.ptr(), 0.1f);
