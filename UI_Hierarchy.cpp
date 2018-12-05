@@ -19,6 +19,10 @@ UI_Hierarchy::~UI_Hierarchy()
 void UI_Hierarchy::Draw()
 {
 	isItemClicked = false;
+	// Color de relleno de la ventana
+	// ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.24f, 0.24f, 0.24f, 1));
+
+	ImGui::PushStyleColor(ImGuiCol_Tab, ImVec4(0.24f, 0.24f, 0.24f, 1));
 
 	ImGui::Begin(name, &active, ImGuiWindowFlags_HorizontalScrollbar);
 
@@ -59,4 +63,6 @@ void UI_Hierarchy::Draw()
 	}
 
 	ImGui::End();
+
+	ImGui::PopStyleColor();
 }

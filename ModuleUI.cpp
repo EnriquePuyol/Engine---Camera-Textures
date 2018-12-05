@@ -62,11 +62,16 @@ void ModuleUI::Draw()
 
 	for (list<UI*>::iterator it = uiWindows.begin(); it != uiWindows.end(); ++it)
 	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
+		ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.24f, 0.24f, 0.24f, 1));
+		ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 0, 0, 1));
 		if ((*it)->getActive())
 		{
 			ImGui::SetNextWindowSizeConstraints({ 10,10 }, { (float)App->window->width, (float)App->window->height });
 			(*it)->Draw();
 		}
+		ImGui::PopStyleColor(2);
+		ImGui::PopStyleVar();
 	}
 
 	ImGui::End();
@@ -253,9 +258,7 @@ void ModuleUI::Docking()
 	ImGui::SetNextWindowPos({ 0,0 });
 	ImGui::SetNextWindowSize({ (float)App->window->width, (float)App->window->height });
 	
-	// ToDo: Cuando coja la imagen y la guarde como textura, se tendrá que poner a 1
 	ImGui::SetNextWindowBgAlpha(1.0f);
-	//ImGui::SetNextWindowBgAlpha(0.0f);
 
 	//TODO: change this to a simple define
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -265,8 +268,10 @@ void ModuleUI::Docking()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::PushStyleColor(ImGuiCol_DockingPreview, ImVec4(1, 0, 0, 1));
 	ImGui::Begin("DockSpace", 0, windowFlags);
 	ImGui::PopStyleVar(3);
+	ImGui::PopStyleColor();
 
 	ImGuiID dockspaceId = ImGui::GetID("DockSpace");
 	ImGui::DockSpace(dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
