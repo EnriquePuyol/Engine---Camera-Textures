@@ -3,6 +3,7 @@
 #include "ModuleUI.h"
 #include "ModuleScene.h"
 #include "UI_Hierarchy.h"
+#include "ComponentTransform.h"
 
 GameObject::GameObject(const char name[40])
 {
@@ -18,24 +19,30 @@ GameObject::~GameObject()
 NextPreReturn GameObject::PreUpdate()
 {
 
+	for (list<Component*>::iterator it = components.begin(); it != components.end();)
+	{
+		if ((*it)->PreUpdate() == COMP_DELETED)
+			components.erase(it++);
+		else
+			++it;
+	}
+
 	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end();)
 	{
 		
-		if ((*it)->PreUpdate() != DELETED)
+		if ((*it)->PreUpdate() != GO_DELETED)
 			++it;
 		else
-		{
 			childs.erase(it++);
-		}
 		
 	}
 
-	if (nextPreReturn == DELETED)
+	if (nextPreReturn == GO_DELETED)
 	{
 		Delete();
-		return DELETED;
+		return GO_DELETED;
 	}
-	return NONE;
+	return GO_NONE;
 }
 
 void GameObject::Update()
@@ -73,9 +80,12 @@ void GameObject::Delete()
 	App->scene->selectedGO = nullptr;
 }
 
-Component * GameObject::AddComponent(Type type)
+void GameObject::AddComponent(Type type)
 {
-	return nullptr;
+	if (type == Transform)
+	{
+		components.push_back(new ComponentTransform(this));
+	}
 }
 
 void GameObject::Draw()
@@ -151,9 +161,11 @@ void GameObject::DrawComponents()
 	ImGui::Spacing();
 	ImGui::Separator();
 
+	int i = 0;
 	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		(*it)->Draw();
+		(*it)->Draw(i);
 		ImGui::Separator();
+		i++;
 	}
 }

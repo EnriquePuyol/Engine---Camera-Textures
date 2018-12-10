@@ -8,11 +8,11 @@ using namespace std;
 
 enum NextPreReturn
 {
-	NONE,
-	DELETED,
-	COPY,
-	CUT,
-	PASTE
+	GO_NONE,
+	GO_DELETED,
+	GO_COPY,
+	GO_CUT,
+	GO_PASTE
 };
 
 class GameObject
@@ -25,7 +25,7 @@ public:
 	void Update();
 	void CleanUp();
 	void Delete();
-	Component* AddComponent(Type type);
+	void AddComponent(Type type);
 
 	void Draw();
 	void DrawComponents();
@@ -36,7 +36,7 @@ public:
 	char name[40] = "";
 	bool selected = false;
 	bool enable;
-	NextPreReturn nextPreReturn = NONE;
+	NextPreReturn nextPreReturn = GO_NONE;
 
 	// ImGui property
 	bool openNode = false;

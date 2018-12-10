@@ -14,6 +14,15 @@ enum Type
 	Material
 };
 
+enum PreComponentReturn
+{
+	COMP_NONE,
+	COMP_DELETED,
+	COMP_COPY,
+	COMP_CUT,
+	COMP_PASTE
+};
+
 class Component
 {
 
@@ -24,9 +33,10 @@ public:
 	virtual void Enable() { active = true; }
 	virtual void Disable() { active = false; }
 
+	virtual PreComponentReturn PreUpdate() { return COMP_NONE; }
 	virtual void Update() {}
 	virtual void CleanUp() {}
-	virtual void Draw() {}
+	virtual void Draw(int id) {}
 	virtual void Delete() {}
 
 public:

@@ -23,6 +23,24 @@ void UI_Inspector::Draw()
 	else
 	{
 		App->scene->selectedGO->DrawComponents();
+
+		ImGui::Spacing();
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("Add Component...").x / 2);
+
+
+		/*if (ImGui::Button("Add Component..."))
+		{
+		}*/
+		//ImVec2 size = ImGui::GetItemRectSize();
+		if (ImGui::BeginButtonDropDown("Add Component...   ", ImVec2(140, 20)))
+		{
+			if (ImGui::Button("Transform")) 
+			{
+				App->scene->selectedGO->AddComponent(Transform);
+			}
+
+			ImGui::EndButtonDropDown();
+		}
 	}
 
 	ImGui::End();

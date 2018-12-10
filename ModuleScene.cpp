@@ -23,7 +23,7 @@ update_status ModuleScene::PreUpdate()
 {
 	for (list<GameObject*>::iterator it = root->childs.begin(); it != root->childs.end();)
 	{
-		if ((*it)->PreUpdate() != DELETED)
+		if ((*it)->PreUpdate() != GO_DELETED)
 			++it;
 		else
 		{
@@ -69,5 +69,5 @@ void  ModuleScene::CreateGameObject()
 
 void ModuleScene::DeleteGameObject()
 {
-	selectedGO->nextPreReturn = DELETED;
+	selectedGO->nextPreReturn = GO_DELETED;
 }

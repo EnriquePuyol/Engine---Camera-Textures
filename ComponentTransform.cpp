@@ -15,6 +15,12 @@ ComponentTransform::ComponentTransform(GameObject* parent) : Component(parent)
 
 ComponentTransform::~ComponentTransform()
 {
+	parent = nullptr;
+}
+
+PreComponentReturn ComponentTransform::PreUpdate()
+{
+	return nextPreReturn;
 }
 
 void ComponentTransform::Update()
@@ -27,27 +33,38 @@ void ComponentTransform::CleanUp()
 
 }
 
-void ComponentTransform::Draw()
+void ComponentTransform::Draw(int id)
 {
 	
 	ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("TRANSFORM").x / 2);
 	ImGui::Text("TRANSFORM");
 	ImGui::SameLine();
 	ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize("     X     ").x / 2);
+	ImGui::PushID(id);
 	if (ImGui::Button("X"))
 	{
-
+		Delete();
 	}
+	ImGui::PopID();
+
 	ImGui::Spacing();
 	
+	ImGui::PushID(id);
 	ImGui::DragFloat3("Position", position.ptr(), 0.1f);
+	ImGui::PopID();
+	
+	ImGui::PushID(id); 
 	ImGui::DragFloat3("Rotation", rotation.ptr(), 0.1f);
+	ImGui::PopID();
+
+	ImGui::PushID(id);
 	ImGui::DragFloat3("Scale",	  scale.ptr(),    0.1f);
+	ImGui::PopID();
 
 	
 }
 
 void ComponentTransform::Delete()
 {
-	delete this;
+	nextPreReturn = COMP_DELETED;
 }

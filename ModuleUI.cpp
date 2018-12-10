@@ -63,8 +63,9 @@ void ModuleUI::Draw()
 	for (list<UI*>::iterator it = uiWindows.begin(); it != uiWindows.end(); ++it)
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
+		//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(100.0f, 0.0f));
 		ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.24f, 0.24f, 0.24f, 1));
-		ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 0, 0, 1));
+		ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 0.6f, 0.2f, 1));
 		if ((*it)->getActive())
 		{
 			ImGui::SetNextWindowSizeConstraints({ 10,10 }, { (float)App->window->width, (float)App->window->height });

@@ -10,12 +10,15 @@ public:
 	ComponentTransform(GameObject* parent);
 	~ComponentTransform();
 
+	PreComponentReturn PreUpdate() override;
 	void Update() override;
 	void CleanUp() override;
-	void Draw() override;
+	void Draw(int id) override;
 	void Delete() override;
 
 public:
+	PreComponentReturn nextPreReturn = COMP_NONE;
+
 	float3 position;
 	float3 rotation;
 	float3 scale;
