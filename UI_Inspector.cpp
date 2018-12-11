@@ -27,17 +27,29 @@ void UI_Inspector::Draw()
 		ImGui::Spacing();
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("Add Component...").x / 2);
 
+		ImVec2 totalSize = ImVec2(140, 20);
+		ImVec2 elementSize = ImVec2(140, 20);
 
-		/*if (ImGui::Button("Add Component..."))
+		if (ImGui::BeginButtonDropDown("Add Component...   ", totalSize, 3))
 		{
-		}*/
-		//ImVec2 size = ImGui::GetItemRectSize();
-		if (ImGui::BeginButtonDropDown("Add Component...   ", ImVec2(140, 20)))
-		{
-			if (ImGui::Button("Transform")) 
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
+			if (ImGui::Button("Transform", elementSize))
 			{
 				App->scene->selectedGO->AddComponent(Transform);
+				ImGui::CloseCurrentPopup();
 			}
+			ImGui::Separator();
+			if (ImGui::Button("Mesh", elementSize))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::Separator();
+			if (ImGui::Button("Material", elementSize))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::PopStyleVar(2);
 
 			ImGui::EndButtonDropDown();
 		}

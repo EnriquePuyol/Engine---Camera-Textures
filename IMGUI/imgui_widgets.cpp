@@ -5512,7 +5512,7 @@ bool ImGui::BeginMenuBar()
     return true;
 }
 
-bool ImGui::BeginButtonDropDown(const char* label, ImVec2 buttonSize)
+bool ImGui::BeginButtonDropDown(const char* label, ImVec2 buttonSize, int numElements)
 {
 	//ImGui::SameLine(0.f, 0.f);
 
@@ -5536,6 +5536,11 @@ bool ImGui::BeginButtonDropDown(const char* label, ImVec2 buttonSize)
 
 	window->DrawList->AddTriangleFilled(a, b, c, GetColorU32(ImGuiCol_Text));
 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::PushStyleColor(ImGuiCol_Border, style.Colors[ImGuiCol_Button]);
+	ImGui::SetNextWindowSize(ImVec2(size.x, size.y * numElements));
+	ImGui::SetNextWindowPos(ImVec2(window->Pos.x + x, y + size.y * 2));
+
 	if (pressed)
 	{
 		ImGui::OpenPopup(label);
@@ -5546,8 +5551,12 @@ bool ImGui::BeginButtonDropDown(const char* label, ImVec2 buttonSize)
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, style.Colors[ImGuiCol_Button]);
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, style.Colors[ImGuiCol_Button]);
 		ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, style.Colors[ImGuiCol_Button]);
+		ImGui::PopStyleVar();
+		ImGui::PopStyleColor();
 		return true;
 	}
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor();
 
 	return false;
 }
