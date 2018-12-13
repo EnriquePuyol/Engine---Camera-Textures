@@ -88,6 +88,19 @@ void GameObject::AddComponent(Type type)
 	}
 }
 
+int GameObject::GetNumComponentsOfType(Type type)
+{
+	int contador = 0;
+
+	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->type == type)
+			contador++;
+	}
+
+	return contador;
+}
+
 void GameObject::Draw()
 {
 	if (openNode)

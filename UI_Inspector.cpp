@@ -1,6 +1,7 @@
 #include "UI_Inspector.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "IMGUI/imgui_internal.h"
 
 UI_Inspector::UI_Inspector(char* name) : UI(name)
 {
@@ -44,11 +45,26 @@ void UI_Inspector::Draw()
 		{
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
+
+			if (App->scene->selectedGO->GetNumComponentsOfType(Transform) >= MAX_TRANSFORM_COMP)
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+			}
+			else
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 1.0f);
+			}
+
 			if (ImGui::Button("Transform", size))
 			{
 				App->scene->selectedGO->AddComponent(Transform);
 				pressed = false;
+
 			}
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
 
 			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);

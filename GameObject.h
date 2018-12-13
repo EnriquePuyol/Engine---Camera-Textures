@@ -26,6 +26,7 @@ public:
 	void CleanUp();
 	void Delete();
 	void AddComponent(Type type);
+	int	 GetNumComponentsOfType(Type type);
 
 	void Draw();
 	void DrawComponents();
