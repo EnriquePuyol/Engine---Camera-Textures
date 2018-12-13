@@ -27,6 +27,7 @@ public:
 	void Delete();
 	void AddComponent(Type type);
 	int	 GetNumComponentsOfType(Type type);
+	bool CanAddComponentOfType(Type type);
 
 	void Draw();
 	void DrawComponents();

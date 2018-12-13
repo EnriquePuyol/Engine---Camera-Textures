@@ -11,7 +11,9 @@ enum Type
 {
 	Transform,
 	Mesh,
-	Material
+	Material,
+	Camera,
+	Light
 };
 
 enum PreComponentReturn
@@ -33,16 +35,18 @@ public:
 	virtual void Enable() { active = true; }
 	virtual void Disable() { active = false; }
 
-	virtual PreComponentReturn PreUpdate() { return COMP_NONE; }
+	virtual PreComponentReturn PreUpdate() { return nextPreReturn; }
 	virtual void Update() {}
 	virtual void CleanUp() {}
 	virtual void Draw(int id) {}
-	virtual void Delete() {}
+	virtual void Delete() { nextPreReturn = COMP_DELETED; }
 
 public:
 	Type type;
 	bool active;
 	GameObject* parent;
+
+	PreComponentReturn nextPreReturn = COMP_NONE;
 
 };
 

@@ -163,7 +163,6 @@ void ModuleCameraEditor::Move()
 	{
 		eye += forward * zoomSpeed * App->input->mouseScroll;
 	}
-
 }
 
 void ModuleCameraEditor::Yaw(float angle)

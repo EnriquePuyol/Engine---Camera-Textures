@@ -154,6 +154,9 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="ComponentLight.cpp">
+      <Filter>GameObject\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -383,6 +386,9 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="ComponentLight.h">
+      <Filter>GameObject\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utils">

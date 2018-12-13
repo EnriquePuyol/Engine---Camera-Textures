@@ -18,7 +18,7 @@ void UI_Inspector::Draw()
 	ImGui::Begin(name, &active, ImGuiWindowFlags_HorizontalScrollbar);
 
 	// Dropdown menu properties
-	int numElements = 3;
+	int numElements = 5;
 	int padding = 14;
 	static bool pressed = false;
 	const char * title = "Add Component...";
@@ -34,7 +34,8 @@ void UI_Inspector::Draw()
 
 		ImGui::Spacing();
 
-		if (pressed && !ImGui::IsAnyItemHovered() && ImGui::IsMouseClicked(0))
+		if (pressed && !ImGui::IsAnyItemHovered() && ImGui::IsMouseClicked(0) ||
+			pressed && !ImGui::IsWindowHovered()  && ImGui::IsMouseClicked(0))
 		{
 			pressed = false;
 		}
@@ -46,7 +47,7 @@ void UI_Inspector::Draw()
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
 
-			if (App->scene->selectedGO->GetNumComponentsOfType(Transform) >= MAX_TRANSFORM_COMP)
+			if (!App->scene->selectedGO->CanAddComponentOfType(Transform))
 			{
 				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
 				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
@@ -71,6 +72,7 @@ void UI_Inspector::Draw()
 
 			if (ImGui::Button("Mesh", size))
 			{
+				App->scene->selectedGO->AddComponent(Mesh);
 				pressed = false;
 			}
 
@@ -79,13 +81,43 @@ void UI_Inspector::Draw()
 
 			if (ImGui::Button("Material", size))
 			{
+				App->scene->selectedGO->AddComponent(Material);
 				pressed = false;
 			}
+
+			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);
+			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
+
+			if (ImGui::Button("Camera", size))
+			{
+				App->scene->selectedGO->AddComponent(Camera);
+				pressed = false;
+			}
+
+			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);
+			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
+
+			if (!App->scene->selectedGO->CanAddComponentOfType(Light))
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+			}
+			else
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 1.0f);
+			}
+
+			if (ImGui::Button("Light", size))
+			{
+				App->scene->selectedGO->AddComponent(Light);
+				pressed = false;
+			}
+
+			ImGui::PopItemFlag();
 			ImGui::PopStyleVar();
 
 			ImGui::EndButtonDropDown();
-
-
 		}
 		else
 		{

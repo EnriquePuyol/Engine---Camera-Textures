@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "UI_Hierarchy.h"
 #include "ComponentTransform.h"
+#include "ComponentLight.h"
 
 GameObject::GameObject(const char name[40])
 {
@@ -82,10 +83,19 @@ void GameObject::Delete()
 
 void GameObject::AddComponent(Type type)
 {
-	if (type == Transform)
+	switch (type)
+	{
+	case Transform:
+		components.push_back(new ComponentTransform(this));
+		break;
+	case Light:
+		components.push_back(new ComponentLight(this));
+		break;
+	}
+	/*if (type == Transform)
 	{
 		components.push_back(new ComponentTransform(this));
-	}
+	}*/	
 }
 
 int GameObject::GetNumComponentsOfType(Type type)
@@ -99,6 +109,47 @@ int GameObject::GetNumComponentsOfType(Type type)
 	}
 
 	return contador;
+}
+
+bool GameObject::CanAddComponentOfType(Type type)
+{
+	int limit = 0;
+
+	switch(type)
+	{
+	case Transform:
+		limit = MAX_TRANSFORM_COMP;
+		break;
+	case Mesh:
+		limit = MAX_MESH_COMP;
+		break;
+	case Material:
+		limit = MAX_MATERIAL_COMP;
+		break;
+	case Camera:
+		limit = MAX_CAMERA_COMP;
+		break;
+	case Light:
+		limit = MAX_LIGHT_COMP;
+		break;
+	}
+
+	if (limit == -1)
+		return true;
+
+
+	int contador = 0;
+
+	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->type == type)
+			contador++;
+	}
+
+	if (contador < limit)
+		return true;
+
+	return false;
 }
 
 void GameObject::Draw()

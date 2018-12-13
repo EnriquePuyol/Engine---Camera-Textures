@@ -18,11 +18,6 @@ ComponentTransform::~ComponentTransform()
 	parent = nullptr;
 }
 
-PreComponentReturn ComponentTransform::PreUpdate()
-{
-	return nextPreReturn;
-}
-
 void ComponentTransform::Update()
 {
 
@@ -62,9 +57,4 @@ void ComponentTransform::Draw(int id)
 	ImGui::PopID();
 
 	
-}
-
-void ComponentTransform::Delete()
-{
-	nextPreReturn = COMP_DELETED;
 }
