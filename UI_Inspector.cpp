@@ -16,14 +16,12 @@ void UI_Inspector::Draw()
 {
 	ImGui::Begin(name, &active, ImGuiWindowFlags_HorizontalScrollbar);
 
+	// Dropdown menu properties
 	int numElements = 3;
 	int padding = 14;
-	const char * title = "Add Component...";
 	static bool pressed = false;
-
-	ImVec2 size = ImGui::GetWindowSize();
-	ImGui::SetWindowSize(ImVec2(size.x, size.y + 20 * numElements));
-	ImVec2 size2 = ImGui::GetWindowSize();
+	const char * title = "Add Component...";
+	ImVec2 size = ImVec2(140, 20);
 
 	if (nullptr == App->scene->selectedGO)
 	{
@@ -34,14 +32,13 @@ void UI_Inspector::Draw()
 		App->scene->selectedGO->DrawComponents();
 
 		ImGui::Spacing();
-		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
-
-		ImVec2 size = ImVec2(140, 20);
 
 		if (pressed && !ImGui::IsAnyItemHovered() && ImGui::IsMouseClicked(0))
 		{
 			pressed = false;
 		}
+
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
 
 		if (ImGui::BeginButtonDropDown("Add Component...   ", size, numElements, &pressed))
 		{
