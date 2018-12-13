@@ -1094,12 +1094,12 @@ void ImGui::Bullet()
 // - SplitterBehavior() [Internal]
 //-------------------------------------------------------------------------
 
-void ImGui::Spacing()
+void ImGui::Spacing(float h)
 {
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems)
         return;
-    ItemSize(ImVec2(0,0));
+    ItemSize(ImVec2(0,h));
 }
 
 void ImGui::Dummy(const ImVec2& size)
@@ -1185,6 +1185,52 @@ void ImGui::Separator()
         PushColumnClipRect();
         window->DC.ColumnsSet->LineMinY = window->DC.CursorPos.y;
     }
+}
+
+void ImGui::SeparatorCustom(float offset, float width)
+{
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return;
+	ImGuiContext& g = *GImGui;
+
+	// Those flags should eventually be overridable by the user
+	ImGuiSeparatorFlags flags = (window->DC.LayoutType == ImGuiLayoutType_Horizontal) ? ImGuiSeparatorFlags_Vertical : ImGuiSeparatorFlags_Horizontal;
+	IM_ASSERT(ImIsPowerOfTwo((int)(flags & (ImGuiSeparatorFlags_Horizontal | ImGuiSeparatorFlags_Vertical))));   // Check that only 1 option is selected
+	if (flags & ImGuiSeparatorFlags_Vertical)
+	{
+		VerticalSeparator();
+		return;
+	}
+
+	// Horizontal Separator
+	if (window->DC.ColumnsSet)
+		PopClipRect();
+
+	float x1 = window->Pos.x + offset;
+	float x2 = window->Pos.x + offset + width;
+	if (!window->DC.GroupStack.empty())
+		x1 += window->DC.Indent.x;
+
+	const ImRect bb(ImVec2(x1, window->DC.CursorPos.y), ImVec2(x2, window->DC.CursorPos.y + 1.0f));
+	ItemSize(ImVec2(0.0f, 0.0f)); // NB: we don't provide our width so that it doesn't get feed back into AutoFit, we don't provide height to not alter layout.
+	if (!ItemAdd(bb, 0))
+	{
+		if (window->DC.ColumnsSet)
+			PushColumnClipRect();
+		return;
+	}
+
+	window->DrawList->AddLine(bb.Min, ImVec2(bb.Max.x, bb.Min.y), GetColorU32(ImGuiCol_Separator));
+
+	if (g.LogEnabled)
+		LogRenderedText(NULL, IM_NEWLINE "--------------------------------");
+
+	if (window->DC.ColumnsSet)
+	{
+		PushColumnClipRect();
+		window->DC.ColumnsSet->LineMinY = window->DC.CursorPos.y;
+	}
 }
 
 void ImGui::VerticalSeparator()
@@ -5512,9 +5558,8 @@ bool ImGui::BeginMenuBar()
     return true;
 }
 
-bool ImGui::BeginButtonDropDown(const char* label, ImVec2 buttonSize, int numElements)
+bool ImGui::BeginButtonDropDown(const char* label, ImVec2 buttonSize, int numElements, bool* pressed)
 {
-	//ImGui::SameLine(0.f, 0.f);
 
 	ImGuiWindow* window = GetCurrentWindow();
 	ImGuiContext& g = *GImGui;
@@ -5523,8 +5568,13 @@ bool ImGui::BeginButtonDropDown(const char* label, ImVec2 buttonSize, int numEle
 	float x = ImGui::GetCursorPosX();
 	float y = ImGui::GetCursorPosY();
 
-	ImVec2 size(buttonSize.x, buttonSize.y);
-	bool pressed = ImGui::Button(label, size);
+	if (ImGui::Button(label, buttonSize))
+	{
+		if (*pressed == true)
+			*pressed = false;
+		else
+			*pressed = true;
+	}
 
 	// Arrow
 	ImVec2 center(window->Pos.x + x + buttonSize.x - 10, window->Pos.y + y + buttonSize.y / 2);
@@ -5536,35 +5586,18 @@ bool ImGui::BeginButtonDropDown(const char* label, ImVec2 buttonSize, int numEle
 
 	window->DrawList->AddTriangleFilled(a, b, c, GetColorU32(ImGuiCol_Text));
 
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_Border, style.Colors[ImGuiCol_Button]);
-	ImGui::SetNextWindowSize(ImVec2(size.x, size.y * numElements));
-	ImGui::SetNextWindowPos(ImVec2(window->Pos.x + x, y + size.y * 2));
-
-	if (pressed)
+	if (*pressed)
 	{
-		ImGui::OpenPopup(label);
-	}
-
-	if (ImGui::BeginPopup(label))
-	{
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, style.Colors[ImGuiCol_Button]);
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, style.Colors[ImGuiCol_Button]);
-		ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, style.Colors[ImGuiCol_Button]);
-		ImGui::PopStyleVar();
-		ImGui::PopStyleColor();
 		return true;
 	}
-	ImGui::PopStyleVar();
-	ImGui::PopStyleColor();
 
 	return false;
+
 }
 
 void ImGui::EndButtonDropDown()
 {
-	ImGui::PopStyleColor(3);
-	ImGui::EndPopup();
+	
 }
 
 void ImGui::EndMenuBar()

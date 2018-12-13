@@ -26,23 +26,22 @@ ModuleInput::~ModuleInput()
 // Called before render is available
 bool ModuleInput::Init()
 {
-	//LOG("Init SDL input event system");
-	App->ui->uiConsole->console.AddLog("Init SDL input event system");
+	LOG("Init SDL input event system");
+	//App->ui->uiConsole->console.AddLog("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
-		//LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
-		App->ui->uiConsole->console.AddLog("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		//App->ui->uiConsole->console.AddLog("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
 	return ret;
 }
 
-// Called every draw update
-update_status ModuleInput::Update()
+update_status ModuleInput::PreUpdate()
 {
 	if (quit)
 		return UPDATE_STOP;
@@ -131,7 +130,7 @@ update_status ModuleInput::Update()
 		case SDL_MOUSEMOTION:
 
 			moving = true;
-			
+
 			mouseMotion.x = event.motion.xrel;
 			mouseMotion.y = event.motion.yrel;
 			mouse.x = event.motion.x;
@@ -149,6 +148,12 @@ update_status ModuleInput::Update()
 	if (GetWindowEvent(EventWindow::WE_QUIT) == true || GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		return UPDATE_STOP;
 
+	return UPDATE_CONTINUE;
+}
+
+// Called every draw update
+update_status ModuleInput::Update()
+{
 	return UPDATE_CONTINUE;
 }
 
