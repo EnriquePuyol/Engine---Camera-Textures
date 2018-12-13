@@ -1,6 +1,7 @@
 #include "UI_Inspector.h"
 #include "Application.h"
 #include "ModuleScene.h"
+
 #include "IMGUI/imgui_internal.h"
 
 UI_Inspector::UI_Inspector(char* name) : UI(name)
@@ -70,14 +71,39 @@ void UI_Inspector::Draw()
 			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
 
+			if (!App->scene->selectedGO->CanAddComponentOfType(Mesh))
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+			}
+			else
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 1.0f);
+			}
+
 			if (ImGui::Button("Mesh", size))
 			{
 				App->scene->selectedGO->AddComponent(Mesh);
 				pressed = false;
 			}
 
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
+
 			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
+
+			if (!App->scene->selectedGO->CanAddComponentOfType(Material))
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+			}
+			else
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 1.0f);
+			}
 
 			if (ImGui::Button("Material", size))
 			{
@@ -85,14 +111,31 @@ void UI_Inspector::Draw()
 				pressed = false;
 			}
 
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
+
 			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
+
+			if (!App->scene->selectedGO->CanAddComponentOfType(Camera))
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+			}
+			else
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 1.0f);
+			}
 
 			if (ImGui::Button("Camera", size))
 			{
 				App->scene->selectedGO->AddComponent(Camera);
 				pressed = false;
 			}
+
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
 
 			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);

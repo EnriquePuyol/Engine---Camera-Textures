@@ -20,6 +20,7 @@ public:
 public:
 	GameObject* root;
 	GameObject* selectedGO = nullptr;
+	GameObject* cutcopyGO = nullptr;
 
 };
 

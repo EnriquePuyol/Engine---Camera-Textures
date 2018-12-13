@@ -3,8 +3,12 @@
 #include "ModuleUI.h"
 #include "ModuleScene.h"
 #include "UI_Hierarchy.h"
+
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
+#include "ComponentCamera.h"
 #include "ComponentLight.h"
+#include "ComponentMesh.h"
 
 GameObject::GameObject(const char name[40])
 {
@@ -91,11 +95,16 @@ void GameObject::AddComponent(Type type)
 	case Light:
 		components.push_back(new ComponentLight(this));
 		break;
+	case Material:
+		components.push_back(new ComponentMaterial(this));
+		break;
+	case Mesh:
+		components.push_back(new ComponentMesh(this));
+		break;
+	case Camera:
+		components.push_back(new ComponentCamera(this));
+		break;
 	}
-	/*if (type == Transform)
-	{
-		components.push_back(new ComponentTransform(this));
-	}*/	
 }
 
 int GameObject::GetNumComponentsOfType(Type type)

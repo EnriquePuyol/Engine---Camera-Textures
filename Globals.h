@@ -46,8 +46,9 @@ enum update_status
 
 #define ARRAYSIZE(_ARR)          ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
+// Max Number of Components
 #define MAX_TRANSFORM_COMP 1
-#define MAX_MATERIAL_COMP 1
-#define MAX_MESH_COMP 1
-#define MAX_CAMERA_COMP 1
-#define MAX_LIGHT_COMP -1
+#define MAX_MATERIAL_COMP  1
+#define MAX_CAMERA_COMP    1
+#define MAX_MESH_COMP	  -1
+#define MAX_LIGHT_COMP	  -1

@@ -38,9 +38,15 @@ void UI_Hierarchy::Draw()
 		if (nullptr != App->scene->selectedGO)
 		{
 			ImGui::Separator();
-			if (ImGui::MenuItem("Copy")) {}
+			if (ImGui::MenuItem("Copy")) { App->scene->cutcopyGO = App->scene->selectedGO; }
 			if (ImGui::MenuItem("Cut")) {}
-			if (ImGui::MenuItem("Paste")) {}
+			if (ImGui::MenuItem("Paste")) 
+			{
+				if (nullptr == App->scene->selectedGO)
+					App->scene->root->nextPreReturn = GO_PASTE;
+				else
+					App->scene->selectedGO->nextPreReturn = GO_PASTE;
+			}
 		}
 		else
 		{

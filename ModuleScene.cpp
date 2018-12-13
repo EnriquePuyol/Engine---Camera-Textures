@@ -21,6 +21,11 @@ ModuleScene::~ModuleScene()
 
 update_status ModuleScene::PreUpdate()
 {
+	if (root->nextPreReturn == GO_PASTE)
+	{
+		root->childs.push_back(cutcopyGO);
+	}
+
 	for (list<GameObject*>::iterator it = root->childs.begin(); it != root->childs.end();)
 	{
 		if ((*it)->PreUpdate() != GO_DELETED)
