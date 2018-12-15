@@ -7,6 +7,12 @@ ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 	type = Mesh;
 }
 
+ComponentMesh::ComponentMesh(ComponentMesh * component)
+{
+	type = Mesh;
+	active = component->active;
+	parent = component->parent;
+}
 
 ComponentMesh::~ComponentMesh()
 {

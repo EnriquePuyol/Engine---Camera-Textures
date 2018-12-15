@@ -1,3 +1,4 @@
+#include "Application.h"
 #include "ModuleScene.h"
 #include "ComponentTransform.h"
 
@@ -23,17 +24,23 @@ update_status ModuleScene::PreUpdate()
 {
 	if (root->nextPreReturn == GO_PASTE)
 	{
-		root->childs.push_back(cutcopyGO);
+		if (nullptr != App->scene->selectedGO)
+		{
+			root->childs.push_back(new GameObject(App->scene->cutcopyGO, App->scene->selectedGO));
+			App->scene->selectedGO->openNode = true;
+		}
+		else
+			root->childs.push_back(new GameObject(App->scene->cutcopyGO, App->scene->root));
+
+		root->nextPreReturn = GO_NONE;
 	}
 
 	for (list<GameObject*>::iterator it = root->childs.begin(); it != root->childs.end();)
 	{
-		if ((*it)->PreUpdate() != GO_DELETED)
-			++it;
-		else
-		{
+		if ((*it)->PreUpdate() == GO_DELETED || (*it)->PreUpdate() == GO_CUT)
 			root->childs.erase(it++);
-		}
+		else
+			++it;
 	}
 	return UPDATE_CONTINUE;
 }

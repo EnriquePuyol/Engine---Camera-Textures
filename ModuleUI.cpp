@@ -38,6 +38,7 @@ bool ModuleUI::Init()
 	uiWindows.push_back(uiScene = new UI_Scene("Scene"));
 	uiWindows.push_back(uiHierarchy = new UI_Hierarchy("Hierarchy"));
 	uiWindows.push_back(uiInspector = new UI_Inspector("Inspector"));
+	uiWindows.push_back(uiGame = new UI_Game("Game"));
 
 	return true;
 }

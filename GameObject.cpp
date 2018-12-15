@@ -15,6 +15,41 @@ GameObject::GameObject(const char name[40])
 	sprintf_s(this->name, name);
 }
 
+GameObject::GameObject(GameObject * gameobject, GameObject * parent)
+{
+	sprintf_s(name, gameobject->name);
+	this->parent = parent;
+	
+	for (list<Component*>::iterator it = gameobject->components.begin(); it != gameobject->components.end(); ++it)
+	{
+		if ((*it)->type == Transform)
+		{
+			components.push_back(new ComponentTransform(dynamic_cast<ComponentTransform*>(*it)));
+		}
+		else if ((*it)->type == Mesh)
+		{
+			components.push_back(new ComponentMesh(dynamic_cast<ComponentMesh*>(*it)));
+		}
+		else if ((*it)->type == Material)
+		{
+			components.push_back(new ComponentMaterial(dynamic_cast<ComponentMaterial*>(*it)));
+		}
+		else if ((*it)->type == Camera)
+		{
+			components.push_back(new ComponentCamera(dynamic_cast<ComponentCamera*>(*it)));
+		}
+		else if ((*it)->type == Light)
+		{
+			components.push_back(new ComponentLight(dynamic_cast<ComponentLight*>(*it)));
+		}
+	}
+
+	for (list<GameObject*>::iterator it = gameobject->childs.begin(); it != gameobject->childs.end(); ++it)
+	{
+		childs.push_back(new GameObject((*it), this));
+	}
+}
+
 
 GameObject::~GameObject()
 {
@@ -23,6 +58,19 @@ GameObject::~GameObject()
 
 NextPreReturn GameObject::PreUpdate()
 {
+
+	if (nextPreReturn == GO_PASTE)
+	{
+		if (nullptr != App->scene->selectedGO)
+		{
+			childs.push_back(new GameObject(App->scene->cutcopyGO, App->scene->selectedGO));
+			App->scene->selectedGO->openNode = true;
+		}
+		else
+			childs.push_back(new GameObject(App->scene->cutcopyGO, App->scene->root));
+
+		nextPreReturn = GO_NONE;
+	}
 
 	for (list<Component*>::iterator it = components.begin(); it != components.end();)
 	{
@@ -35,10 +83,10 @@ NextPreReturn GameObject::PreUpdate()
 	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end();)
 	{
 		
-		if ((*it)->PreUpdate() != GO_DELETED)
-			++it;
-		else
+		if ((*it)->PreUpdate() == GO_CUT || (*it)->PreUpdate() == GO_DELETED)
 			childs.erase(it++);
+		else
+			++it;
 		
 	}
 
@@ -47,6 +95,15 @@ NextPreReturn GameObject::PreUpdate()
 		Delete();
 		return GO_DELETED;
 	}
+	else if (nextPreReturn == GO_CUT)
+	{
+		App->scene->cutcopyGO = new GameObject(App->scene->selectedGO, nullptr);
+		App->scene->selectedGO = nullptr;
+
+		nextPreReturn = GO_NONE;
+		return GO_CUT;
+	}
+
 	return GO_NONE;
 }
 

@@ -12,6 +12,16 @@ ComponentTransform::ComponentTransform(GameObject* parent) : Component(parent)
 	scale	 = { 1.0f, 1.0f, 1.0f };
 }
 
+ComponentTransform::ComponentTransform(ComponentTransform * component)
+{
+	type   = Transform;
+	active = component->active;
+	parent = component->parent;
+
+	position = component->position;
+	rotation = component->rotation;
+	scale	 = component->scale;
+}
 
 ComponentTransform::~ComponentTransform()
 {

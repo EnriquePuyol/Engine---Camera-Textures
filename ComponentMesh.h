@@ -7,6 +7,7 @@ class ComponentMesh : public Component
 {
 public:
 	ComponentMesh(GameObject* parent);
+	ComponentMesh(ComponentMesh* component);
 	~ComponentMesh();
 
 	void Update() override;

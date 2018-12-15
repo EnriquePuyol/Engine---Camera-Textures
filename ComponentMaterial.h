@@ -7,6 +7,7 @@ class ComponentMaterial : public Component
 {
 public:
 	ComponentMaterial(GameObject* parent);
+	ComponentMaterial(ComponentMaterial* component);
 	~ComponentMaterial();
 
 	void Update() override;

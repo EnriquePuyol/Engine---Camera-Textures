@@ -166,6 +166,9 @@
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>GameObject\Component</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Game.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -406,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="ComponentCamera.h">
       <Filter>GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Game.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

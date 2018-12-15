@@ -29,7 +29,9 @@ class Component
 {
 
 public:
+	Component() {}
 	Component(GameObject* parent) :parent(parent) {}
+	Component(Component* component) {}
 	virtual ~Component() {}
 
 	virtual void Enable() { active = true; }

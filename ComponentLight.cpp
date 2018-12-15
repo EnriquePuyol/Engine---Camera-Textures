@@ -12,6 +12,12 @@ ComponentLight::ComponentLight(GameObject* parent) : Component(parent)
 		App->scene->selectedGO->AddComponent(Transform);
 }
 
+ComponentLight::ComponentLight(ComponentLight* component)
+{
+	type = Light;
+	active = component->active;
+	parent = component->parent;
+}
 
 ComponentLight::~ComponentLight()
 {

@@ -7,6 +7,12 @@ ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(parent)
 	type = Material;
 }
 
+ComponentMaterial::ComponentMaterial(ComponentMaterial * component)
+{
+	type = Material;
+	active = component->active;
+	parent = component->parent;
+}
 
 ComponentMaterial::~ComponentMaterial()
 {

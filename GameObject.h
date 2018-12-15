@@ -19,6 +19,7 @@ class GameObject
 {
 public:
 	GameObject(const char name[40] = "Empty");
+	GameObject(GameObject* gameobject, GameObject* parent);
 	~GameObject();
 
 	NextPreReturn PreUpdate();
@@ -37,7 +38,7 @@ public:
 	// General info
 	char name[40] = "";
 	bool selected = false;
-	bool enable;
+	bool enable = true;
 	NextPreReturn nextPreReturn = GO_NONE;
 
 	// ImGui property

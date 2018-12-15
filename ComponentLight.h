@@ -15,6 +15,7 @@ class ComponentLight : public Component
 {
 public:
 	ComponentLight(GameObject* parent);
+	ComponentLight(ComponentLight* component);
 	~ComponentLight();
 
 	void Update() override;
@@ -23,7 +24,7 @@ public:
 
 	void SetLightType(LightType lightType) { this->lightType = lightType; }
 	char* GetLightTypeToString(LightType type);
-	void SetLightTypeFromString(const char* type);
+	void  SetLightTypeFromString(const char* type);
 
 public:
 	LightType lightType;

@@ -8,6 +8,7 @@ class ComponentTransform : public Component
 {
 public:
 	ComponentTransform(GameObject* parent);
+	ComponentTransform(ComponentTransform* component);
 	~ComponentTransform();
 
 	void Update() override;
