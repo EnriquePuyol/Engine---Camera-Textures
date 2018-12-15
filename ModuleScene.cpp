@@ -30,14 +30,16 @@ update_status ModuleScene::PreUpdate()
 			App->scene->selectedGO->openNode = true;
 		}
 		else
+		{
 			root->childs.push_back(new GameObject(App->scene->cutcopyGO, App->scene->root));
+		}
 
 		root->nextPreReturn = GO_NONE;
 	}
 
 	for (list<GameObject*>::iterator it = root->childs.begin(); it != root->childs.end();)
 	{
-		if ((*it)->PreUpdate() == GO_DELETED || (*it)->PreUpdate() == GO_CUT)
+		if ((*it)->PreUpdate() == GO_CUT || (*it)->PreUpdate() == GO_DELETED)
 			root->childs.erase(it++);
 		else
 			++it;

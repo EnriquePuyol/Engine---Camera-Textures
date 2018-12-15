@@ -18,6 +18,7 @@ GameObject::GameObject(const char name[40])
 GameObject::GameObject(GameObject * gameobject, GameObject * parent)
 {
 	sprintf_s(name, gameobject->name);
+	selected = gameobject->selected;
 	this->parent = parent;
 	
 	for (list<Component*>::iterator it = gameobject->components.begin(); it != gameobject->components.end(); ++it)
