@@ -1,5 +1,5 @@
 #include "ComponentTransform.h"
-
+#include "GameObject.h"
 
 
 ComponentTransform::ComponentTransform(GameObject* parent) : Component(parent)
@@ -48,6 +48,9 @@ void ComponentTransform::Draw(int id)
 	ImGui::PushID(id);
 	if (ImGui::Button("X"))
 	{
+		if(parent->GetNumComponentsOfType(Camera) == 0 &&
+		   parent->GetNumComponentsOfType(Light) == 0  &&
+		   parent->GetNumComponentsOfType(Mesh) == 0)
 		Delete();
 	}
 	ImGui::PopID();

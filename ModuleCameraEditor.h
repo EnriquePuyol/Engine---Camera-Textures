@@ -24,9 +24,7 @@ public:
 
 	void Yaw(float angle);
 	void Pitch(float angle);
-
-private:
-	void LookAt(const math::float3& eye, const math::float3& target);
+	void LookAt(const math::float3& target);
 
 public:
 	float cameraSpeed = 2.0f;

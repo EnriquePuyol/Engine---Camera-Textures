@@ -2,6 +2,7 @@
 #define __ComponentCamera_h__
 
 #include "Component.h"
+#include "GL/glew.h"
 
 enum CameraType
 {
@@ -26,6 +27,9 @@ public:
 
 public:
 	CameraType cameraType = Other;
+
+	GLuint fbo = 0;
+	GLuint renderedTexture;
 };
 
 #endif // !__ComponentCamera_h__

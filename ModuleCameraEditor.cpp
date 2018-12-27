@@ -39,7 +39,7 @@ bool ModuleCameraEditor::Init()
 	float3 target(0.0f, 0.0f, 0.0f);
 	up = float3(0.0f, 1.0f, 0.0f);
 
-	LookAt(eye, target);
+	LookAt(target);
 
 	App->window->SetResolution();
 
@@ -55,7 +55,7 @@ update_status ModuleCameraEditor::Update()
 
 update_status ModuleCameraEditor::PostUpdate()
 {
-	LookAt(eye, eye + forward);
+	LookAt(eye + forward);
 	return UPDATE_CONTINUE;
 }
 
@@ -137,7 +137,7 @@ void ModuleCameraEditor::Move()
 	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 	{
 		up = float3(0.0f, 1.0f, 0.0f);
-		LookAt(eye, float3(0.0f, 0.0f, 0.0f));
+		LookAt(float3(0.0f, 0.0f, 0.0f));
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
@@ -185,7 +185,7 @@ void ModuleCameraEditor::Pitch(float angle)
 	}
 }
 
-void ModuleCameraEditor::LookAt(const math::float3 & eye, const math::float3 & target)
+void ModuleCameraEditor::LookAt(const math::float3 & target)
 {
 	forward = math::float3(target - eye);
 	forward.Normalize();

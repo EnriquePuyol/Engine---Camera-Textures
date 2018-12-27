@@ -2,6 +2,7 @@
 #define __UI_Game_h__
 
 #include "UI.h"
+#include "ComponentCamera.h"
 
 class UI_Game : public UI
 {
@@ -12,7 +13,7 @@ public:
 	void Draw() override;
 
 public:
-	bool cameraRendering = false;
+	ComponentCamera* primaryCamera = nullptr;
 
 };
 

@@ -1,6 +1,8 @@
 #include "ComponentCamera.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleWindow.h"
+#include "ModuleUI.h"
 
 ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent)
 {
@@ -23,7 +25,23 @@ ComponentCamera::~ComponentCamera()
 
 void ComponentCamera::Update()
 {
+	glDeleteFramebuffers(1, &fbo);
+	glDeleteTextures(1, &renderedTexture);
 
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+	glGenTextures(1, &renderedTexture);
+	glBindTexture(GL_TEXTURE_2D, renderedTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->window->width, App->window->height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void ComponentCamera::CleanUp()
@@ -56,7 +74,7 @@ void ComponentCamera::Draw(int id)
 			{
 				if (types[n] == "Primary")
 				{
-					//ToDo: Eliminar la otra primary
+					App->ui->uiGame->primaryCamera = this;
 				}
 				SetCameraTypeFromString(types[n]);
 			}
