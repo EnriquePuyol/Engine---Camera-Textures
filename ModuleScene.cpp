@@ -1,18 +1,19 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ComponentTransform.h"
+#include "ModuleUI.h"
 
 
 ModuleScene::ModuleScene()
 {
 	root = new GameObject("Root");
+	root->transform = new ComponentTransform(root);
 	// ToDo: Borrar algun dia
-	GameObject* helloWorld = new GameObject("Test");
+	/*GameObject* helloWorld = new GameObject("Test");
 	GameObject* child = new GameObject("Test Child");
-	helloWorld->components.push_back(new ComponentTransform(helloWorld));
 
 	helloWorld->childs.push_back(child);
-	root->childs.push_back(helloWorld);
+	root->childs.push_back(helloWorld);*/
 }
 
 
@@ -69,12 +70,14 @@ void  ModuleScene::CreateGameObject()
 	if (nullptr == selectedGO)
 	{
 		root->childs.push_back(myGO);
+		myGO->parent = root;
 	}
 	else
 	{
 		selectedGO->openNode = true;
 		selectedGO->selected = !selectedGO->selected;
 		selectedGO->childs.push_back(myGO);
+		myGO->parent = selectedGO;
 	}
 
 	selectedGO = myGO;
@@ -84,4 +87,14 @@ void  ModuleScene::CreateGameObject()
 void ModuleScene::DeleteGameObject()
 {
 	selectedGO->nextPreReturn = GO_DELETED;
+
+	for (list<GameObject*>::iterator it = selectedGO->childs.begin(); it != selectedGO->childs.end(); ++it)
+	{
+		(*it)->nextPreReturn = GO_DELETED;
+	}
+
+	for (list<Component*>::iterator it = selectedGO->components.begin(); it != selectedGO->components.end(); ++it)
+	{
+		(*it)->nextPreReturn = COMP_DELETED;
+	}
 }

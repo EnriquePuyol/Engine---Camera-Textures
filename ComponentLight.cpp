@@ -7,16 +7,13 @@
 ComponentLight::ComponentLight(GameObject* parent) : Component(parent)
 {
 	type = Light;
-
-	if (App->scene->selectedGO->GetNumComponentsOfType(Transform) == 0)
-		App->scene->selectedGO->AddComponent(Transform);
 }
 
 ComponentLight::ComponentLight(ComponentLight* component)
 {
 	type = Light;
 	active = component->active;
-	parent = component->parent;
+	owner = component->owner;
 }
 
 ComponentLight::~ComponentLight()

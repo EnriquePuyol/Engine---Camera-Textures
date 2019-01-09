@@ -13,6 +13,7 @@
 GameObject::GameObject(const char name[40])
 {
 	sprintf_s(this->name, name);
+	transform = new ComponentTransform(this);
 }
 
 GameObject::GameObject(GameObject * gameobject, GameObject * parent)
@@ -20,14 +21,11 @@ GameObject::GameObject(GameObject * gameobject, GameObject * parent)
 	sprintf_s(name, gameobject->name);
 	selected = gameobject->selected;
 	this->parent = parent;
+	this->transform = new ComponentTransform(gameobject->transform);
 	
 	for (list<Component*>::iterator it = gameobject->components.begin(); it != gameobject->components.end(); ++it)
 	{
-		if ((*it)->type == Transform)
-		{
-			components.push_back(new ComponentTransform(dynamic_cast<ComponentTransform*>(*it)));
-		}
-		else if ((*it)->type == Mesh)
+		if ((*it)->type == Mesh)
 		{
 			components.push_back(new ComponentMesh(dynamic_cast<ComponentMesh*>(*it)));
 		}
@@ -60,6 +58,24 @@ GameObject::~GameObject()
 NextPreReturn GameObject::PreUpdate()
 {
 
+	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end();)
+	{
+
+		if ((*it)->PreUpdate() == GO_CUT || (*it)->PreUpdate() == GO_DELETED)
+			childs.erase(it++);
+		else
+			++it;
+
+	}
+
+	/*for (list<Component*>::iterator it = components.begin(); it != components.end();)
+	{
+		if ((*it)->PreUpdate() == COMP_DELETED)
+			components.erase(it++);
+		else
+			++it;
+	}*/
+
 	if (nextPreReturn == GO_PASTE)
 	{
 		if (nullptr != App->scene->selectedGO)
@@ -71,24 +87,6 @@ NextPreReturn GameObject::PreUpdate()
 			childs.push_back(new GameObject(App->scene->cutcopyGO, App->scene->root));
 
 		nextPreReturn = GO_NONE;
-	}
-
-	for (list<Component*>::iterator it = components.begin(); it != components.end();)
-	{
-		if ((*it)->PreUpdate() == COMP_DELETED)
-			components.erase(it++);
-		else
-			++it;
-	}
-
-	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end();)
-	{
-		
-		if ((*it)->PreUpdate() == GO_CUT || (*it)->PreUpdate() == GO_DELETED)
-			childs.erase(it++);
-		else
-			++it;
-		
 	}
 
 	if (nextPreReturn == GO_DELETED)
@@ -110,13 +108,13 @@ NextPreReturn GameObject::PreUpdate()
 
 void GameObject::Update()
 {
-	// Update the components
-	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	// Update the childs
+	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
 	{
 		(*it)->Update();
 	}
-	// Update the childs
-	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+	// Update the components
+	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->Update();
 	}
@@ -147,9 +145,6 @@ void GameObject::AddComponent(Type type)
 {
 	switch (type)
 	{
-	case Transform:
-		components.push_back(new ComponentTransform(this));
-		break;
 	case Light:
 		components.push_back(new ComponentLight(this));
 		break;
@@ -184,9 +179,6 @@ bool GameObject::CanAddComponentOfType(Type type)
 
 	switch(type)
 	{
-	case Transform:
-		limit = MAX_TRANSFORM_COMP;
-		break;
 	case Mesh:
 		limit = MAX_MESH_COMP;
 		break;
@@ -292,7 +284,10 @@ void GameObject::DrawComponents()
 	ImGui::Spacing();
 	ImGui::Separator();
 
-	int i = 0;
+	transform->Draw(0);
+	ImGui::Separator();
+
+	int i = 1;
 	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->Draw(i);

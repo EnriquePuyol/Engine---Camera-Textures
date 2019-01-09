@@ -46,8 +46,12 @@ enum update_status
 
 #define ARRAYSIZE(_ARR)          ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
+// World Axis
+#define X_AXIS float3(1, 0, 0)
+#define Y_AXIS float3(0, 1, 0)
+#define Z_AXIS float3(0, 0, 1)
+
 // Max Number of Components
-#define MAX_TRANSFORM_COMP 1
 #define MAX_MATERIAL_COMP  1
 #define MAX_CAMERA_COMP    1
 #define MAX_MESH_COMP	  -1

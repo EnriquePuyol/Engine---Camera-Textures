@@ -11,7 +11,7 @@ ComponentMesh::ComponentMesh(ComponentMesh * component)
 {
 	type = Mesh;
 	active = component->active;
-	parent = component->parent;
+	owner = component->owner;
 }
 
 ComponentMesh::~ComponentMesh()

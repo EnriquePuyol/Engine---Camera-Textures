@@ -11,7 +11,7 @@ ComponentMaterial::ComponentMaterial(ComponentMaterial * component)
 {
 	type = Material;
 	active = component->active;
-	parent = component->parent;
+	owner = component->owner;
 }
 
 ComponentMaterial::~ComponentMaterial()

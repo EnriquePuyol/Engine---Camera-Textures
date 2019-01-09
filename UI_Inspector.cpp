@@ -19,7 +19,7 @@ void UI_Inspector::Draw()
 	ImGui::Begin(name, &active, ImGuiWindowFlags_HorizontalScrollbar);
 
 	// Dropdown menu properties
-	int numElements = 5;
+	int numElements = 4;
 	int padding = 14;
 	static bool pressed = false;
 	const char * title = "Add Component...";
@@ -45,9 +45,8 @@ void UI_Inspector::Draw()
 
 		if (ImGui::BeginButtonDropDown("Add Component...   ", size, numElements, &pressed))
 		{
-			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
-
+			/*ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
 			if (!App->scene->selectedGO->CanAddComponentOfType(Transform))
 			{
 				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
@@ -68,7 +67,7 @@ void UI_Inspector::Draw()
 			ImGui::PopItemFlag();
 			ImGui::PopStyleVar();
 
-			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);
+			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);*/
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
 
 			if (!App->scene->selectedGO->CanAddComponentOfType(Mesh))

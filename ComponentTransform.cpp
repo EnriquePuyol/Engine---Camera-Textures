@@ -16,7 +16,7 @@ ComponentTransform::ComponentTransform(ComponentTransform * component)
 {
 	type   = Transform;
 	active = component->active;
-	parent = component->parent;
+	owner = component->owner;
 
 	position = component->position;
 	rotation = component->rotation;
@@ -25,7 +25,7 @@ ComponentTransform::ComponentTransform(ComponentTransform * component)
 
 ComponentTransform::~ComponentTransform()
 {
-	parent = nullptr;
+	owner = nullptr;
 }
 
 void ComponentTransform::Update()
@@ -44,30 +44,72 @@ void ComponentTransform::Draw(int id)
 	ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("TRANSFORM").x / 2);
 	ImGui::Text("TRANSFORM");
 	ImGui::SameLine();
-	ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize("     X     ").x / 2);
-	ImGui::PushID(id);
-	if (ImGui::Button("X"))
-	{
-		if(parent->GetNumComponentsOfType(Camera) == 0 &&
-		   parent->GetNumComponentsOfType(Light) == 0  &&
-		   parent->GetNumComponentsOfType(Mesh) == 0)
-		Delete();
-	}
-	ImGui::PopID();
+	ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 + ImGui::GetWindowWidth() / 4 );
+	ImGui::Checkbox("Global", &showGlobal);
 
 	ImGui::Spacing();
 	
-	ImGui::PushID(id);
-	ImGui::DragFloat3("Position", position.ptr(), 0.1f);
-	ImGui::PopID();
-	
-	ImGui::PushID(id); 
-	ImGui::DragFloat3("Rotation", rotation.ptr(), 0.1f);
-	ImGui::PopID();
+	if (!showGlobal)
+	{
+		ImGui::PushID(id);
+		ImGui::DragFloat3("Position", position.ptr(), 0.1f);
+		ImGui::PopID();
 
-	ImGui::PushID(id);
-	ImGui::DragFloat3("Scale",	  scale.ptr(),    0.1f);
-	ImGui::PopID();
+		ImGui::PushID(id);
+		ImGui::DragFloat3("Rotation", rotation.ptr(), 0.1f);
+		ImGui::PopID();
+
+		ImGui::PushID(id);
+		ImGui::DragFloat3("Scale", scale.ptr(), 0.1f);
+		ImGui::PopID();
+	}
+	else
+	{
+		ImGui::Text("Cannot be edited:");
+		ImGui::PushID(id);
+		ImGui::DragFloat3("G-Position", GetWorldPosition().ptr(), 0.1f);
+		ImGui::PopID();
+
+		ImGui::PushID(id);
+		ImGui::DragFloat3("G-Rotation", GetWorldRotation().ptr(), 0.1f);
+		ImGui::PopID();
+
+		ImGui::PushID(id);
+		ImGui::DragFloat3("G-Scale", GetWorldScale().ptr(), 0.1f);
+		ImGui::PopID();
+	}
 
 	
+}
+
+float3 ComponentTransform::GetWorldPosition()
+{	
+	if (owner->parent == NULL)
+		return position;
+
+	float3 globalTransform = position + owner->parent->transform->GetWorldPosition();
+	return globalTransform;
+}
+
+float3 ComponentTransform::GetWorldRotation()
+{
+	if (owner->parent == NULL)
+		return rotation;
+
+	float3 globalRotation = rotation + owner->parent->transform->GetWorldRotation();
+	return globalRotation;
+}
+
+float3 ComponentTransform::GetWorldScale()
+{
+	if (owner->parent == NULL)
+		return scale;
+
+	float3 parent = owner->parent->transform->GetWorldScale();
+	float x = scale.x * parent.x;
+	float y = scale.y * parent.y;
+	float z = scale.z * parent.z;
+
+	float3 globalScale = float3(x, y, z);
+	return globalScale;
 }

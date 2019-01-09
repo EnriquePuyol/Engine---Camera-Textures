@@ -2,6 +2,7 @@
 #define __GameObject_h__
 
 #include "Component.h"
+#include "ComponentTransform.h"
 #include <list>
 
 using namespace std;
@@ -45,10 +46,11 @@ public:
 	bool openNode = false;
 
 	// Hierarchy info
-	GameObject* parent;
+	GameObject* parent = NULL;
 	list<GameObject*> childs;
 
 	// Inspector info
+	ComponentTransform* transform = NULL;
 	list<Component*> components;
 
 };

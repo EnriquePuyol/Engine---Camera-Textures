@@ -30,7 +30,7 @@ class Component
 
 public:
 	Component() {}
-	Component(GameObject* parent) :parent(parent) {}
+	Component(GameObject* parent) :owner(parent) {}
 	Component(Component* component) {}
 	virtual ~Component() {}
 
@@ -46,7 +46,7 @@ public:
 public:
 	Type type;
 	bool active;
-	GameObject* parent;
+	GameObject* owner;
 
 	PreComponentReturn nextPreReturn = COMP_NONE;
 

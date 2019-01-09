@@ -8,15 +8,32 @@ ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent)
 {
 	type = Camera;
 
-	if (App->scene->selectedGO->GetNumComponentsOfType(Transform) == 0)
-		App->scene->selectedGO->AddComponent(Transform);
+	fboSet.fbo = 0;
+	fboSet.fb_depth = 0;
+	fboSet.fb_tex = 0;
+	fboSet.fb_width = 0;
+	fboSet.fb_height = 0;
+
+	frustum.type = FrustumType::PerspectiveFrustum;
+	frustum.pos = parent->transform->GetWorldPosition();
+	frustum.front = math::float3(0, 0, -1);
+	frustum.up = math::float3(0, 1, 0);
+	frustum.nearPlaneDistance = 0.1f;
+	frustum.farPlaneDistance = 100.0f;
+	frustum.verticalFov = math::pi / 4.0f;
+
+	w = App->window->width;
+	h = App->window->height;
+
+	float aspect = (float)w / (float)h;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) *aspect);
 }
 
 ComponentCamera::ComponentCamera(ComponentCamera* component)
 {
 	type = Camera;
 	active = component->active;
-	parent = component->parent;
+	owner = component->owner;
 }
 
 ComponentCamera::~ComponentCamera()
@@ -25,23 +42,8 @@ ComponentCamera::~ComponentCamera()
 
 void ComponentCamera::Update()
 {
-	glDeleteFramebuffers(1, &fbo);
-	glDeleteTextures(1, &renderedTexture);
-
-	glGenFramebuffers(1, &fbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
-	glGenTextures(1, &renderedTexture);
-	glBindTexture(GL_TEXTURE_2D, renderedTexture);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->window->width, App->window->height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
+	if (w != App->window->width || h != App->window->height)
+		UpdateFrustum();
 }
 
 void ComponentCamera::CleanUp()
@@ -84,6 +86,32 @@ void ComponentCamera::Draw(int id)
 		ImGui::EndCombo();
 	}
 
+	ImGui::Spacing();
+	float3 globalPos = App->scene->selectedGO->transform->GetWorldPosition();
+	ImGui::DragFloat3("Global position", globalPos.ptr(), 0.1f);
+
+}
+
+/*void ComponentCamera::LookAt(const math::float3 & target)
+{
+	float3 dir = (target - eye).Normalized();
+	float3x3 rot = float3x3::LookAt(forward, dir, up, Y_AXIS);
+	up = rot * up;
+	forward = rot * forward;
+	right = rot * right;
+}*/
+
+void ComponentCamera::UpdateFrustum()
+{
+	frustum.pos = owner->transform->GetWorldPosition();
+
+	w = App->window->width;
+	h = App->window->height;
+	float aspect = (float)w / (float)h;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) *aspect);
+
+	view = frustum.ViewMatrix();
+	proj = frustum.ProjectionMatrix();
 }
 
 char* ComponentCamera::GetCameraTypeToString(CameraType type)

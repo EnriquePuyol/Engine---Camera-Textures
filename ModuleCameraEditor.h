@@ -48,8 +48,6 @@ private:
 	float3 right;
 
 	float pitch;
-
-	float4x4 view_matrix;
 };
 
 #endif
