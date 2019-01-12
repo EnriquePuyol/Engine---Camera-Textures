@@ -7,6 +7,7 @@ class ComponentMaterial : public Component
 {
 public:
 	ComponentMaterial(GameObject* parent);
+	ComponentMaterial(unsigned material);
 	ComponentMaterial(ComponentMaterial* component);
 	~ComponentMaterial();
 
@@ -15,7 +16,8 @@ public:
 	void Draw(int id) override;
 
 public:
-
+	unsigned material;
+	bool defaultMat = false;
 };
 
 #endif // !_ComponentMaterial_h__

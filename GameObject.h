@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
 #include <list>
 
 using namespace std;
@@ -51,6 +52,7 @@ public:
 
 	// Inspector info
 	ComponentTransform* transform = NULL;
+	ComponentMaterial* material = NULL;
 	list<Component*> components;
 
 };

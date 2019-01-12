@@ -11,6 +11,8 @@
 
 #include <GL/glew.h>
 
+#include "ComponentMesh.h"
+
 class ModuleModelLoader: public Module
 {
 public:
@@ -24,6 +26,8 @@ public:
 
 	void GenerateMeshData(const aiScene* myScene);
 	void GenerateMaterialData(const aiScene* myScene);
+	void GenerateMeshDataNEW(int id, const aiScene* myScene, MeshData* meshData, const char* path);
+	unsigned GenerateMaterialDataNEW(int idMaterial, const char* path);
 
 	void DeleteModel();
 

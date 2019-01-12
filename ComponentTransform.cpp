@@ -45,7 +45,7 @@ void ComponentTransform::Draw(int id)
 	ImGui::Text("TRANSFORM");
 	ImGui::SameLine();
 	ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 + ImGui::GetWindowWidth() / 4 );
-	ImGui::Checkbox("Global", &showGlobal);
+	ImGui::Checkbox("World", &showGlobal);
 
 	ImGui::Spacing();
 	
@@ -67,15 +67,15 @@ void ComponentTransform::Draw(int id)
 	{
 		ImGui::Text("Cannot be edited:");
 		ImGui::PushID(id);
-		ImGui::DragFloat3("G-Position", GetWorldPosition().ptr(), 0.1f);
+		ImGui::DragFloat3("W-Position", GetWorldPosition().ptr(), 0.1f);
 		ImGui::PopID();
 
 		ImGui::PushID(id);
-		ImGui::DragFloat3("G-Rotation", GetWorldRotation().ptr(), 0.1f);
+		ImGui::DragFloat3("W-Rotation", GetWorldRotation().ptr(), 0.1f);
 		ImGui::PopID();
 
 		ImGui::PushID(id);
-		ImGui::DragFloat3("G-Scale", GetWorldScale().ptr(), 0.1f);
+		ImGui::DragFloat3("W-Scale", GetWorldScale().ptr(), 0.1f);
 		ImGui::PopID();
 	}
 

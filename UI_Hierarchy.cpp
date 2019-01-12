@@ -58,7 +58,8 @@ void UI_Hierarchy::Draw()
 		if (nullptr != App->scene->selectedGO)
 		{
 			ImGui::Separator();
-			if (ImGui::MenuItem("Delete")) { App->scene->DeleteGameObject(); }
+			if (ImGui::MenuItem("Delete")) 
+			{ App->scene->DeleteGameObject(); }
 		}
 
 		ImGui::EndPopup();

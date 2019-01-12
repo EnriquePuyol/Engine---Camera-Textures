@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
+#include "ModuleRender.h"
 #include "ModuleUI.h"
 
 ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent)
@@ -27,6 +28,8 @@ ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent)
 
 	float aspect = (float)w / (float)h;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) *aspect);
+
+	App->renderer->cameras.push_back(this);
 }
 
 ComponentCamera::ComponentCamera(ComponentCamera* component)
@@ -38,6 +41,23 @@ ComponentCamera::ComponentCamera(ComponentCamera* component)
 
 ComponentCamera::~ComponentCamera()
 {
+}
+
+PreComponentReturn ComponentCamera::PreUpdate()
+{
+	// Si borramos el componente quitamos la camara del Render
+	if (nextPreReturn == COMP_DELETED)
+	{
+		for (list<ComponentCamera*>::iterator it = App->renderer->cameras.begin(); it != App->renderer->cameras.end(); )
+		{
+			if ((*it) != this)
+				++it;
+			else
+				App->renderer->cameras.erase(it++);
+		}
+	}
+
+	return nextPreReturn;
 }
 
 void ComponentCamera::Update()

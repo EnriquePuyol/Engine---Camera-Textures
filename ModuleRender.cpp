@@ -83,46 +83,52 @@ update_status ModuleRender::Update()
 	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 
-	for (unsigned i = 0; i < App->modelLoader->scene->mNumMeshes; i++)
+	//Todo: Quitar esto
+	if (App->modelLoader->scene != NULL)
 	{
-		unsigned Vbo = App->modelLoader->vbo[i];
-		unsigned Ibo = App->modelLoader->ibo[i];
-		unsigned numVerticesMesh = App->modelLoader->numVerticesMesh[i];
-		unsigned numIndexesMesh = App->modelLoader->numIndexesMesh[i];
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, App->modelLoader->materials[App->modelLoader->textures[i]]);
-		glUniform1i(glGetUniformLocation(App->programs->tex_program, "texture0"), 0);
+		for (unsigned i = 0; i < App->modelLoader->scene->mNumMeshes; i++)
+		{
+			unsigned Vbo = App->modelLoader->vbo[i];
+			unsigned Ibo = App->modelLoader->ibo[i];
+			unsigned numVerticesMesh = App->modelLoader->numVerticesMesh[i];
+			unsigned numIndexesMesh = App->modelLoader->numIndexesMesh[i];
 
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, Vbo);
-		glVertexAttribPointer(
-			0,
-			3,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			(void*)0
-		);
-		glVertexAttribPointer(
-			1,
-			2,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			(void*)(sizeof(float) * 3 * numVerticesMesh)
-		);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, App->modelLoader->materials[App->modelLoader->textures[i]]);
+			glUniform1i(glGetUniformLocation(App->programs->tex_program, "texture0"), 0);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Ibo);
-		glDrawElements(GL_TRIANGLES, numIndexesMesh, GL_UNSIGNED_INT, nullptr);
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			glBindBuffer(GL_ARRAY_BUFFER, Vbo);
+			glVertexAttribPointer(
+				0,
+				3,
+				GL_FLOAT,
+				GL_FALSE,
+				0,
+				(void*)0
+			);
+			glVertexAttribPointer(
+				1,
+				2,
+				GL_FLOAT,
+				GL_FALSE,
+				0,
+				(void*)(sizeof(float) * 3 * numVerticesMesh)
+			);
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Ibo);
+			glDrawElements(GL_TRIANGLES, numIndexesMesh, GL_UNSIGNED_INT, nullptr);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+		}
 
 	}
 	glUseProgram(0);
@@ -269,5 +275,20 @@ void ModuleRender::DrawCoords()
 	glEnd();
 
 	glLineWidth(1.0f);
+}
+
+void ModuleRender::RenderEditorCamera()
+{
+
+}
+
+void ModuleRender::RenderOtherCameras()
+{
+
+}
+
+void ModuleRender::GenerateTexture(FBOset fboSet)
+{
+
 }
 

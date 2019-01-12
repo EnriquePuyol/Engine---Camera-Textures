@@ -27,6 +27,7 @@ public:
 	ComponentCamera(ComponentCamera* component);
 	~ComponentCamera();
 
+	PreComponentReturn PreUpdate() override;
 	void Update() override;
 	void CleanUp() override;
 	void Draw(int id) override;

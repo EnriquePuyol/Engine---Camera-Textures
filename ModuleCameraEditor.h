@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "ComponentCamera.h"
 
 #include "GL/glew.h"
 #include "MathGeoLib.h"
@@ -36,6 +37,8 @@ public:
 	float4x4 view = float4x4::identity;
 
 private:
+
+	FBOset fboSet;
 
 	GLuint program = GL_FALSE;
 

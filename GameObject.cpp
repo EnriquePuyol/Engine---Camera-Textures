@@ -14,6 +14,8 @@ GameObject::GameObject(const char name[40])
 {
 	sprintf_s(this->name, name);
 	transform = new ComponentTransform(this);
+	material = new ComponentMaterial(this);
+	material->defaultMat = true;
 }
 
 GameObject::GameObject(GameObject * gameobject, GameObject * parent)
@@ -61,20 +63,20 @@ NextPreReturn GameObject::PreUpdate()
 	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end();)
 	{
 
-		if ((*it)->PreUpdate() == GO_CUT || (*it)->PreUpdate() == GO_DELETED)
+		if ((*it)->PreUpdate() == GO_DELETED || (*it)->PreUpdate() == GO_CUT)
 			childs.erase(it++);
 		else
 			++it;
 
 	}
 
-	/*for (list<Component*>::iterator it = components.begin(); it != components.end();)
+	for (list<Component*>::iterator it = components.begin(); it != components.end();)
 	{
 		if ((*it)->PreUpdate() == COMP_DELETED)
 			components.erase(it++);
 		else
 			++it;
-	}*/
+	}
 
 	if (nextPreReturn == GO_PASTE)
 	{
@@ -294,4 +296,7 @@ void GameObject::DrawComponents()
 		ImGui::Separator();
 		i++;
 	}
+
+	material->Draw(i+1);
+	ImGui::Separator();
 }
