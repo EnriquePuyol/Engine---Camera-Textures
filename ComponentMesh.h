@@ -46,7 +46,6 @@ public:
 
 	MeshData meshData;
 	char path[40] = "";
-	char currentPath[40] = "";
 };
 
 #endif // !__ComponentMesh_h__

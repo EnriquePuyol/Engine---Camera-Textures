@@ -119,13 +119,12 @@ void ComponentMesh::LoadMesh(char* path)
 			App->scene->selectedGO->components.push_back(compMesh);
 
 		}
-		//child->BB->SetAABB(child->mesh);
 	}
 }
 
 void ComponentMesh::CheckOtherMeshes(char* path)
 {
-	//bool ret = false;
+	// Checks if this model is already loaded in this gameobject
 	for (list<Component*>::iterator it = App->scene->selectedGO->components.begin(); it != App->scene->selectedGO->components.end(); ++it)
 	{
 		if ((*it)->type == Mesh)
@@ -133,10 +132,7 @@ void ComponentMesh::CheckOtherMeshes(char* path)
 			if (strcmp(dynamic_cast<ComponentMesh*>(*it)->path, path) == 0 && (*it) != this)
 			{
 				(*it)->nextPreReturn = COMP_DELETED;
-				//ret = true;
 			}
 		}
 	}
-
-	//return ret;
 }
