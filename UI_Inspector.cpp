@@ -46,28 +46,6 @@ void UI_Inspector::Draw()
 		if (ImGui::BeginButtonDropDown("Add Component...   ", size, numElements, &pressed))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
-			/*ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
-			if (!App->scene->selectedGO->CanAddComponentOfType(Transform))
-			{
-				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-			}
-			else
-			{
-				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
-				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 1.0f);
-			}
-
-			if (ImGui::Button("Transform", size))
-			{
-				App->scene->selectedGO->AddComponent(Transform);
-				pressed = false;
-
-			}
-			ImGui::PopItemFlag();
-			ImGui::PopStyleVar();
-
-			ImGui::SeparatorCustom(ImGui::GetWindowWidth() / 2 - (size.x / 2) + padding, size.x);*/
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize(title).x / 2);
 
 			if (!App->scene->selectedGO->CanAddComponentOfType(Mesh))
@@ -165,7 +143,6 @@ void UI_Inspector::Draw()
 		{
 			ImGui::Spacing(20 * numElements);
 		}
-
 	}
 
 	ImGui::End();

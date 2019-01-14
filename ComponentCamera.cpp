@@ -29,7 +29,13 @@ ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent)
 	float aspect = (float)w / (float)h;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) *aspect);
 
+	forward = float3(0.0f, 0.0f, 1.0f);
+	up = float3(0.0f, 1.0f, 0.0f);
+	right = float3(1.0f, 0.0f, 0.0f);
+
 	App->renderer->cameras.push_back(this);
+
+	uID = App->GenerateUUID();
 }
 
 ComponentCamera::ComponentCamera(ComponentCamera* component)
@@ -37,6 +43,10 @@ ComponentCamera::ComponentCamera(ComponentCamera* component)
 	type = Camera;
 	active = component->active;
 	owner = component->owner;
+
+	App->renderer->cameras.push_back(this);
+
+	uID = component->uID;
 }
 
 ComponentCamera::~ComponentCamera()
@@ -62,8 +72,7 @@ PreComponentReturn ComponentCamera::PreUpdate()
 
 void ComponentCamera::Update()
 {
-	if (w != App->window->width || h != App->window->height)
-		UpdateFrustum();
+	UpdateFrustum();
 }
 
 void ComponentCamera::CleanUp()
@@ -96,7 +105,9 @@ void ComponentCamera::Draw(int id)
 			{
 				if (types[n] == "Primary")
 				{
-					App->ui->uiGame->primaryCamera = this;
+					if(App->scene->primaryCamera != NULL)
+						App->scene->primaryCamera->cameraType = Other;
+					App->scene->primaryCamera = this;
 				}
 				SetCameraTypeFromString(types[n]);
 			}
@@ -106,24 +117,18 @@ void ComponentCamera::Draw(int id)
 		ImGui::EndCombo();
 	}
 
-	ImGui::Spacing();
-	float3 globalPos = App->scene->selectedGO->transform->GetWorldPosition();
-	ImGui::DragFloat3("Global position", globalPos.ptr(), 0.1f);
-
 }
 
-/*void ComponentCamera::LookAt(const math::float3 & target)
+void ComponentCamera::LookAt()
 {
-	float3 dir = (target - eye).Normalized();
-	float3x3 rot = float3x3::LookAt(forward, dir, up, Y_AXIS);
-	up = rot * up;
-	forward = rot * forward;
-	right = rot * right;
-}*/
+	frustum.front = (owner->transform->rotation * WORLD_FRONT).Normalized();
+	frustum.up = (owner->transform->rotation * WORLD_UP).Normalized();
+}
 
 void ComponentCamera::UpdateFrustum()
 {
 	frustum.pos = owner->transform->GetWorldPosition();
+	LookAt();
 
 	w = App->window->width;
 	h = App->window->height;
@@ -131,7 +136,7 @@ void ComponentCamera::UpdateFrustum()
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) *aspect);
 
 	view = frustum.ViewMatrix();
-	proj = frustum.ProjectionMatrix();
+	proj = frustum.ProjectionMatrix();	
 }
 
 char* ComponentCamera::GetCameraTypeToString(CameraType type)

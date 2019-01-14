@@ -4,6 +4,7 @@
 #include "SDL/include/SDL.h"
 #include "ModuleCameraEditor.h"
 #include "ModuleModelLoader.h"
+#include "ModuleScene.h"
 #include "ModuleUI.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
@@ -145,7 +146,10 @@ update_status ModuleInput::PreUpdate()
 		}
 	}
 
-	if (GetWindowEvent(EventWindow::WE_QUIT) == true || GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		App->scene->selectedGO = NULL;
+
+	if (GetWindowEvent(EventWindow::WE_QUIT) == true)
 		return UPDATE_STOP;
 
 	return UPDATE_CONTINUE;

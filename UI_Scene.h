@@ -13,6 +13,7 @@ public:
 
 public:
 	bool focused = false;
+	bool showSceneOptions = true;
 };
 
 #endif // !__UI_Scene_h__

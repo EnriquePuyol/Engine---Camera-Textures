@@ -13,7 +13,8 @@ enum Type
 	Mesh,
 	Material,
 	Camera,
-	Light
+	Light,
+	BBox
 };
 
 enum PreComponentReturn
@@ -44,6 +45,7 @@ public:
 	virtual void Delete() { nextPreReturn = COMP_DELETED; }
 
 public:
+	const char* uID;
 	Type type;
 	bool active;
 	GameObject* owner;

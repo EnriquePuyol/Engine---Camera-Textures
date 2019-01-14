@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "GameObject.h"
+#include "ComponentCamera.h"
 
 class ModuleScene : public Module
 {
@@ -10,6 +11,7 @@ public:
 	ModuleScene();
 	~ModuleScene();
 
+	bool Init() override;
 	update_status PreUpdate() override;
 	update_status Update() override;
 	bool CleanUp() override;
@@ -21,6 +23,8 @@ public:
 	GameObject* root;
 	GameObject* selectedGO = nullptr;
 	GameObject* cutcopyGO = nullptr;
+
+	ComponentCamera* primaryCamera = NULL;
 
 };
 

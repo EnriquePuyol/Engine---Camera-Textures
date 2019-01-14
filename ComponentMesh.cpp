@@ -15,6 +15,17 @@ ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 {
 	type = Mesh;
 	App->renderer->meshes.push_back(this);
+
+	uID = App->GenerateUUID();
+}
+
+ComponentMesh::ComponentMesh(GameObject * parent, char * path) : Component(parent)
+{
+	type = Mesh;
+	sprintf(this->path, path);
+	App->renderer->meshes.push_back(this);
+
+	uID = App->GenerateUUID();
 }
 
 ComponentMesh::ComponentMesh(ComponentMesh * component)
@@ -22,6 +33,9 @@ ComponentMesh::ComponentMesh(ComponentMesh * component)
 	type = Mesh;
 	active = component->active;
 	owner = component->owner;
+	App->renderer->meshes.push_back(this);
+
+	uID = component->uID;
 }
 
 ComponentMesh::~ComponentMesh()
@@ -99,33 +113,34 @@ void ComponentMesh::LoadMesh(char* path)
 
 	for (int i = 0; i < scene->mNumMeshes; ++i) {
 
-		App->scene->selectedGO->material->material = App->modelLoader->GenerateMaterialDataNEW(i, path);
+		owner->material->material = App->modelLoader->GenerateMaterialDataNEW(i, path);
 
 		if (i == 0)
 		{
 			id = i;
 			sprintf_s(this->path, path);
 
-			App->modelLoader->GenerateMeshDataNEW(i, scene, &meshData, path);
+			App->modelLoader->GenerateMeshDataNEW(i, scene, &meshData, path, owner);
 		}
 		else
 		{
-			ComponentMesh* compMesh = new ComponentMesh(App->scene->selectedGO);
+			ComponentMesh* compMesh = new ComponentMesh(owner);
 			compMesh->id = i;
 			sprintf_s(compMesh->path, path);
 
-			App->modelLoader->GenerateMeshDataNEW(i, scene, &compMesh->meshData, path);
+			App->modelLoader->GenerateMeshDataNEW(i, scene, &compMesh->meshData, path, owner);
 
-			App->scene->selectedGO->components.push_back(compMesh);
+			owner->components.push_back(compMesh);
 
 		}
 	}
+	owner->boundingBox->SetAABB(owner->GetAllComponentsOfType(Mesh));
 }
 
 void ComponentMesh::CheckOtherMeshes(char* path)
 {
 	// Checks if this model is already loaded in this gameobject
-	for (list<Component*>::iterator it = App->scene->selectedGO->components.begin(); it != App->scene->selectedGO->components.end(); ++it)
+	for (list<Component*>::iterator it = owner->components.begin(); it != owner->components.end(); ++it)
 	{
 		if ((*it)->type == Mesh)
 		{

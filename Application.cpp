@@ -7,9 +7,11 @@
 #include "ModulePrograms.h"
 #include "ModuleCameraEditor.h"
 #include "ModuleModelLoader.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleUI.h"
 #include "ModuleScene.h"
 #include "MsTimer.h"
+#include "guid.hpp"
 
 using namespace std;
 
@@ -25,6 +27,7 @@ Application::Application()
 	modules.push_back(camera	  = new ModuleCameraEditor());
 	modules.push_back(modelLoader = new ModuleModelLoader());
 	modules.push_back(scene		  = new ModuleScene());
+	modules.push_back(debugDraw	  = new ModuleDebugDraw());
 	timer = new MsTimer();
 }
 
@@ -99,4 +102,12 @@ void Application::Tick()
 		frameCount = 0;
 		auxTimer = 0;
 	}
+}
+
+const char* Application::GenerateUUID()
+{
+	string uuid = xg::newGuid().str();
+	char* newUUID = new char[strlen(uuid.c_str())];
+	strcpy(newUUID, uuid.c_str());
+	return newUUID;
 }

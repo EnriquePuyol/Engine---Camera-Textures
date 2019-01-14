@@ -23,7 +23,6 @@ bool ModuleModelLoader::Init()
 
 update_status ModuleModelLoader::Update()
 {
-
 	return UPDATE_CONTINUE;
 }
 
@@ -134,7 +133,7 @@ void ModuleModelLoader::GenerateMaterialData(const aiScene* myScene)
 	}
 }
 
-void ModuleModelLoader::GenerateMeshDataNEW(int id, const aiScene* myScene, MeshData* meshData, const char * path)
+void ModuleModelLoader::GenerateMeshDataNEW(int id, const aiScene* myScene, MeshData* meshData, const char * path, GameObject* go)
 {
 	const aiMesh* src_mesh = myScene->mMeshes[id];
 
@@ -208,7 +207,11 @@ void ModuleModelLoader::GenerateMeshDataNEW(int id, const aiScene* myScene, Mesh
 	int numMaterials = myScene->mNumMaterials;
 	//int index = meshComp->my_go->components.size()  - idMesh;
 	//ComponentMaterial* compMat = (ComponentMaterial*)meshComp->my_go->components[index - numMaterials + src_mesh->mMaterialIndex];
-	ComponentMaterial* compMat = App->scene->selectedGO->material;
+	ComponentMaterial* compMat;
+	if (App->scene->selectedGO != NULL)
+		compMat = App->scene->selectedGO->material;
+	else
+		compMat = go->material;
 
 	meshData->numTexCoords = src_mesh->mNumVertices;
 	meshData->materialIndex = compMat->material;

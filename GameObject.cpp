@@ -16,6 +16,9 @@ GameObject::GameObject(const char name[40])
 	transform = new ComponentTransform(this);
 	material = new ComponentMaterial(this);
 	material->defaultMat = true;
+	boundingBox = new ComponentBBox(this);
+
+	uID = App->GenerateUUID();
 }
 
 GameObject::GameObject(GameObject * gameobject, GameObject * parent)
@@ -49,6 +52,8 @@ GameObject::GameObject(GameObject * gameobject, GameObject * parent)
 	{
 		childs.push_back(new GameObject((*it), this));
 	}
+
+	uID = gameobject->uID;
 }
 
 
@@ -110,6 +115,8 @@ NextPreReturn GameObject::PreUpdate()
 
 void GameObject::Update()
 {
+	boundingBox->Update();
+
 	// Update the childs
 	for (list<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
 	{
@@ -160,6 +167,34 @@ void GameObject::AddComponent(Type type)
 		components.push_back(new ComponentCamera(this));
 		break;
 	}
+}
+
+Component* GameObject::GetComponentOfType(Type type)
+{
+	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->type == type)
+		{
+			return (*it);
+		}
+	}
+
+	return NULL;
+}
+
+list<Component*> GameObject::GetAllComponentsOfType(Type type)
+{
+	list<Component*> comps;
+
+	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->type == type)
+		{
+			comps.push_back((*it));
+		}
+	}
+
+	return comps;
 }
 
 int GameObject::GetNumComponentsOfType(Type type)
@@ -276,6 +311,7 @@ void GameObject::Draw()
 	}
 	ImGui::PopID();
 	ImGui::PopID();
+
 }
 
 void GameObject::DrawComponents()
@@ -284,19 +320,30 @@ void GameObject::DrawComponents()
 	ImGui::SameLine();
 	ImGui::InputText("Name", name, ARRAYSIZE(name));
 	ImGui::Spacing();
+	ImGui::Checkbox("Show Metadata", &showMetadata);
+
+	if (showMetadata)
+	{
+		ImGui::Text("uID:");
+		ImGui::Text(uID);
+	}
+	ImGui::Spacing();
 	ImGui::Separator();
 
 	transform->Draw(0);
 	ImGui::Separator();
+	ImGui::Spacing();
 
 	int i = 1;
 	for (list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->Draw(i);
 		ImGui::Separator();
+		ImGui::Spacing();
 		i++;
 	}
 
+	ImGui::Separator();
 	material->Draw(i+1);
 	ImGui::Separator();
 }

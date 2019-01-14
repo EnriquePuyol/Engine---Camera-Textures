@@ -11,8 +11,6 @@ public:
 	ComponentMaterial(ComponentMaterial* component);
 	~ComponentMaterial();
 
-	void Update() override;
-	void CleanUp() override;
 	void Draw(int id) override;
 
 public:

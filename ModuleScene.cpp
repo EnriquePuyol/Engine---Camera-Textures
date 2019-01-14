@@ -1,24 +1,45 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ComponentTransform.h"
+#include "ComponentMesh.h"
+#include "ComponentCamera.h"
 #include "ModuleUI.h"
+#include "ModuleRender.h"
 
 
 ModuleScene::ModuleScene()
 {
 	root = new GameObject("Root");
 	root->transform = new ComponentTransform(root);
-	// ToDo: Borrar algun dia
-	/*GameObject* helloWorld = new GameObject("Test");
-	GameObject* child = new GameObject("Test Child");
-
-	helloWorld->childs.push_back(child);
-	root->childs.push_back(helloWorld);*/
 }
 
 
 ModuleScene::~ModuleScene()
 {
+}
+
+bool ModuleScene::Init()
+{
+	// Default scene
+	GameObject* house = new GameObject("House");
+	GameObject* camera = new GameObject("Main camera");
+
+	root->childs.push_back(house);
+	root->childs.push_back(camera);
+
+	house->parent = root;
+	camera->parent = root;
+
+	house->components.push_back(new ComponentMesh(house, "BakerHouse.fbx"));
+	((ComponentMesh*)house->GetComponentOfType(Mesh))->LoadMesh("BakerHouse.fbx");
+
+	//ComponentCamera
+	camera->transform->position = float3(3.0f, 1.5f, 9.5f);
+	camera->components.push_back(new ComponentCamera(camera));
+	((ComponentCamera*)camera->GetComponentOfType(Camera))->cameraType = Primary;
+	App->scene->primaryCamera = ((ComponentCamera*)camera->GetComponentOfType(Camera));
+
+	return true;
 }
 
 update_status ModuleScene::PreUpdate()

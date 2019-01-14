@@ -28,13 +28,14 @@ public:
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
 
+	void RenderEditorCamera();
+	void RenderGameCameras();
+	void RenderMesh(ComponentMesh * meshComp, ComponentCamera * cameraComp);
+
+	void GenerateTexture(FBOset* fboSet);
+
 	void CreateSceneImage();
 	void DrawCoords();
-
-	void RenderEditorCamera();
-	void RenderOtherCameras();
-
-	void GenerateTexture(FBOset fboSet);
 
 public:
 	list<ComponentCamera*> cameras;
@@ -45,6 +46,8 @@ public:
 	GLuint renderedTexture = 0; // ToDo: Borrar si no se usa
 	unsigned fbo = 0u; // ToDo: Borrar si no se usa
 	unsigned rbo = 0u; // ToDo: Borrar si no se usa
+
+	bool showGrid = true;
 
 	void* context = NULL;
 };

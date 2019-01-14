@@ -26,7 +26,7 @@ public:
 
 	void GenerateMeshData(const aiScene* myScene);
 	void GenerateMaterialData(const aiScene* myScene);
-	void GenerateMeshDataNEW(int id, const aiScene* myScene, MeshData* meshData, const char* path);
+	void GenerateMeshDataNEW(int id, const aiScene* myScene, MeshData* meshData, const char* path, GameObject* go = NULL);
 	unsigned GenerateMaterialDataNEW(int idMaterial, const char* path);
 
 	void DeleteModel();

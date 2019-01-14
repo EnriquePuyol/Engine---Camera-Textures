@@ -1,6 +1,7 @@
 #include "UI_Game.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
 
 
 UI_Game::UI_Game(char* name) : UI(name)
@@ -11,7 +12,7 @@ UI_Game::UI_Game(char* name) : UI(name)
 
 UI_Game::~UI_Game()
 {
-	delete primaryCamera;
+	
 }
 
 void UI_Game::Draw()
@@ -19,7 +20,7 @@ void UI_Game::Draw()
 	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0, 0, 0, 1));
 	ImGui::Begin(name, &active);
 
-	if (primaryCamera == nullptr)
+	if (App->scene->primaryCamera == nullptr)
 	{
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("NO CAMERAS RENDERING...").x / 2);
 		ImGui::SetCursorPosY(ImGui::GetWindowHeight() / 2);
@@ -27,12 +28,12 @@ void UI_Game::Draw()
 	}
 	else
 	{
-		//ImTextureID my_tex_id = primaryCamera->renderedTexture;
-		//ImGui::Image((void*)primaryCamera->renderedTexture, ImVec2(App->window->width, App->window->height));
-		ImVec2 size = ImGui::GetWindowSize();
-		ImGui::SetCursorPos({ -(App->window->width - size.x) / 2,-(App->window->height - size.y) / 2 });
-
-		//ImGui::Image((ImTextureID)primaryCamera->renderedTexture, { (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });
+		ImGui::GetWindowDrawList()->AddImage(
+			(void*)App->scene->primaryCamera->fboSet.fb_tex,
+			ImVec2(ImGui::GetCursorScreenPos()),
+			ImVec2(ImGui::GetCursorScreenPos().x + App->scene->primaryCamera->fboSet.fb_width,
+				ImGui::GetCursorScreenPos().y + App->scene->primaryCamera->fboSet.fb_height),
+			ImVec2(0, 1), ImVec2(1, 0));
 	}
 
 	ImGui::PopStyleColor();

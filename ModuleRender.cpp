@@ -5,8 +5,10 @@
 #include "ModulePrograms.h"
 #include "ModuleCameraEditor.h"
 #include "ModuleModelLoader.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleUI.h"
 
+#include "debugdraw.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -66,7 +68,10 @@ update_status ModuleRender::PreUpdate()
 
 	SDL_GetWindowSize(App->window->window, &App->window->width, &App->window->height);
 	glViewport(0, 0, App->window->width, App->window->height);
+	
 	App->camera->UpdateFoV(App->window->width, App->window->height);
+	for (list<ComponentCamera*>::iterator it = cameras.begin(); it != cameras.end(); ++it)
+		(*it)->UpdateFrustum();
 
 	return UPDATE_CONTINUE;
 }
@@ -74,7 +79,10 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	RenderEditorCamera();
+	RenderGameCameras();
+
+	/*glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(App->programs->tex_program);
@@ -135,7 +143,7 @@ update_status ModuleRender::Update()
 
 	DrawCoords();
 
-	glUseProgram(0);
+	glUseProgram(0);*/
 
 	return UPDATE_CONTINUE;
 }
@@ -170,24 +178,243 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 	CreateSceneImage();
 }
 
+void ModuleRender::RenderEditorCamera()
+{
+	GenerateTexture(&(App->camera->fboSet));
+
+	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->fboSet.fbo);
+	glViewport(0, 0, App->camera->fboSet.fb_width, App->camera->fboSet.fb_height);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	for (list<ComponentMesh*>::iterator it = meshes.begin(); it != meshes.end(); ++it)
+	{
+		math::AABB* aabb = (*it)->owner->boundingBox->aabb;
+		if ((*it)->active && (*it)->owner->enable && App->camera->frustum.Intersects(*aabb))
+		{
+			MeshData meshData = (*it)->meshData;
+			if (meshData.numVertices > 0) {
+
+				if (meshData.type == Vao) {
+
+					glBindVertexArray(meshData.vao);
+					glDrawElements(GL_TRIANGLES, meshData.numFaces * 3, GL_UNSIGNED_INT, NULL);
+					glBindVertexArray(0);
+
+				}
+				else
+				{
+					glUseProgram(App->programs->tex_program);
+
+					glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+						"model"), 1, GL_TRUE, &(*it)->owner->transform->model[0][0]);
+					glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+						"view"), 1, GL_TRUE, &App->camera->view[0][0]);
+					glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+						"proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+
+
+					glUniform3fv(glGetUniformLocation(App->programs->tex_program,
+						"viewPosition"), 1, &App->camera->frustum.pos[0]);
+
+					GLint drawText = glGetUniformLocation(App->programs->tex_program, "drawTexture");
+					GLint color0 = glGetUniformLocation(App->programs->tex_program, "color0");
+
+					if ((*it)->hasTexture) glUniform1i(drawText, 1);
+					else {
+						glUniform1i(drawText, 0);
+						float color[4] = { 0.6, 1, 0.6, 1 };
+						glUniform4fv(color0, 1, color);
+					}
+
+					unsigned vboActual = (*it)->meshData.vbo;
+					unsigned numVerticesActual = meshData.numVertices;
+					unsigned numIndexesActual = meshData.numIndexesMesh;
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, (*it)->meshData.materialIndex);
+					glUniform1i(glGetUniformLocation(App->programs->tex_program, "texture0"), 0);
+
+					glEnableVertexAttribArray(0);
+					glEnableVertexAttribArray(1);
+					glEnableVertexAttribArray(2);
+					glBindBuffer(GL_ARRAY_BUFFER, vboActual);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVerticesActual));
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)((sizeof(float) * 3 + sizeof(float) * 2)* numVerticesActual));
+
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it)->meshData.ibo);
+					glDrawElements(GL_TRIANGLES, numIndexesActual, GL_UNSIGNED_INT, nullptr);
+
+					glDisableVertexAttribArray(0);
+					glDisableVertexAttribArray(1);
+					glDisableVertexAttribArray(2);
+
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
+					glBindTexture(GL_TEXTURE_2D, 0);
+
+					glUseProgram(0);
+				}
+			}
+		}
+	}
+	if(showGrid)
+		DrawCoords();
+
+	App->debugDraw->Draw(App->camera->fboSet.fbo, App->camera->fboSet.fb_width, App->camera->fboSet.fb_height);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void ModuleRender::RenderGameCameras()
+{
+	for (list<ComponentCamera*>::iterator cam = cameras.begin(); cam != cameras.end(); ++cam)
+	{
+		(*cam)->w = App->window->width;
+		(*cam)->h = App->window->height;
+
+		GenerateTexture(&(*cam)->fboSet);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, (*cam)->fboSet.fbo);
+		glViewport(0, 0, (*cam)->fboSet.fb_width, (*cam)->fboSet.fb_height);
+		glClearColor(0.2f, 0.2f, 0.2f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		for (list<ComponentMesh*>::iterator it = meshes.begin(); it != meshes.end(); ++it)
+		{
+			math::AABB* aabb = (*it)->owner->boundingBox->aabb;
+			if ((*it)->active && (*it)->owner->enable && (*cam)->frustum.Intersects(*aabb))
+				RenderMesh((*it), (*cam));
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+}
+
+void ModuleRender::RenderMesh(ComponentMesh * meshComp, ComponentCamera * cameraComp)
+{
+	MeshData meshData = meshComp->meshData;
+
+	if (meshData.numVertices > 0) 
+	{
+		if (meshData.type == Vao) 
+		{
+			glBindVertexArray(meshData.vao);
+			glDrawElements(GL_TRIANGLES, meshData.numFaces * 3, GL_UNSIGNED_INT, NULL);
+			glBindVertexArray(0);
+		}
+		else 
+		{
+			glUseProgram(App->programs->tex_program);
+
+			glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+				"model"), 1, GL_TRUE, &meshComp->owner->transform->model[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+				"view"), 1, GL_TRUE, &cameraComp->view[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+				"proj"), 1, GL_TRUE, &cameraComp->proj[0][0]);
+
+			glUniform3fv(glGetUniformLocation(App->programs->tex_program,
+				"viewPosition"), 1, &cameraComp->frustum.pos[0]);
+
+			GLint drawText = glGetUniformLocation(App->programs->tex_program, "drawTexture");
+			GLint color0 = glGetUniformLocation(App->programs->tex_program, "color0");
+
+			glUniform1i(drawText, 1);
+
+			unsigned vboActual = meshComp->meshData.vbo;
+			unsigned numVerticesActual = meshData.numVertices;
+			unsigned numIndexesActual = meshData.numIndexesMesh;
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, meshComp->meshData.materialIndex);
+			glUniform1i(glGetUniformLocation(App->programs->tex_program, "texture0"), 0);
+
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(2);
+			glBindBuffer(GL_ARRAY_BUFFER, vboActual);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVerticesActual));
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)((sizeof(float) * 3 + sizeof(float) * 2)* numVerticesActual));
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshComp->meshData.ibo);
+			glDrawElements(GL_TRIANGLES, numIndexesActual, GL_UNSIGNED_INT, nullptr);
+
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(2);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			glUseProgram(0);
+		}
+	}
+}
+
+void ModuleRender::GenerateTexture(FBOset* fboSet)
+{
+	int w = App->window->width;
+	int h = App->window->height;
+
+	if (w != fboSet->fb_width || h != fboSet->fb_height)
+	{
+		if (fboSet->fb_tex != 0)
+		{
+			glDeleteTextures(1, &(fboSet->fb_tex));
+		}
+		glGenFramebuffers(1, &(fboSet->fbo));
+
+		glBindFramebuffer(GL_FRAMEBUFFER, fboSet->fbo);
+		glGenTextures(1, &(fboSet->fb_tex));
+		glBindTexture(GL_TEXTURE_2D, fboSet->fb_tex);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		glGenRenderbuffers(1, &(fboSet->fb_depth));
+		glBindRenderbuffer(GL_RENDERBUFFER, fboSet->fb_depth);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, w, h);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fboSet->fb_depth);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboSet->fb_tex, 0);
+
+		glDrawBuffer(GL_COLOR_ATTACHMENT0);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		
+
+		fboSet->fb_width = w;
+		fboSet->fb_height = h;
+	}
+}
+
 void ModuleRender::CreateSceneImage()
 {
-	glDeleteFramebuffers(1, &fbo);
-	glDeleteTextures(1, &renderedTexture);
+	glDeleteFramebuffers(1, &App->camera->fboSet.fbo);
+	glDeleteTextures(1, &App->camera->fboSet.fb_tex);
 	glDeleteRenderbuffers(1, &rbo);
 
-	glGenFramebuffers(1, &fbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glGenFramebuffers(1, &App->camera->fboSet.fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->fboSet.fbo);
 
-	glGenTextures(1, &renderedTexture);
-	glBindTexture(GL_TEXTURE_2D, renderedTexture);
+	glGenTextures(1, &App->camera->fboSet.fb_tex);
+	glBindTexture(GL_TEXTURE_2D, App->camera->fboSet.fb_tex);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->window->width, App->window->height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, App->camera->fboSet.fb_tex, 0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -208,87 +435,5 @@ void ModuleRender::CreateSceneImage()
 
 void ModuleRender::DrawCoords()
 {
-	glUseProgram(App->programs->def_program);
-
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->def_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
-
-	glLineWidth(1.0f);
-	int grid = glGetUniformLocation(App->programs->def_program, "newColor");
-	float white[4] = { 0.8f, 0.8f, 0.8f, 1.0f };
-	glUniform4fv(grid, 1, white);
-
-	glBegin(GL_LINES);
-
-	float d = 200.0f;
-
-	for (float i = -d; i <= d; i += 1.0f)
-	{
-		glVertex3f(i, 0.0f, -d);
-		glVertex3f(i, 0.0f, d);
-		glVertex3f(-d, 0.0f, i);
-		glVertex3f(d, 0.0f, i);
-	}
-	glEnd();
-
-	glLineWidth(3.0f);
-
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	// red X
-	int xAxis = glGetUniformLocation(App->programs->def_program, "newColor");
-	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	glUniform4fv(xAxis, 1, red);
-
-	glBegin(GL_LINES);
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-	glEnd();
-
-	// green Y
-	int yAxis = glGetUniformLocation(App->programs->def_program, "newColor");
-	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
-	glUniform4fv(xAxis, 1, green);
-
-	glBegin(GL_LINES);
-	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
-	glEnd();
-
-	// blue Z
-	int zAxis = glGetUniformLocation(App->programs->def_program, "newColor");
-	float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-	glUniform4fv(xAxis, 1, blue);
-
-	glBegin(GL_LINES);
-	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
-	glEnd();
-
-	glLineWidth(1.0f);
+	dd::xzSquareGrid(-1000.0f, 1000.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
 }
-
-void ModuleRender::RenderEditorCamera()
-{
-
-}
-
-void ModuleRender::RenderOtherCameras()
-{
-
-}
-
-void ModuleRender::GenerateTexture(FBOset fboSet)
-{
-
-}
-

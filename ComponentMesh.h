@@ -31,6 +31,7 @@ class ComponentMesh : public Component
 {
 public:
 	ComponentMesh(GameObject* parent);
+	ComponentMesh(GameObject* parent, char* path);
 	ComponentMesh(ComponentMesh* component);
 	~ComponentMesh();
 
@@ -43,6 +44,7 @@ public:
 
 public:
 	int id;
+	bool hasTexture = true;
 
 	MeshData meshData;
 	char path[40] = "";

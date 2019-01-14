@@ -32,7 +32,7 @@ public:
 	void CleanUp() override;
 	void Draw(int id) override;
 
-	//void LookAt(const math::float3& target);
+	void LookAt();
 	void UpdateFrustum();
 
 	char* GetCameraTypeToString(CameraType type);

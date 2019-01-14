@@ -51,6 +51,10 @@ enum update_status
 #define Y_AXIS float3(0, 1, 0)
 #define Z_AXIS float3(0, 0, 1)
 
+#define WORLD_FRONT float3(0, 0,-1)
+#define WORLD_UP	float3(0, 1, 0)
+#define WORLD_RIGHT float3(1, 0, 0)
+
 // Max Number of Components
 #define MAX_MATERIAL_COMP  1
 #define MAX_CAMERA_COMP    1

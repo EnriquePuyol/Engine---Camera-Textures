@@ -8,8 +8,13 @@ ComponentTransform::ComponentTransform(GameObject* parent) : Component(parent)
 	active = true;
 
 	position = { 0.0f, 0.0f, 0.0f };
-	rotation = { 0.0f, 0.0f, 0.0f };
+	eulerRotation = { 0.0f, 0.0f, 0.0f };
 	scale	 = { 1.0f, 1.0f, 1.0f };
+
+	rotation = Quat::FromEulerXYZ(0.f, 0.f, 0.f);
+	model.Set(float4x4::FromTRS(position, rotation, scale));
+
+	uID = App->GenerateUUID();
 }
 
 ComponentTransform::ComponentTransform(ComponentTransform * component)
@@ -19,18 +24,18 @@ ComponentTransform::ComponentTransform(ComponentTransform * component)
 	owner = component->owner;
 
 	position = component->position;
-	rotation = component->rotation;
+	eulerRotation = component->eulerRotation;
 	scale	 = component->scale;
+
+	rotation = Quat::FromEulerXYZ(eulerRotation.x, eulerRotation.y, eulerRotation.z);
+	model.Set(float4x4::FromTRS(position, rotation, scale));
+
+	uID = component->uID;
 }
 
 ComponentTransform::~ComponentTransform()
 {
 	owner = nullptr;
-}
-
-void ComponentTransform::Update()
-{
-
 }
 
 void ComponentTransform::CleanUp()
@@ -52,15 +57,18 @@ void ComponentTransform::Draw(int id)
 	if (!showGlobal)
 	{
 		ImGui::PushID(id);
-		ImGui::DragFloat3("Position", position.ptr(), 0.1f);
+		if (ImGui::DragFloat3("Position", position.ptr(), 0.1f))
+			UpdateTransform();
 		ImGui::PopID();
 
 		ImGui::PushID(id);
-		ImGui::DragFloat3("Rotation", rotation.ptr(), 0.1f);
+		if (ImGui::DragFloat3("Rotation", eulerRotation.ptr(), 0.12f))
+			UpdateTransform();
 		ImGui::PopID();
 
 		ImGui::PushID(id);
-		ImGui::DragFloat3("Scale", scale.ptr(), 0.1f);
+		if (ImGui::DragFloat3("Scale", scale.ptr(), 0.01f))
+			UpdateTransform();
 		ImGui::PopID();
 	}
 	else
@@ -78,8 +86,22 @@ void ComponentTransform::Draw(int id)
 		ImGui::DragFloat3("W-Scale", GetWorldScale().ptr(), 0.1f);
 		ImGui::PopID();
 	}
+		
+}
 
-	
+void ComponentTransform::UpdateTransform()
+{
+	rotation = Quat::FromEulerXYZ(math::DegToRad(eulerRotation.x), math::DegToRad(eulerRotation.y) , math::DegToRad(eulerRotation.z));
+
+	model.Set(float4x4::FromTRS(position, rotation, scale));
+
+	if (owner->parent != nullptr)
+		model = owner->parent->transform->model * model;
+
+	owner->boundingBox->UpdateBBox();
+
+	for (list<GameObject*>::iterator it = owner->childs.begin(); it != owner->childs.end(); ++it)
+		(*it)->transform->UpdateTransform();
 }
 
 float3 ComponentTransform::GetWorldPosition()
@@ -94,9 +116,9 @@ float3 ComponentTransform::GetWorldPosition()
 float3 ComponentTransform::GetWorldRotation()
 {
 	if (owner->parent == NULL)
-		return rotation;
+		return eulerRotation;
 
-	float3 globalRotation = rotation + owner->parent->transform->GetWorldRotation();
+	float3 globalRotation = eulerRotation + owner->parent->transform->GetWorldRotation();
 	return globalRotation;
 }
 

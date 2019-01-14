@@ -7,6 +7,8 @@
 ComponentLight::ComponentLight(GameObject* parent) : Component(parent)
 {
 	type = Light;
+
+	uID = App->GenerateUUID();
 }
 
 ComponentLight::ComponentLight(ComponentLight* component)
@@ -14,6 +16,8 @@ ComponentLight::ComponentLight(ComponentLight* component)
 	type = Light;
 	active = component->active;
 	owner = component->owner;
+
+	uID = component->uID;
 }
 
 ComponentLight::~ComponentLight()

@@ -114,15 +114,21 @@ void ModuleUI::MainBar()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("New", "No use..")) {}
+			if (ImGui::MenuItem("Open", "No use..")) {}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Save")) {}
+			if (ImGui::MenuItem("Load")) {}
+			ImGui::Separator();
 			if (ImGui::MenuItem("Exit")) { App->input->quit = true; }
 
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit"))
 		{
-			if (ImGui::MenuItem("Undo")) {}
-			if (ImGui::MenuItem("Redo")) {}
-			if (ImGui::MenuItem("Preferences")) {}
+			if (ImGui::MenuItem("Undo", "No use..")) {}
+			if (ImGui::MenuItem("Redo", "No use..")) {}
+			if (ImGui::MenuItem("Preferences", "No use..")) {}
 
 			ImGui::EndMenu();
 		}

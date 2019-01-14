@@ -169,6 +169,10 @@
     <ClCompile Include="UI_Game.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentBBox.cpp">
+      <Filter>GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GUID\guid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -413,6 +417,10 @@
     <ClInclude Include="UI_Game.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentBBox.h">
+      <Filter>GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GUID\guid.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utils">

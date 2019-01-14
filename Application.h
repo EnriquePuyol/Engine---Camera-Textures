@@ -12,6 +12,7 @@ class ModulePrograms;
 class ModuleRenderExercise;
 class ModuleCameraEditor;
 class ModuleModelLoader;
+class ModuleDebugDraw;
 class ModuleUI;
 class ModuleScene;
 class MsTimer;
@@ -28,6 +29,7 @@ public:
 	bool CleanUp();
 
 	void Tick();
+	const char* GenerateUUID();
 
 public:
 	ModuleRender* renderer = nullptr;
@@ -40,6 +42,7 @@ public:
 	ModuleModelLoader* modelLoader = nullptr;
 	ModuleUI* ui = nullptr;
 	ModuleScene* scene = nullptr;
+	ModuleDebugDraw* debugDraw = nullptr;
 
 	MsTimer* timer = nullptr;
 

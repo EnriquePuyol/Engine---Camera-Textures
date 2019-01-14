@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
+#include "ComponentBBox.h"
 #include <list>
 
 using namespace std;
@@ -29,6 +30,8 @@ public:
 	void CleanUp();
 	void Delete();
 	void AddComponent(Type type);
+	Component* GetComponentOfType(Type type);
+	list<Component*> GetAllComponentsOfType(Type type);
 	int	 GetNumComponentsOfType(Type type);
 	bool CanAddComponentOfType(Type type);
 
@@ -45,6 +48,7 @@ public:
 
 	// ImGui property
 	bool openNode = false;
+	bool showMetadata = false;
 
 	// Hierarchy info
 	GameObject* parent = NULL;
@@ -53,7 +57,9 @@ public:
 	// Inspector info
 	ComponentTransform* transform = NULL;
 	ComponentMaterial* material = NULL;
+	ComponentBBox* boundingBox = NULL;
 	list<Component*> components;
+	const char* uID;
 
 };
 
