@@ -14,17 +14,22 @@ ModulePrograms::~ModulePrograms()
 
 bool ModulePrograms::Init()
 {
-	def_program = LoadShader("default.vs", "default.fs");
-	tex_program = LoadShader("texture.vs", "texture.fs");
+	default_program = LoadShader("shaders/default.vs", "shaders/default.fs");
+
+	programs[DEFAULT] = LoadShader("shaders/default.vs", "shaders/default.fs");
+	//programs[FLAT]	  = LoadShader("Assets/Shaders/flat.vs", "Assets/Shaders/flat.fs");
+	//programs[GOURAUD] = LoadShader("Assets/Shaders/gouraud.vs", "Assets/Shaders/gouraud.fs");
+	//programs[PHONG]   = LoadShader("Assets/Shaders/phong.vs", "Assets/Shaders/phong.fs");
+	//programs[BLINN]   = LoadShader("Assets/Shaders/blinn.vs", "Assets/Shaders/blinn.fs");
 
 	return true;
 }
 
 bool ModulePrograms::CleanUp()
 {
-	if (def_program != 0)
+	if (default_program != 0)
 	{
-		glDeleteProgram(def_program);
+		glDeleteProgram(default_program);
 	}
 
 	return true;

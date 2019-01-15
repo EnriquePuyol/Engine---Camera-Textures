@@ -214,7 +214,7 @@ void ModuleModelLoader::GenerateMeshDataNEW(int id, const aiScene* myScene, Mesh
 		compMat = go->material;
 
 	meshData->numTexCoords = src_mesh->mNumVertices;
-	meshData->materialIndex = compMat->material;
+	meshData->materialIndex = compMat->matIndex;
 	meshData->numVertices = src_mesh->mNumVertices;
 	meshData->numFaces = src_mesh->mNumFaces;
 	meshData->numIndexesMesh = src_mesh->mNumFaces * 3;

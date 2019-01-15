@@ -238,8 +238,18 @@
     <ClCompile Include="UI_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Game\default.fs" />
-    <None Include="Game\default.vs" />
+    <None Include="Game\shaders\blinn.fs" />
+    <None Include="Game\shaders\blinn.vs" />
+    <None Include="Game\shaders\default.fs" />
+    <None Include="Game\shaders\default.vs" />
+    <None Include="Game\shaders\flat.fs" />
+    <None Include="Game\shaders\flat.vs" />
+    <None Include="Game\shaders\gouraud.fs" />
+    <None Include="Game\shaders\gouraud.vs" />
+    <None Include="Game\shaders\phong.fs" />
+    <None Include="Game\shaders\phong.vs" />
+    <None Include="Game\shaders\texture.fs" />
+    <None Include="Game\shaders\texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

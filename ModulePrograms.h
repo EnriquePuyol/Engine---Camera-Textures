@@ -4,6 +4,16 @@
 #include "Module.h"
 #include "GL/glew.h"
 
+enum Program
+{
+	DEFAULT = 0,
+	FLAT,
+	GOURAUD,
+	PHONG,
+	BLINN,
+	TOTAL
+};
+
 class ModulePrograms : public Module
 {
 public:
@@ -20,8 +30,9 @@ private:
 	bool  Compile(unsigned id, char* data);
 
 public:
-	GLuint def_program;
-	GLuint tex_program;
+	unsigned programs[TOTAL];
+
+	GLuint default_program;
 };
 
 #endif

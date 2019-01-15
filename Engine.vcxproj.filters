@@ -443,10 +443,40 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Game\default.fs">
+    <None Include="Game\shaders\default.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Game\default.vs">
+    <None Include="Game\shaders\default.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\flat.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\flat.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\texture.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\texture.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\blinn.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\blinn.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\gouraud.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\gouraud.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\phong.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\phong.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "ComponentMaterial.h"
 #include "Application.h"
+#include "ModulePrograms.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(parent)
 {
@@ -10,7 +11,7 @@ ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(parent)
 
 ComponentMaterial::ComponentMaterial(unsigned material)
 {
-	this->material = material;
+	this->matIndex = material;
 
 	uID = App->GenerateUUID();
 }
@@ -45,6 +46,8 @@ void ComponentMaterial::Draw(int id)
 		}
 	}
 	ImGui::Text("ToDo: Material");
+	char* program_names[TOTAL] = { "Default", "Flat", "Gouraud", "Phong", "Blinn" };
+	ImGui::Combo("shader", (int*)&_mat, program_names, TOTAL);
 
 	ImGui::PopID();
 }

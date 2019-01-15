@@ -113,7 +113,8 @@ void ComponentMesh::LoadMesh(char* path)
 
 	for (int i = 0; i < scene->mNumMeshes; ++i) {
 
-		owner->material->material = App->modelLoader->GenerateMaterialDataNEW(i, path);
+		//App->modelLoader->GenerateMaterialDataNEW(i, path);
+		owner->material->matIndex = App->modelLoader->GenerateMaterialDataNEW(i, path);
 
 		if (i == 0)
 		{

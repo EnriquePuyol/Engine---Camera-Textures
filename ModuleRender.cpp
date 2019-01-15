@@ -82,69 +82,6 @@ update_status ModuleRender::Update()
 	RenderEditorCamera();
 	RenderGameCameras();
 
-	/*glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glUseProgram(App->programs->tex_program);
-
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "model"), 1, GL_TRUE, &tri_model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
-
-	//Todo: Quitar esto
-	if (App->modelLoader->scene != NULL)
-	{
-
-		for (unsigned i = 0; i < App->modelLoader->scene->mNumMeshes; i++)
-		{
-			unsigned Vbo = App->modelLoader->vbo[i];
-			unsigned Ibo = App->modelLoader->ibo[i];
-			unsigned numVerticesMesh = App->modelLoader->numVerticesMesh[i];
-			unsigned numIndexesMesh = App->modelLoader->numIndexesMesh[i];
-
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, App->modelLoader->materials[App->modelLoader->textures[i]]);
-			glUniform1i(glGetUniformLocation(App->programs->tex_program, "texture0"), 0);
-
-			glEnableVertexAttribArray(0);
-			glEnableVertexAttribArray(1);
-			glBindBuffer(GL_ARRAY_BUFFER, Vbo);
-			glVertexAttribPointer(
-				0,
-				3,
-				GL_FLOAT,
-				GL_FALSE,
-				0,
-				(void*)0
-			);
-			glVertexAttribPointer(
-				1,
-				2,
-				GL_FLOAT,
-				GL_FALSE,
-				0,
-				(void*)(sizeof(float) * 3 * numVerticesMesh)
-			);
-
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Ibo);
-			glDrawElements(GL_TRIANGLES, numIndexesMesh, GL_UNSIGNED_INT, nullptr);
-
-			glDisableVertexAttribArray(0);
-			glDisableVertexAttribArray(1);
-
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-		}
-
-	}
-	glUseProgram(0);
-
-	DrawCoords();
-
-	glUseProgram(0);*/
-
 	return UPDATE_CONTINUE;
 }
 
@@ -204,21 +141,21 @@ void ModuleRender::RenderEditorCamera()
 				}
 				else
 				{
-					glUseProgram(App->programs->tex_program);
+					glUseProgram(App->programs->default_program);
 
-					glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+					glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
 						"model"), 1, GL_TRUE, &(*it)->owner->transform->model[0][0]);
-					glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+					glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
 						"view"), 1, GL_TRUE, &App->camera->view[0][0]);
-					glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+					glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
 						"proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 
 
-					glUniform3fv(glGetUniformLocation(App->programs->tex_program,
+					glUniform3fv(glGetUniformLocation(App->programs->default_program,
 						"viewPosition"), 1, &App->camera->frustum.pos[0]);
 
-					GLint drawText = glGetUniformLocation(App->programs->tex_program, "drawTexture");
-					GLint color0 = glGetUniformLocation(App->programs->tex_program, "color0");
+					GLint drawText = glGetUniformLocation(App->programs->default_program, "drawTexture");
+					GLint color0 = glGetUniformLocation(App->programs->default_program, "color0");
 
 					if ((*it)->hasTexture) glUniform1i(drawText, 1);
 					else {
@@ -233,7 +170,7 @@ void ModuleRender::RenderEditorCamera()
 
 					glActiveTexture(GL_TEXTURE0);
 					glBindTexture(GL_TEXTURE_2D, (*it)->meshData.materialIndex);
-					glUniform1i(glGetUniformLocation(App->programs->tex_program, "texture0"), 0);
+					glUniform1i(glGetUniformLocation(App->programs->default_program, "texture0"), 0);
 
 					glEnableVertexAttribArray(0);
 					glEnableVertexAttribArray(1);
@@ -305,20 +242,20 @@ void ModuleRender::RenderMesh(ComponentMesh * meshComp, ComponentCamera * camera
 		}
 		else 
 		{
-			glUseProgram(App->programs->tex_program);
+			glUseProgram(App->programs->default_program);
 
-			glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+			glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
 				"model"), 1, GL_TRUE, &meshComp->owner->transform->model[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+			glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
 				"view"), 1, GL_TRUE, &cameraComp->view[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(App->programs->tex_program,
+			glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
 				"proj"), 1, GL_TRUE, &cameraComp->proj[0][0]);
 
-			glUniform3fv(glGetUniformLocation(App->programs->tex_program,
+			glUniform3fv(glGetUniformLocation(App->programs->default_program,
 				"viewPosition"), 1, &cameraComp->frustum.pos[0]);
 
-			GLint drawText = glGetUniformLocation(App->programs->tex_program, "drawTexture");
-			GLint color0 = glGetUniformLocation(App->programs->tex_program, "color0");
+			GLint drawText = glGetUniformLocation(App->programs->default_program, "drawTexture");
+			GLint color0 = glGetUniformLocation(App->programs->default_program, "color0");
 
 			glUniform1i(drawText, 1);
 
@@ -328,7 +265,7 @@ void ModuleRender::RenderMesh(ComponentMesh * meshComp, ComponentCamera * camera
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, meshComp->meshData.materialIndex);
-			glUniform1i(glGetUniformLocation(App->programs->tex_program, "texture0"), 0);
+			glUniform1i(glGetUniformLocation(App->programs->default_program, "texture0"), 0);
 
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
