@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleUI.h"
+#include "debugdraw.h"
 
 ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent)
 {
@@ -73,6 +74,9 @@ PreComponentReturn ComponentCamera::PreUpdate()
 void ComponentCamera::Update()
 {
 	UpdateFrustum();
+
+	const ddVec3 boxColor = { 0.25f, 0.77f, 0.95f };
+	dd::frustum((proj * view).Inverted(), boxColor);
 }
 
 void ComponentCamera::CleanUp()

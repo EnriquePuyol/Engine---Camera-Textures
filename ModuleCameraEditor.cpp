@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModulePrograms.h"
 #include "ModuleTextures.h"
+#include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "ModuleUI.h"
 #include "UI_Scene.h"
@@ -137,7 +138,7 @@ void ModuleCameraEditor::Move()
 	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 	{
 		up = float3(0.0f, 1.0f, 0.0f);
-		LookAt(float3(0.0f, 0.0f, 0.0f));
+		LookAt(App->scene->selectedGO->transform->GetWorldPosition());
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{

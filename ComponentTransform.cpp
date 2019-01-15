@@ -1,5 +1,6 @@
 #include "ComponentTransform.h"
 #include "GameObject.h"
+#include "Application.h"
 
 
 ComponentTransform::ComponentTransform(GameObject* parent) : Component(parent)
