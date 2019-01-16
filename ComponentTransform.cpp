@@ -46,7 +46,8 @@ void ComponentTransform::CleanUp()
 
 void ComponentTransform::Draw(int id)
 {
-	
+	ImGui::PushID(id);
+
 	ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("TRANSFORM").x / 2);
 	ImGui::Text("TRANSFORM");
 	ImGui::SameLine();
@@ -57,37 +58,53 @@ void ComponentTransform::Draw(int id)
 	
 	if (!showGlobal)
 	{
-		ImGui::PushID(id);
 		if (ImGui::DragFloat3("Position", position.ptr(), 0.1f))
 			UpdateTransform();
-		ImGui::PopID();
 
-		ImGui::PushID(id);
 		if (ImGui::DragFloat3("Rotation", eulerRotation.ptr(), 0.12f))
 			UpdateTransform();
-		ImGui::PopID();
-
-		ImGui::PushID(id);
+		
 		if (ImGui::DragFloat3("Scale", scale.ptr(), 0.01f))
 			UpdateTransform();
-		ImGui::PopID();
 	}
 	else
 	{
 		ImGui::Text("Cannot be edited:");
-		ImGui::PushID(id);
 		ImGui::DragFloat3("W-Position", GetWorldPosition().ptr(), 0.1f);
-		ImGui::PopID();
-
-		ImGui::PushID(id);
 		ImGui::DragFloat3("W-Rotation", GetWorldRotation().ptr(), 0.1f);
-		ImGui::PopID();
-
-		ImGui::PushID(id);
 		ImGui::DragFloat3("W-Scale", GetWorldScale().ptr(), 0.1f);
-		ImGui::PopID();
-	}
 		
+	}
+
+	if (owner->showMetadata)
+		ShowMetadata();
+
+	ImGui::PopID();
+}
+
+void ComponentTransform::ShowMetadata()
+{
+	ImGui::SeparatorCustom(50, ImGui::GetWindowWidth() - 100);
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4, 0.4, 0.4, 1));
+	ImGui::Text("uID:");
+	ImGui::Text(uID);
+	ImGui::PopStyleColor();
+}
+
+void ComponentTransform::Save(System * system)
+{
+	system->StartObject();
+
+	system->AddComponentType("compType", type);
+	system->AddString("ownerUID", owner->uID);
+	system->AddString("uID", uID);
+
+	system->AddFloat3("position", position);
+	system->AddFloat3("eulerRotation", eulerRotation);
+	system->AddFloat3("scale", scale);
+	system->AddQuat("rotation", rotation);
+
+	system->EndObject();
 }
 
 void ComponentTransform::UpdateTransform()

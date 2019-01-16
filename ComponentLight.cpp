@@ -1,6 +1,7 @@
 #include "ComponentLight.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleRender.h"
 
 #include <string>
 
@@ -9,6 +10,8 @@ ComponentLight::ComponentLight(GameObject* parent) : Component(parent)
 	type = Light;
 
 	uID = App->GenerateUUID();
+
+	App->renderer->lights.push_back(this);
 }
 
 ComponentLight::ComponentLight(ComponentLight* component)
@@ -18,10 +21,29 @@ ComponentLight::ComponentLight(ComponentLight* component)
 	owner = component->owner;
 
 	uID = component->uID;
+
+	App->renderer->lights.push_back(this);
 }
 
 ComponentLight::~ComponentLight()
 {
+}
+
+PreComponentReturn ComponentLight::PreUpdate()
+{
+	// Si borramos el componente quitamos la camara del Render
+	if (nextPreReturn == COMP_DELETED)
+	{
+		for (list<ComponentLight*>::iterator it = App->renderer->lights.begin(); it != App->renderer->lights.end(); )
+		{
+			if ((*it) != this)
+				++it;
+			else
+				App->renderer->lights.erase(it++);
+		}
+	}
+
+	return nextPreReturn;
 }
 
 void ComponentLight::Update()
@@ -58,11 +80,26 @@ void ComponentLight::Draw(int id)
 			if (ImGui::Selectable(types[n], is_selected))
 				SetLightTypeFromString(types[n]);
 			if (is_selected)
-				ImGui::SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+				ImGui::SetItemDefaultFocus();
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::Text("Intensity: "); ImGui::SameLine();
+	ImGui::DragFloat("##hidelabel", &intensity, 0.005f, 0.0, 10000);
+
+	if(owner->showMetadata)
+		ShowMetadata();
+
 	ImGui::PopID();
+}
+
+void ComponentLight::ShowMetadata()
+{
+	ImGui::SeparatorCustom(50, ImGui::GetWindowWidth() - 100);
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4, 0.4, 0.4, 1));
+	ImGui::Text("uID:");
+	ImGui::Text(uID);
+	ImGui::PopStyleColor();
 }
 
 char* ComponentLight::GetLightTypeToString(LightType type)
@@ -92,4 +129,17 @@ void ComponentLight::SetLightTypeFromString(const char * type)
 		lightType = Directional;
 	else if (type == "SpotLight")
 		lightType = SpotLight;
+}
+
+void ComponentLight::Save(System * system)
+{
+	system->StartObject();
+
+	system->AddComponentType("compType", type);
+	system->AddString("ownerUID", owner->uID);
+	system->AddString("uID", uID);
+
+	system->AddFloat("intensity", intensity);
+
+	system->EndObject();
 }

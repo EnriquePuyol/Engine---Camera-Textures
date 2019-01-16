@@ -135,7 +135,7 @@ void ModuleCameraEditor::Move()
 			eye += (-right * speed * mov.x) + (up * speed * mov.y);
 		}
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->scene->selectedGO != NULL)
 	{
 		up = float3(0.0f, 1.0f, 0.0f);
 		LookAt(App->scene->selectedGO->transform->GetWorldPosition());
@@ -155,9 +155,10 @@ void ModuleCameraEditor::Move()
 			up = yawRotMat * up;
 		}
 	}
-	else
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_UP || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
 	{
 		SDL_SetRelativeMouseMode(SDL_FALSE);
+		SDL_WarpMouseGlobal(App->window->width/2, App->window->height/2);
 	}
 
 	if (App->input->scrolling)

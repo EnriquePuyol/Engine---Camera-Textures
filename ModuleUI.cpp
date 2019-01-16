@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
 #include "ModuleInput.h"
 
 ModuleUI::ModuleUI()
@@ -117,7 +118,7 @@ void ModuleUI::MainBar()
 			if (ImGui::MenuItem("New", "No use..")) {}
 			if (ImGui::MenuItem("Open", "No use..")) {}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Save")) {}
+			if (ImGui::MenuItem("Save")) { App->scene->SaveScene(); }
 			if (ImGui::MenuItem("Load")) {}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Exit")) { App->input->quit = true; }

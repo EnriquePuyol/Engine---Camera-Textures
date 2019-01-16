@@ -5,6 +5,7 @@
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+class System;
 class GameObject;
 
 enum Type
@@ -43,12 +44,15 @@ public:
 	virtual void CleanUp() {}
 	virtual void Draw(int id) {}
 	virtual void Delete() { nextPreReturn = COMP_DELETED; }
+	virtual void ShowMetadata() {}
+
+	virtual void Save(System* system) {}
 
 public:
 	const char* uID;
 	Type type;
 	bool active;
-	GameObject* owner;
+	GameObject* owner = NULL;
 
 	PreComponentReturn nextPreReturn = COMP_NONE;
 

@@ -14,13 +14,13 @@ ModulePrograms::~ModulePrograms()
 
 bool ModulePrograms::Init()
 {
-	default_program = LoadShader("shaders/default.vs", "shaders/default.fs");
+	//default_program = LoadShader("shaders/default.vs", "shaders/default.fs");
 
 	programs[DEFAULT] = LoadShader("shaders/default.vs", "shaders/default.fs");
-	//programs[FLAT]	  = LoadShader("Assets/Shaders/flat.vs", "Assets/Shaders/flat.fs");
-	//programs[GOURAUD] = LoadShader("Assets/Shaders/gouraud.vs", "Assets/Shaders/gouraud.fs");
-	//programs[PHONG]   = LoadShader("Assets/Shaders/phong.vs", "Assets/Shaders/phong.fs");
-	//programs[BLINN]   = LoadShader("Assets/Shaders/blinn.vs", "Assets/Shaders/blinn.fs");
+	programs[FLAT]	  = LoadShader("shaders/flat.vs", "shaders/flat.fs");
+	programs[GOURAUD] = LoadShader("shaders/gouraud.vs", "shaders/gouraud.fs");
+	programs[PHONG]   = LoadShader("shaders/phong.vs", "shaders/phong.fs");
+	programs[BLINN]   = LoadShader("shaders/blinn.vs", "shaders/blinn.fs");
 
 	return true;
 }
@@ -80,7 +80,7 @@ GLuint ModulePrograms::LoadShader(const char * vsPath, const char * fsPath)
 	free(vertex_data);
 	free(fragment_data);
 
-	GLuint program;
+	GLuint program = 0;
 
 	if (ok)
 	{

@@ -93,7 +93,20 @@ void ComponentMesh::Draw(int id)
 	{
 		LoadMesh(path);
 	}
+
+	if (owner->showMetadata)
+		ShowMetadata();
+
 	ImGui::PopID();
+}
+
+void ComponentMesh::ShowMetadata()
+{
+	ImGui::SeparatorCustom(50, ImGui::GetWindowWidth() - 100);
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4, 0.4, 0.4, 1));
+	ImGui::Text("uID:");
+	ImGui::Text(uID);
+	ImGui::PopStyleColor();
 }
 
 void ComponentMesh::LoadMesh(char* path)
@@ -121,7 +134,8 @@ void ComponentMesh::LoadMesh(char* path)
 			id = i;
 			sprintf_s(this->path, path);
 
-			App->modelLoader->GenerateMeshDataNEW(i, scene, &meshData, path, owner);
+			//App->modelLoader->GenerateMeshDataNEW(i, scene, &meshData, path, owner);
+			GenerateMeshData(scene);
 		}
 		else
 		{
@@ -129,8 +143,8 @@ void ComponentMesh::LoadMesh(char* path)
 			compMesh->id = i;
 			sprintf_s(compMesh->path, path);
 
-			App->modelLoader->GenerateMeshDataNEW(i, scene, &compMesh->meshData, path, owner);
-
+			//App->modelLoader->GenerateMeshDataNEW(i, scene, &compMesh->meshData, path, owner);
+			compMesh->GenerateMeshData(scene);
 			owner->components.push_back(compMesh);
 
 		}
@@ -151,4 +165,138 @@ void ComponentMesh::CheckOtherMeshes(char* path)
 			}
 		}
 	}
+}
+
+void ComponentMesh::GenerateMeshData(const aiScene* myScene)
+{
+	const aiMesh* src_mesh = myScene->mMeshes[id];
+
+	meshData.numVertices = src_mesh->mNumVertices;
+	meshData.vertices = new float3[meshData.numVertices];
+	memcpy(meshData.vertices, src_mesh->mVertices, sizeof(float) * meshData.numVertices * 3);
+
+	if (src_mesh->HasFaces())
+	{
+		meshData.numIndexesMesh = src_mesh->mNumFaces * 3;
+		meshData.indices = new unsigned[meshData.numIndexesMesh];
+		for (unsigned i = 0u; i < src_mesh->mNumFaces; ++i)
+		{
+			memcpy(&meshData.indices[i * 3], src_mesh->mFaces[i].mIndices, 3 * sizeof(unsigned));
+		}
+	}
+
+	if (src_mesh->HasTextureCoords(0))
+	{
+		meshData.uvs = new float[meshData.numVertices * 2];
+		int uvsCounter = 0;
+		for (unsigned i = 0u; i < meshData.numVertices; ++i)
+		{
+			meshData.uvs[uvsCounter] = src_mesh->mTextureCoords[0][i].x;
+			++uvsCounter;
+			meshData.uvs[uvsCounter] = src_mesh->mTextureCoords[0][i].y;
+			++uvsCounter;
+		}
+	}
+
+	if (src_mesh->HasNormals())
+	{
+		meshData.normals = new float[meshData.numVertices * 3];
+		memcpy(meshData.normals, src_mesh->mNormals, sizeof(float)*meshData.numVertices * 3);
+	}
+
+	if (src_mesh->HasVertexColors(0))
+	{
+		meshData.colours = new float[meshData.numVertices * 3];
+		memcpy(meshData.colours, src_mesh->mColors, sizeof(float)*meshData.numVertices * 3);
+	}
+
+	glGenVertexArrays(1, &meshData.vao);
+	glBindVertexArray(meshData.vao);
+
+	glGenBuffers(1, &meshData.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, meshData.vbo);
+
+
+	unsigned offset = sizeof(math::float3);
+
+	if (meshData.normals != nullptr) {
+		meshData.normalsOffset = offset;
+		offset += sizeof(math::float3);
+	}
+
+	if (meshData.uvs != nullptr) {
+		meshData.texturesOffset = offset;
+		offset += sizeof(math::float2);
+	}
+
+	meshData.vertexSize = offset;
+
+	glBufferData(GL_ARRAY_BUFFER, meshData.vertexSize * meshData.numVertices, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * meshData.numVertices, meshData.vertices);
+
+	if (meshData.normals != nullptr)
+	{
+		glBufferSubData(GL_ARRAY_BUFFER, meshData.normalsOffset * meshData.numVertices, sizeof(float) * 3 * meshData.numVertices, meshData.normals);
+	}
+
+	if (meshData.uvs != nullptr)
+	{
+		glBufferSubData(GL_ARRAY_BUFFER, meshData.texturesOffset * meshData.numVertices, sizeof(float2) * meshData.numVertices, meshData.uvs);
+	}
+
+	glUnmapBuffer(GL_ARRAY_BUFFER);
+
+	glGenBuffers(1, &meshData.ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData.ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * meshData.numIndexesMesh, meshData.indices, GL_STATIC_DRAW);
+
+	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+
+	if (meshData.texturesOffset != 0)
+	{
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(meshData.texturesOffset * meshData.numVertices));
+	}
+
+	if (meshData.normalsOffset != 0)
+	{
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)(meshData.normalsOffset * meshData.numVertices));
+	}
+
+	// vao off
+	glBindVertexArray(0);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+
+	// vbo off
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	this->numIndices = src_mesh->mNumFaces * 3;
+	this->materialIndex = src_mesh->mMaterialIndex;
+	this->numVert = src_mesh->mNumVertices;
+}
+
+void ComponentMesh::Save(System * system)
+{
+	system->StartObject();
+
+	system->AddComponentType("compType", type);
+	system->AddString("ownerUID", owner->uID);
+	system->AddString("uID", uID);
+
+	system->AddInt("id", id);
+	system->AddInt("numIndices", numIndices);
+	system->AddInt("materialIndex", materialIndex);
+	system->AddInt("numVert", numVert);
+	system->AddString("path", path);
+
+	system->EndObject();
 }

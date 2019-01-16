@@ -173,6 +173,8 @@
       <Filter>GameObject\Component</Filter>
     </ClCompile>
     <ClCompile Include="GUID\guid.cpp" />
+    <ClCompile Include="System.cpp" />
+    <ClCompile Include="ModuleFileSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -421,6 +423,8 @@
       <Filter>GameObject\Component</Filter>
     </ClInclude>
     <ClInclude Include="GUID\guid.hpp" />
+    <ClInclude Include="System.h" />
+    <ClInclude Include="ModuleFileSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utils">

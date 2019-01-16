@@ -1,88 +1,53 @@
-#version 330 core
-
-struct Material
-{
-	sampler2D diffuse_map;
-	vec4 diffuse_color;
-	float k_diffuse;
-
-	sampler2D specular_map;
-	vec3 specular_color;
-	float shininess;
-	float k_specular;
-
-	sampler2D occlusion_map;
-	float k_ambient;
-
-    sampler2D emissive_map;
-    vec3      emissive_color;
-};
-
-in vec3 normal;
-in vec3 position;
-in vec2 uv0;
+#version 400 core
 
 out vec4 color;
 
-uniform mat4 view;
+uniform sampler2D occlusion_map;
+uniform float k_ambient;
 
-uniform	vec3 light_pos;
-uniform	Material material;
+uniform sampler2D diffuse_map;
+uniform vec4 diffuse_color;
+uniform float k_diffuse;
 
-vec4 get_diffuse_color()
-{
-	return texture(material.diffuse_map, uv0)*material.diffuse_color;
-}
+uniform sampler2D specular_map;
+uniform vec4 specular_color;
+uniform float k_specular;
 
-vec3 get_specular_color()
-{
-	return texture(material.specular_map, uv0).rgb*material.specular_color;
-}
+uniform float shininess;
 
-vec3 get_occlusion_color()
-{
-	return texture(material.occlusion_map, uv0).rgb;
-}
+in vec2 uv0;
+in vec3 position;
+in vec3 normal;
 
-vec3 get_emissive_color()
-{
-	return texture(material.emissive_map, uv0).rgb*material.emissive_color;
-}
+uniform mat4 proj; 
+uniform mat4 view; 
+uniform mat4 model;
 
-float lambert(vec3 direction, vec3 normals)
-{
-	return max(dot(normals, direction), 0.0);
-}
-
-float specular_blinn(vec3 direction, vec3 pos, vec3 normals, vec3 view_pos, float shininess)
-{
-        vec3 view_dir    = normalize(view_pos-pos);
-        vec3 half_dir    = normalize(view_dir+direction);
-		return pow(max(dot(normal, half_dir), 0.0), shininess);
-}
+uniform vec3 light_pos;
+uniform float light_intensity;
 
 void main()
 {
-    vec3 normal      = normalize(normal);
-    vec3 light_dir   = normalize(light_pos-position);
+	/* AMBIENT */
+	vec3 ambientFinal = k_ambient * light_intensity * vec3(texture(occlusion_map, uv0));
 
-	float diffuse = lambert(light_dir, normal);
-	float specular = 0.0;
-	if(diffuse> 0.0 && material.k_specular>0.0 && material.shininess > 0.0)
-	{
-		vec3 view_pos = transpose(mat3(view))*(-view[3].xyz);
-		specular = specular_blinn(light_dir, position, normal, view_pos, material.shininess);
-	}
+	/* DIFFUSE */
+	vec3 normal = normalize(normal);
+	vec3 lightDir = normalize(light_pos - position);
+	float diff = max(dot(normal, lightDir), 0.0f);
+	vec3 finalDiffuse = k_diffuse * diff * vec3(texture(diffuse_map, uv0) * diffuse_color);
 
-	vec3 emissive_color = get_emissive_color();
-	vec3 occlusion_color= get_occlusion_color();
-	vec3 specular_color = get_specular_color();
-	vec4 diffuse_color = get_diffuse_color();
-    
-	vec3 color_aux = emissive_color +										//emissive
-				 diffuse_color.rgb * occlusion_color * material.k_ambient + //ambient
-				 diffuse_color.rgb * diffuse * material.k_diffuse +			//diffuse
-				 specular_color.rgb * specular * material.k_specular;		//specular
+	/* SPECULAR */
+	vec3 viewPos = transpose(mat3(view))*(-view[3].xyz);
+    vec3 viewDir = normalize(viewPos - position);
+    vec3 half = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(half, normal), 0.0f), shininess);
+    vec3 textureSpecularColor = vec3(texture(specular_map, uv0));
+    vec3 finalSpecular = k_specular * spec * specular_color.rgb * textureSpecularColor;
 
-    color = vec4(color_aux, diffuse_color.a);
+	/* EMISSIVE */
+
+
+	/* FINAL */
+    color = vec4(finalDiffuse,1.0f) + vec4(finalSpecular, 1.0) + vec4(ambientFinal, 1.0f);
 }

@@ -1,5 +1,7 @@
 #include "Globals.h"
 #include "ModuleTextures.h"
+#include "Application.h"
+#include "ModuleUI.h"
 
 #include <GL/glew.h>
 #include <IL/il.h>
@@ -84,6 +86,8 @@ unsigned ModuleTextures::Load(const char* path, bool mipmaps)
 		ilDeleteImages(1, &imageId);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		App->ui->uiConsole->console.AddLog("Texture loaded correctly!");
 
 		return textureId;
 	}

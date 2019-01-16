@@ -15,6 +15,7 @@ class ModuleModelLoader;
 class ModuleDebugDraw;
 class ModuleUI;
 class ModuleScene;
+class ModuleFileSystem;
 class MsTimer;
 
 class Application
@@ -43,6 +44,7 @@ public:
 	ModuleUI* ui = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleDebugDraw* debugDraw = nullptr;
+	ModuleFileSystem* fileSystem = nullptr;
 
 	MsTimer* timer = nullptr;
 

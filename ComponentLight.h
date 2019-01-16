@@ -18,16 +18,21 @@ public:
 	ComponentLight(ComponentLight* component);
 	~ComponentLight();
 
+	PreComponentReturn PreUpdate() override;
 	void Update() override;
 	void CleanUp() override;
 	void Draw(int id) override;
+	void ShowMetadata() override;
 
 	void SetLightType(LightType lightType) { this->lightType = lightType; }
 	char* GetLightTypeToString(LightType type);
 	void  SetLightTypeFromString(const char* type);
 
+	void Save(System* system) override;
+
 public:
 	LightType lightType;
+	float intensity = 0.4f;
 
 };
 

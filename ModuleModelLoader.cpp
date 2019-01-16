@@ -135,57 +135,40 @@ void ModuleModelLoader::GenerateMaterialData(const aiScene* myScene)
 
 void ModuleModelLoader::GenerateMeshDataNEW(int id, const aiScene* myScene, MeshData* meshData, const char * path, GameObject* go)
 {
-	const aiMesh* src_mesh = myScene->mMeshes[id];
+	
+	// ===========
+	//---INICIO---
+	// ===========
 
-	// copies to assign to the mesh
+	const aiMesh* src_mesh = myScene->mMeshes[id];
+	unsigned* vboActual = &meshData->vbo;
+	unsigned* iboActual = &meshData->ibo;
+	unsigned numVerticesActual = meshData->numVertices;
+
 	float3 * verticesAux = new float3[src_mesh->mNumVertices];
 	float3 * indicesAux = new float3[src_mesh->mNumFaces];
 	float3 * normalsAux = new float3[src_mesh->mNumVertices];
-
-	meshData->type = Vbo;
-	meshData->numVertices = src_mesh->mNumVertices;
-	meshData->numFaces = src_mesh->mNumFaces;
-
-	unsigned* vboActual = &meshData->vbo;
-
-	glGenBuffers(1, vboActual);
-	glBindBuffer(GL_ARRAY_BUFFER, *vboActual);
-
-	// Vertices & texture coords & normals
-	glBufferData(GL_ARRAY_BUFFER, (sizeof(float) * 3 + sizeof(float) * 2 + sizeof(float) * 3)*src_mesh->mNumVertices, nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * src_mesh->mNumVertices, src_mesh->mVertices);
-
-	math::float2* texture_coords = (math::float2*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * src_mesh->mNumVertices,
-		sizeof(float) * 2 * src_mesh->mNumVertices, GL_MAP_WRITE_BIT);
-
-	for (unsigned i = 0; i < src_mesh->mNumVertices; ++i)
-	{
-		texture_coords[i] = math::float2(src_mesh->mTextureCoords[0][i].x, src_mesh->mTextureCoords[0][i].y);
-	}
-
-	meshData->hasNormals = src_mesh->HasNormals();
-
-	if (meshData->hasNormals) 
-		glBufferSubData(GL_ARRAY_BUFFER, (sizeof(float) * 3 + sizeof(float) * 2)*src_mesh->mNumVertices, sizeof(float) * 3 * src_mesh->mNumVertices, src_mesh->mNormals);
-
-	glUnmapBuffer(GL_ARRAY_BUFFER);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 
 	for (int i = 0; i < src_mesh->mNumVertices; ++i) {
 		verticesAux[i] = float3(src_mesh->mVertices[i].x, src_mesh->mVertices[i].y, src_mesh->mVertices[i].z);
 		if (src_mesh->HasNormals()) normalsAux[i] = float3(src_mesh->mNormals[i].x, src_mesh->mNormals[i].y, src_mesh->mNormals[i].z);
 	}
 
-	// indices
-	unsigned* iboActual = &meshData->ibo;
+	glGenVertexArrays(1, &meshData->vao);
+	glBindVertexArray(meshData->vao);
 
-	glGenBuffers(1, iboActual);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *iboActual);
+	glGenBuffers(1, vboActual);
+	glBindBuffer(GL_ARRAY_BUFFER, *vboActual);
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned)*src_mesh->mNumFaces * 3, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (sizeof(float) * 3 + sizeof(float) * 2 + sizeof(float) * 3)*src_mesh->mNumVertices, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * src_mesh->mNumVertices, src_mesh->mVertices);
+	if (meshData->hasNormals) 
+		glBufferSubData(GL_ARRAY_BUFFER, (sizeof(float) * 3 + sizeof(float) * 2)*src_mesh->mNumVertices, sizeof(float) * 3 * src_mesh->mNumVertices, src_mesh->mNormals);
 
-	unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
+	//glBufferSubData(GL_ARRAY_BUFFER, meshData.texturesOffset * meshData.verticesNumber, sizeof(float2)*mesh.verticesNumber, mesh.uvs);
+	glUnmapBuffer(GL_ARRAY_BUFFER);
+
+	/*unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
 		sizeof(unsigned)*src_mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
 
 
@@ -199,11 +182,21 @@ void ModuleModelLoader::GenerateMeshDataNEW(int id, const aiScene* myScene, Mesh
 		*(indices++) = src_mesh->mFaces[i].mIndices[0];
 		*(indices++) = src_mesh->mFaces[i].mIndices[1];
 		*(indices++) = src_mesh->mFaces[i].mIndices[2];
+	}*/
+
+	/*unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
+	 sizeof(unsigned)*src_mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);*/
+
+	for (unsigned i = 0; i < src_mesh->mNumFaces; ++i)
+	{
+		assert(src_mesh->mFaces[i].mNumIndices == 3);
+
+		indicesAux[i] = float3(src_mesh->mFaces[i].mIndices[0], src_mesh->mFaces[i].mIndices[1], src_mesh->mFaces[i].mIndices[2]);
+
+		/**(indices++) = src_mesh->mFaces[i].mIndices[0];
+		*(indices++) = src_mesh->mFaces[i].mIndices[1];
+		*(indices++) = src_mesh->mFaces[i].mIndices[2];*/
 	}
-
-	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 	int numMaterials = myScene->mNumMaterials;
 	//int index = meshComp->my_go->components.size()  - idMesh;
 	//ComponentMaterial* compMat = (ComponentMaterial*)meshComp->my_go->components[index - numMaterials + src_mesh->mMaterialIndex];
@@ -218,10 +211,33 @@ void ModuleModelLoader::GenerateMeshDataNEW(int id, const aiScene* myScene, Mesh
 	meshData->numVertices = src_mesh->mNumVertices;
 	meshData->numFaces = src_mesh->mNumFaces;
 	meshData->numIndexesMesh = src_mesh->mNumFaces * 3;
-
-	meshData->vertices = verticesAux;
+	/*meshData->vertices = verticesAux;
 	meshData->indices = indicesAux;
-	meshData->normals = normalsAux;
+	meshData->normals = normalsAux;*/
+
+	glGenBuffers(1, iboActual);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *iboActual);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * meshData->numIndexesMesh, meshData->indices, GL_STATIC_DRAW);
+
+	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVerticesActual));
+
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)((sizeof(float) * 3 + sizeof(float) * 2)* numVerticesActual));
+
+	glBindVertexArray(0);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	char* log = new char[50];
 

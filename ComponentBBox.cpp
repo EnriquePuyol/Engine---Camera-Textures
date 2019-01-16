@@ -1,6 +1,7 @@
 #include "ComponentBBox.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ComponentMesh.h"
 #include "debugdraw.h"
 
 ComponentBBox::ComponentBBox(GameObject* parent) : Component(parent)
@@ -44,8 +45,6 @@ void ComponentBBox::UpdateBBox()
 
 void ComponentBBox::SetAABB(list<Component*> meshes)
 {
-	aabb->SetNegativeInfinity();
-
 	int totalVertices = 0;
 
 	for (list<Component*>::iterator it = meshes.begin(); it != meshes.end(); ++it)
@@ -54,6 +53,7 @@ void ComponentBBox::SetAABB(list<Component*> meshes)
 	float3* total = new float3[totalVertices];
 
 	int i = 0;
+
 	for (list<Component*>::iterator it = meshes.begin(); it != meshes.end(); ++it)
 	{
 		for (int k = 0; k < ((ComponentMesh*)(*it))->meshData.numVertices; ++k)

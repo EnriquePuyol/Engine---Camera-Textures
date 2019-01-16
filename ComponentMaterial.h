@@ -42,11 +42,21 @@ public:
 	ComponentMaterial(ComponentMaterial* component);
 	~ComponentMaterial();
 
+	void Render();
+
 	void Draw(int id) override;
+	void ShowMetadata() override;
+
+	void Save(System* system) override;
 
 public:
 	unsigned matIndex = 0;
-	unsigned _mat = 0;
+	unsigned mat = 0;
+
+	char diffusePath[100] = "";
+	char specularPath[100] = "";
+	char ambientPath[100] = "";
+	char emissivePath[100] = "";
 
 	MaterialData material;
 

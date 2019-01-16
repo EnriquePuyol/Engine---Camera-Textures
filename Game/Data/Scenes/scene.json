@@ -1,0 +1,106 @@
+{
+    "primaryCamera": {
+        "compType": "CAMERA",
+        "ownerUID": "fc39752c-2878-4719-ba3f-b8b32f0e0acd",
+        "uID": "b73ba583-d715-4693-b8e9-f62f0ae24392",
+        "cameraType": 0,
+        "frustum.nearPlaneDistance": 0.10000000149011612,
+        "frustum.farPlaneDistance": 100.0,
+        "frustum.pos": {
+            "x": 3.0,
+            "y": 1.5,
+            "z": 9.5
+        },
+        "frustum.front": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": -1.0
+        },
+        "frustum.up": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0
+        }
+    },
+    "GameObjects": [
+        {
+            "uID": "5e215009-6df4-48de-9dfa-9ed5c876da15",
+            "name": "Root",
+            "enable": true,
+            "components": []
+        },
+        {
+            "uID": "3243d78b-4148-4301-8db3-31588b2b1d24",
+            "name": "House",
+            "parentUID": "5e215009-6df4-48de-9dfa-9ed5c876da15",
+            "enable": true,
+            "components": [
+                {
+                    "compType": "MESH",
+                    "ownerUID": "3243d78b-4148-4301-8db3-31588b2b1d24",
+                    "uID": "02c20841-ad12-410c-b5f3-3280d921bdb1",
+                    "id": 0,
+                    "numIndices": 324,
+                    "materialIndex": 0,
+                    "numVert": 324,
+                    "path": "BakerHouse.fbx"
+                },
+                {
+                    "compType": "MESH",
+                    "ownerUID": "3243d78b-4148-4301-8db3-31588b2b1d24",
+                    "uID": "b487a287-c54a-4ab9-9b9f-5aaa7f806062",
+                    "id": 1,
+                    "numIndices": 2751,
+                    "materialIndex": 0,
+                    "numVert": 2751,
+                    "path": "BakerHouse.fbx"
+                }
+            ]
+        },
+        {
+            "uID": "fc39752c-2878-4719-ba3f-b8b32f0e0acd",
+            "name": "Main camera",
+            "parentUID": "5e215009-6df4-48de-9dfa-9ed5c876da15",
+            "enable": true,
+            "components": [
+                {
+                    "compType": "CAMERA",
+                    "ownerUID": "fc39752c-2878-4719-ba3f-b8b32f0e0acd",
+                    "uID": "b73ba583-d715-4693-b8e9-f62f0ae24392",
+                    "cameraType": 0,
+                    "frustum.nearPlaneDistance": 0.10000000149011612,
+                    "frustum.farPlaneDistance": 100.0,
+                    "frustum.pos": {
+                        "x": 3.0,
+                        "y": 1.5,
+                        "z": 9.5
+                    },
+                    "frustum.front": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": -1.0
+                    },
+                    "frustum.up": {
+                        "x": 0.0,
+                        "y": 1.0,
+                        "z": 0.0
+                    }
+                }
+            ]
+        },
+        {
+            "uID": "fe697b4d-a691-48cc-9687-410d8cc339ab",
+            "name": "Light",
+            "parentUID": "5e215009-6df4-48de-9dfa-9ed5c876da15",
+            "enable": true,
+            "components": [
+                {
+                    "compType": "LIGHT",
+                    "ownerUID": "fe697b4d-a691-48cc-9687-410d8cc339ab",
+                    "uID": "60a670c6-b232-406b-9779-005dffd9fead",
+                    "intensity": 0.4000000059604645
+                }
+            ]
+        }
+    ]
+}

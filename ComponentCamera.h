@@ -31,12 +31,15 @@ public:
 	void Update() override;
 	void CleanUp() override;
 	void Draw(int id) override;
+	void ShowMetadata() override;
 
 	void LookAt();
 	void UpdateFrustum();
 
 	char* GetCameraTypeToString(CameraType type);
 	void  SetCameraTypeFromString(const char* type);
+
+	void Save(System* system) override;
 
 public:
 	CameraType cameraType = Other;

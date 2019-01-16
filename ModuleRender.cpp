@@ -2,11 +2,13 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
 #include "ModulePrograms.h"
 #include "ModuleCameraEditor.h"
 #include "ModuleModelLoader.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleUI.h"
+#include "ComponentLight.h"
 
 #include "debugdraw.h"
 #include "SDL.h"
@@ -57,8 +59,20 @@ bool ModuleRender::Init()
 
 	tri_model = math::float4x4::identity;
 
-	CreateSceneImage();
+	// Create fallback texture
+	char fallbackImage[3] = { GLubyte(255), GLubyte(255), GLubyte(255) };
 
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &defaultTexture);
+	glBindTexture(GL_TEXTURE_2D, defaultTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, fallbackImage);
+
+	CreateSceneImage();
+	   
 	return true;
 }
 
@@ -129,75 +143,15 @@ void ModuleRender::RenderEditorCamera()
 		math::AABB* aabb = (*it)->owner->boundingBox->aabb;
 		if ((*it)->active && (*it)->owner->enable && App->camera->frustum.Intersects(*aabb))
 		{
-			MeshData meshData = (*it)->meshData;
-			if (meshData.numVertices > 0) {
-
-				if (meshData.type == Vao) {
-
-					glBindVertexArray(meshData.vao);
-					glDrawElements(GL_TRIANGLES, meshData.numFaces * 3, GL_UNSIGNED_INT, NULL);
-					glBindVertexArray(0);
-
-				}
-				else
-				{
-					glUseProgram(App->programs->default_program);
-
-					glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
-						"model"), 1, GL_TRUE, &(*it)->owner->transform->model[0][0]);
-					glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
-						"view"), 1, GL_TRUE, &App->camera->view[0][0]);
-					glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
-						"proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
-
-
-					glUniform3fv(glGetUniformLocation(App->programs->default_program,
-						"viewPosition"), 1, &App->camera->frustum.pos[0]);
-
-					GLint drawText = glGetUniformLocation(App->programs->default_program, "drawTexture");
-					GLint color0 = glGetUniformLocation(App->programs->default_program, "color0");
-
-					if ((*it)->hasTexture) glUniform1i(drawText, 1);
-					else {
-						glUniform1i(drawText, 0);
-						float color[4] = { 0.6, 1, 0.6, 1 };
-						glUniform4fv(color0, 1, color);
-					}
-
-					unsigned vboActual = (*it)->meshData.vbo;
-					unsigned numVerticesActual = meshData.numVertices;
-					unsigned numIndexesActual = meshData.numIndexesMesh;
-
-					glActiveTexture(GL_TEXTURE0);
-					glBindTexture(GL_TEXTURE_2D, (*it)->meshData.materialIndex);
-					glUniform1i(glGetUniformLocation(App->programs->default_program, "texture0"), 0);
-
-					glEnableVertexAttribArray(0);
-					glEnableVertexAttribArray(1);
-					glEnableVertexAttribArray(2);
-					glBindBuffer(GL_ARRAY_BUFFER, vboActual);
-					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVerticesActual));
-					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)((sizeof(float) * 3 + sizeof(float) * 2)* numVerticesActual));
-
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it)->meshData.ibo);
-					glDrawElements(GL_TRIANGLES, numIndexesActual, GL_UNSIGNED_INT, nullptr);
-
-					glDisableVertexAttribArray(0);
-					glDisableVertexAttribArray(1);
-					glDisableVertexAttribArray(2);
-
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-					glBindTexture(GL_TEXTURE_2D, 0);
-
-					glUseProgram(0);
-				}
-			}
+			RenderMeshEditor((*it), &App->camera->view, &App->camera->proj);
 		}
 	}
 	if(showGrid)
 		DrawCoords();
+
+	const ddVec3 boxColor = { 0.25f, 0.77f, 0.95f };
+	GameObject* obj = App->renderer->lights.front()->owner;
+	dd::sphere(obj->transform->GetWorldPosition(), boxColor, ((ComponentLight*)obj->GetComponentOfType(Light))->intensity);
 
 	App->debugDraw->Draw(App->camera->fboSet.fbo, App->camera->fboSet.fb_width, App->camera->fboSet.fb_height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -213,7 +167,7 @@ void ModuleRender::RenderGameCameras()
 		GenerateTexture(&(*cam)->fboSet);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, (*cam)->fboSet.fbo);
-		glViewport(0, 0, (*cam)->fboSet.fb_width, (*cam)->fboSet.fb_height);
+		//glViewport(0, 0, (*cam)->fboSet.fb_width, (*cam)->fboSet.fb_height);
 		glClearColor(0.2f, 0.2f, 0.2f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -221,7 +175,7 @@ void ModuleRender::RenderGameCameras()
 		{
 			math::AABB* aabb = (*it)->owner->boundingBox->aabb;
 			if ((*it)->active && (*it)->owner->enable && (*cam)->frustum.Intersects(*aabb))
-				RenderMesh((*it), (*cam));
+				RenderMeshNEW((*it), (*cam));
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -234,61 +188,130 @@ void ModuleRender::RenderMesh(ComponentMesh * meshComp, ComponentCamera * camera
 
 	if (meshData.numVertices > 0) 
 	{
-		if (meshData.type == Vao) 
-		{
-			glBindVertexArray(meshData.vao);
-			glDrawElements(GL_TRIANGLES, meshData.numFaces * 3, GL_UNSIGNED_INT, NULL);
-			glBindVertexArray(0);
-		}
-		else 
-		{
-			glUseProgram(App->programs->default_program);
+		glBindVertexArray(meshData.vao);
+		glDrawElements(GL_TRIANGLES, meshData.numFaces * 3, GL_UNSIGNED_INT, NULL);
+		glBindVertexArray(0);
 
-			glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
-				"model"), 1, GL_TRUE, &meshComp->owner->transform->model[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
-				"view"), 1, GL_TRUE, &cameraComp->view[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
-				"proj"), 1, GL_TRUE, &cameraComp->proj[0][0]);
+		glUseProgram(App->programs->default_program);
 
-			glUniform3fv(glGetUniformLocation(App->programs->default_program,
-				"viewPosition"), 1, &cameraComp->frustum.pos[0]);
+		glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
+			"model"), 1, GL_TRUE, &meshComp->owner->transform->model[0][0]);
+		glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
+			"view"), 1, GL_TRUE, &cameraComp->view[0][0]);
+		glUniformMatrix4fv(glGetUniformLocation(App->programs->default_program,
+			"proj"), 1, GL_TRUE, &cameraComp->proj[0][0]);
 
-			GLint drawText = glGetUniformLocation(App->programs->default_program, "drawTexture");
-			GLint color0 = glGetUniformLocation(App->programs->default_program, "color0");
+		glUniform3fv(glGetUniformLocation(App->programs->default_program,
+			"viewPosition"), 1, &cameraComp->frustum.pos[0]);
 
-			glUniform1i(drawText, 1);
+		GLint drawText = glGetUniformLocation(App->programs->default_program, "drawTexture");
+		GLint color0 = glGetUniformLocation(App->programs->default_program, "color0");
 
-			unsigned vboActual = meshComp->meshData.vbo;
-			unsigned numVerticesActual = meshData.numVertices;
-			unsigned numIndexesActual = meshData.numIndexesMesh;
+		glUniform1i(drawText, 1);
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, meshComp->meshData.materialIndex);
-			glUniform1i(glGetUniformLocation(App->programs->default_program, "texture0"), 0);
+		// FIN DEL MATERIAL
 
-			glEnableVertexAttribArray(0);
-			glEnableVertexAttribArray(1);
-			glEnableVertexAttribArray(2);
-			glBindBuffer(GL_ARRAY_BUFFER, vboActual);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVerticesActual));
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)((sizeof(float) * 3 + sizeof(float) * 2)* numVerticesActual));
+		unsigned vboActual = meshComp->meshData.vbo;
+		unsigned numVerticesActual = meshData.numVertices;
+		unsigned numIndexesActual = meshData.numIndexesMesh;
 
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshComp->meshData.ibo);
-			glDrawElements(GL_TRIANGLES, numIndexesActual, GL_UNSIGNED_INT, nullptr);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, meshComp->meshData.materialIndex);
+		glUniform1i(glGetUniformLocation(App->programs->default_program, "texture0"), 0);
 
-			glDisableVertexAttribArray(0);
-			glDisableVertexAttribArray(1);
-			glDisableVertexAttribArray(2);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshComp->meshData.ibo);
+		glDrawElements(GL_TRIANGLES, numIndexesActual, GL_UNSIGNED_INT, nullptr);
 
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
-			glUseProgram(0);
-		}
+		glUseProgram(0);
 	}
+}
+
+void ModuleRender::RenderMeshNEW(ComponentMesh * meshComp, ComponentCamera * cameraComp)
+{
+	//Draw meshes
+	unsigned program = 0;
+
+	if (meshComp->owner->material != nullptr)
+		program = App->programs->programs[meshComp->owner->material->mat];
+	else
+		program = App->programs->programs[0];
+
+	if (program < 1)
+	{
+		LOG("Program shader couldn't be found, it may not be loaded.");
+		return;
+	}
+
+	glUseProgram(program);
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&meshComp->owner->transform->model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&cameraComp->view);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&cameraComp->proj);
+
+	// Render Material
+	if (meshComp->owner->material != nullptr && meshComp->owner->enable)
+	{
+		meshComp->owner->material->Render();
+	}
+
+	unsigned vboActual = meshComp->meshData.vbo;
+	unsigned numVerticesActual = meshComp->meshData.numVertices;
+	unsigned numIndexesActual = meshComp->meshData.numIndexesMesh;
+
+	glBindVertexArray(meshComp->meshData.vao);
+	glDrawElements(GL_TRIANGLES, numIndexesActual, GL_UNSIGNED_INT, nullptr);
+
+	// Disable VAO
+	glBindVertexArray(0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
+}
+
+void ModuleRender::RenderMeshEditor(ComponentMesh * meshComp, float4x4* view, float4x4* proj)
+{
+	//Draw meshes
+	unsigned program = 0;
+
+	if (meshComp->owner->material != nullptr)
+		program = App->programs->programs[meshComp->owner->material->mat];
+	else
+		program = App->programs->programs[0];
+
+	if (program < 1)
+	{
+		LOG("Program shader couldn't be found, it may not be loaded.");
+		return;
+	}
+
+	glUseProgram(program);
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&meshComp->owner->transform->model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)view);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)proj);
+
+	// Render Material
+	if (meshComp->owner->material != nullptr && meshComp->owner->enable)
+	{
+		meshComp->owner->material->Render();
+	}
+
+	unsigned vboActual = meshComp->meshData.vbo;
+	unsigned numVerticesActual = meshComp->meshData.numVertices;
+	unsigned numIndexesActual = meshComp->meshData.numIndexesMesh;
+
+	glBindVertexArray(meshComp->meshData.vao);
+	glDrawElements(GL_TRIANGLES, numIndexesActual, GL_UNSIGNED_INT, nullptr);
+
+	// Disable VAO
+	glBindVertexArray(0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
 }
 
 void ModuleRender::GenerateTexture(FBOset* fboSet)

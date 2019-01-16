@@ -5,6 +5,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentBBox.h"
+#include "System.h"
 #include <list>
 
 using namespace std;
@@ -38,10 +39,13 @@ public:
 	void Draw();
 	void DrawComponents();
 
+	void Save(System* system);
+
 public:
 
 	// General info
 	char name[40] = "";
+	const char* uID;
 	bool selected = false;
 	bool enable = true;
 	NextPreReturn nextPreReturn = GO_NONE;
@@ -59,7 +63,6 @@ public:
 	ComponentMaterial* material = NULL;
 	ComponentBBox* boundingBox = NULL;
 	list<Component*> components;
-	const char* uID;
 
 };
 

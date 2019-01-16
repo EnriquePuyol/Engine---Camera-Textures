@@ -324,8 +324,11 @@ void GameObject::DrawComponents()
 
 	if (showMetadata)
 	{
+		ImGui::SeparatorCustom(50, ImGui::GetWindowWidth() - 100);
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4, 0.4, 0.4, 1));
 		ImGui::Text("uID:");
 		ImGui::Text(uID);
+		ImGui::PopStyleColor();
 	}
 	ImGui::Spacing();
 	ImGui::Separator();
@@ -346,4 +349,25 @@ void GameObject::DrawComponents()
 	ImGui::Separator();
 	material->Draw(i+1);
 	ImGui::Separator();
+}
+
+void GameObject::Save(System * system)
+{
+	system->StartObject();
+
+	system->AddString("uID", uID);
+	system->AddString("name", name);
+
+	if (parent != NULL)
+		system->AddString("parentUID", parent->uID);
+
+	system->AddBool("enable", enable);
+
+	system->StartArray("components");
+	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
+		(*it)->Save(system);
+	}
+	system->EndArray();
+	system->EndObject();
+
 }

@@ -120,7 +120,19 @@ void ComponentCamera::Draw(int id)
 		}
 		ImGui::EndCombo();
 	}
+	ShowMetadata();
+}
 
+void ComponentCamera::ShowMetadata()
+{
+	if (owner->showMetadata)
+	{
+		ImGui::SeparatorCustom(50, ImGui::GetWindowWidth() - 100);
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4, 0.4, 0.4, 1));
+		ImGui::Text("uID:");
+		ImGui::Text(uID);
+		ImGui::PopStyleColor();
+	}
 }
 
 void ComponentCamera::LookAt()
@@ -166,4 +178,22 @@ void ComponentCamera::SetCameraTypeFromString(const char * type)
 		cameraType = Secondary;
 	else if (type == "Other")
 		cameraType = Other;
+}
+
+void ComponentCamera::Save(System * system)
+{
+	system->StartObject();
+
+	system->AddComponentType("compType", type);
+	system->AddString("ownerUID", owner->uID);
+	system->AddString("uID", uID);
+	system->AddInt("cameraType", cameraType);
+
+	system->AddFloat("frustum.nearPlaneDistance", frustum.nearPlaneDistance);
+	system->AddFloat("frustum.farPlaneDistance", frustum.farPlaneDistance);
+	system->AddFloat3("frustum.pos", frustum.pos);
+	system->AddFloat3("frustum.front", frustum.front);
+	system->AddFloat3("frustum.up", frustum.up);
+
+	system->EndObject();
 }

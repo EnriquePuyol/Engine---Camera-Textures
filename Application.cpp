@@ -10,6 +10,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleUI.h"
 #include "ModuleScene.h"
+#include "ModuleFileSystem.h"
 #include "MsTimer.h"
 #include "guid.hpp"
 
@@ -28,6 +29,7 @@ Application::Application()
 	modules.push_back(modelLoader = new ModuleModelLoader());
 	modules.push_back(scene		  = new ModuleScene());
 	modules.push_back(debugDraw	  = new ModuleDebugDraw());
+	modules.push_back(fileSystem  = new ModuleFileSystem());
 	timer = new MsTimer();
 }
 

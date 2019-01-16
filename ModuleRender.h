@@ -12,6 +12,7 @@ struct SDL_Rect;
 
 class ComponentCamera;
 class ComponentMesh;
+class ComponentLight;
 
 using namespace std;
 
@@ -31,6 +32,8 @@ public:
 	void RenderEditorCamera();
 	void RenderGameCameras();
 	void RenderMesh(ComponentMesh * meshComp, ComponentCamera * cameraComp);
+	void RenderMeshNEW(ComponentMesh * meshComp, ComponentCamera * cameraComp);
+	void RenderMeshEditor(ComponentMesh* meshComp, float4x4* view, float4x4* proj);
 
 	void GenerateTexture(FBOset* fboSet);
 
@@ -38,14 +41,15 @@ public:
 	void DrawCoords();
 
 public:
+	list<ComponentLight*> lights;
 	list<ComponentCamera*> cameras;
 	list<ComponentMesh*> meshes;
 
 	float4x4 tri_model = float4x4::identity;
 
-	GLuint renderedTexture = 0; // ToDo: Borrar si no se usa
-	unsigned fbo = 0u; // ToDo: Borrar si no se usa
-	unsigned rbo = 0u; // ToDo: Borrar si no se usa
+	unsigned defaultTexture = 0u;
+	// CameraTexture
+	unsigned rbo = 0u;
 
 	bool showGrid = true;
 

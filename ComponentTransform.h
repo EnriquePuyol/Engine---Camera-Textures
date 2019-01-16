@@ -13,6 +13,9 @@ public:
 
 	void CleanUp() override;
 	void Draw(int id) override;
+	void ShowMetadata() override;
+
+	void Save(System* system) override;
 
 	void UpdateTransform();
 
