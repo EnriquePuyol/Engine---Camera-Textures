@@ -1,14 +1,216 @@
-﻿  ModuleUI.cpp
-c:\users\cristina\documents\github\engine---camera-textures\moduleui.cpp(148): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\cristina\documents\github\engine---camera-textures\moduleui.cpp(168): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\cristina\documents\github\engine---camera-textures\moduleui.cpp(169): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\cristina\documents\github\engine---camera-textures\moduleui.cpp(177): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\cristina\documents\github\engine---camera-textures\moduleui.cpp(178): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\cristina\documents\github\engine---camera-textures\moduleui.cpp(197): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\cristina\documents\github\engine---camera-textures\moduleui.cpp(201): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+﻿  Application.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\application.cpp(100): warning C4244: '=': conversión de 'Uint32' a 'float'; posible pérdida de datos
+d:\github\sag-engine\application.cpp(113): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(133): note: vea la declaración de 'strcpy'
+  ComponentBBox.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\componentbbox.cpp(59): warning C4018: '<': no coinciden signed/unsigned
+  ComponentCamera.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\componentcamera.cpp(131): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+d:\github\sag-engine\componentcamera.cpp(203): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+  ComponentLight.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\componentlight.cpp(99): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+d:\github\sag-engine\componentlight.cpp(149): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+  ComponentMaterial.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\componentmaterial.cpp(247): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+d:\github\sag-engine\componentmaterial.cpp(291): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\componentmaterial.cpp(296): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\componentmaterial.cpp(297): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\componentmaterial.cpp(298): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\componentmaterial.cpp(299): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+  ComponentMesh.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\componentmesh.cpp(25): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\componentmesh.cpp(106): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+d:\github\sag-engine\componentmesh.cpp(122): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(90): note: vea la declaración de 'strcat'
+d:\github\sag-engine\componentmesh.cpp(127): warning C4018: '<': no coinciden signed/unsigned
+d:\github\sag-engine\componentmesh.cpp(121): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\componentmesh.cpp(306): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\componentmesh.cpp(313): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+  ComponentTransform.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\componenttransform.cpp(88): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+d:\github\sag-engine\componenttransform.cpp(112): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+  GameObject.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\gameobject.cpp(371): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+d:\github\sag-engine\gameobject.cpp(430): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+  guid.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_impl_sdl.cpp
+  imgui_widgets.cpp
+  log.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  Main.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\brofiler\include\brofiler.h(265): warning C4005: 'PROFILE': redefinición de macro
+  d:\github\sag-engine\mathgeolib\include\geometry\quadtree.h(23): note: vea la definición anterior de 'PROFILE'
+  LCG.cpp
+  AABB.cpp
+  Capsule.cpp
+  Compilando...
+  Circle.cpp
+  Cone.cpp
+  Cylinder.cpp
+  Frustum.cpp
+  Line.cpp
+  LineSegment.cpp
+  OBB.cpp
+  Plane.cpp
+  Polygon.cpp
+  Polyhedron.cpp
+  Ray.cpp
+  Sphere.cpp
+  Triangle.cpp
+  TriangleMesh.cpp
+  BitOps.cpp
+  float2.cpp
+  float3.cpp
+  float3x3.cpp
+  float3x4.cpp
+  float4.cpp
+  Compilando...
+  float4x4.cpp
+  MathFunc.cpp
+  MathLog.cpp
+  MathOps.cpp
+  Polynomial.cpp
+  Quat.cpp
+  SSEMath.cpp
+  TransformOps.cpp
+  Clock.cpp
+  ModuleCameraEditor.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\modulecameraeditor.cpp(35): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+d:\github\sag-engine\modulecameraeditor.cpp(166): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+  ModuleDebugDraw.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  ModuleFileSystem.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  ModuleInput.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\moduleinput.cpp(135): warning C4244: '=': conversión de 'Sint32' a 'TYPE'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+d:\github\sag-engine\moduleinput.cpp(136): warning C4244: '=': conversión de 'Sint32' a 'TYPE'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+d:\github\sag-engine\moduleinput.cpp(137): warning C4244: '=': conversión de 'Sint32' a 'TYPE'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+d:\github\sag-engine\moduleinput.cpp(138): warning C4244: '=': conversión de 'Sint32' a 'TYPE'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+  ModuleModelLoader.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\modulemodelloader.cpp(152): warning C4018: '<': no coinciden signed/unsigned
+d:\github\sag-engine\modulemodelloader.cpp(194): warning C4244: 'argumento': conversión de 'unsigned int' a 'float'; posible pérdida de datos
+d:\github\sag-engine\modulemodelloader.cpp(244): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\modulemodelloader.cpp(246): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\modulemodelloader.cpp(248): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+d:\github\sag-engine\modulemodelloader.cpp(250): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+  ModulePrograms.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  ModuleRender.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\modulerender.cpp(63): warning C4838: la conversión de 'GLubyte' en 'char' requiere una conversión de restricción
+  ModuleScene.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\modulescene.cpp(177): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: vea la declaración de 'sprintf'
+  ModuleTextures.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  ModuleUI.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  ModuleWindow.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  Compilando...
+  System.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  UI_About.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  UI_Console.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\ui_console.cpp(15): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+  UI_Game.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  UI_Hierarchy.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+  UI_Inspector.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\ui_inspector.cpp(144): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+  UI_Performance.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
+d:\github\sag-engine\ui_performance.cpp(26): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+d:\github\sag-engine\ui_performance.cpp(46): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+d:\github\sag-engine\ui_performance.cpp(50): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+  UI_Scene.cpp
+d:\github\sag-engine\globals.h(47): warning C4005: 'ARRAYSIZE': redefinición de macro
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winnt.h(1315): note: vea la definición anterior de 'ARRAYSIZE'
   Generando código
-  1 of 1623 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  0 of 3259 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Generación de código finalizada
-  Engine.vcxproj -> C:\Users\Cristina\Documents\GitHub\Engine---Camera-Textures\Release\Engine - Master 1.exe
+  Engine.vcxproj -> D:\Github\SAG-Engine\Release\Engine - Master 1.exe

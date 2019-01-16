@@ -265,7 +265,60 @@ void ComponentMaterial::Save(System * system)
 	system->AddString("ambientPath", ambientPath);
 	system->AddString("emissivePath", emissivePath);
 
+	// Diffuse
+	system->AddUnsigned("diffuse_map", material.diffuse_map);
+	system->AddFloat4("diffuse_color", material.diffuse_color);
+	system->AddFloat("k_diffuse", material.k_diffuse);
+	// Specular
+	system->AddUnsigned("specular_map", material.specular_map);
+	system->AddFloat3("specular_color", material.specular_color);
+	system->AddFloat("shininess", material.shininess);
+	system->AddFloat("k_specular", material.k_specular);
+	// Ambient
+	system->AddUnsigned("occlusion_map", material.occlusion_map);
+	system->AddFloat("k_ambient", material.k_ambient);
+	// Emissive
+	system->AddUnsigned("emissive_map", material.emissive_map);
+	system->AddFloat3("emissive_color", material.emissive_color);
+
 	system->AddBool("defaultMat", defaultMat);
 
 	system->EndObject();
+}
+
+void ComponentMaterial::Load(System * system, rapidjson::Value & value)
+{
+	sprintf(uID, system->GetString("uID", value));
+
+	matIndex = system->GetUnsigned("matIndex", value);
+	mat = system->GetUnsigned("mat", value);
+
+	sprintf(diffusePath, system->GetString("diffusePath", value));
+	sprintf(specularPath, system->GetString("specularPath", value));
+	sprintf(ambientPath, system->GetString("ambientPath", value));
+	sprintf(emissivePath, system->GetString("emissivePath", value));
+
+	// Diffuse
+	material.diffuse_map = system->GetUnsigned("diffuse_map", value);
+	material.diffuse_color = system->GetFloat4("diffuse_color", value);
+	material.k_diffuse = system->GetFloat("k_diffuse", value);
+	// Specular
+	material.specular_map = system->GetUnsigned("specular_map", value);
+	material.specular_color = system->GetFloat3("specular_color", value);
+	material.shininess = system->GetFloat("shininess", value);
+	material.k_specular = system->GetFloat("k_specular", value);
+	// Ambient
+	material.occlusion_map = system->GetUnsigned("occlusion_map", value);
+	material.k_ambient = system->GetFloat("k_ambient", value);
+	// Emissive
+	material.emissive_map = system->GetUnsigned("emissive_map", value);
+	material.emissive_color = system->GetFloat3("emissive_color", value);
+
+	defaultMat = system->GetBool("defaultMat", value);
+
+	//Load Material
+	material.diffuse_map = App->textures->Load(diffusePath, false);
+	material.specular_map = App->textures->Load(specularPath, false);
+	material.occlusion_map = App->textures->Load(ambientPath, false);
+	material.emissive_map = App->textures->Load(emissivePath, false);
 }

@@ -119,7 +119,7 @@ void ModuleUI::MainBar()
 			if (ImGui::MenuItem("Open", "No use..")) {}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Save")) { App->scene->SaveScene(); }
-			if (ImGui::MenuItem("Load")) {}
+			if (ImGui::MenuItem("Load")) { App->scene->LoadScene(); }
 			ImGui::Separator();
 			if (ImGui::MenuItem("Exit")) { App->input->quit = true; }
 

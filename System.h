@@ -29,7 +29,7 @@ public:
 	void AddQuat(const char* name, math::Quat value);
 
 	/* Custom GET */
-	Type GetComponentType(const char* name, rapidjson::Value& value);
+	int GetComponentType(const char* name, rapidjson::Value& value);
 	int GetInt(const char* name, rapidjson::Value& value);
 	unsigned GetUnsigned(const char* name, rapidjson::Value& value);
 	float GetFloat(const char* name, rapidjson::Value& value);

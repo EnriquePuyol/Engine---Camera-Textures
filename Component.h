@@ -4,6 +4,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "document.h"
 
 class System;
 class GameObject;
@@ -47,9 +48,10 @@ public:
 	virtual void ShowMetadata() {}
 
 	virtual void Save(System* system) {}
+	virtual void Load(System* system, rapidjson::Value& value) {}
 
 public:
-	const char* uID;
+	char* uID;
 	Type type;
 	bool active;
 	GameObject* owner = NULL;

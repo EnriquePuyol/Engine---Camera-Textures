@@ -9,10 +9,24 @@
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 #include "ComponentMesh.h"
+#include "ModuleFileSystem.h"
 
 GameObject::GameObject(const char name[40])
 {
 	sprintf_s(this->name, name);
+	transform = new ComponentTransform(this);
+	material = new ComponentMaterial(this);
+	material->defaultMat = true;
+	boundingBox = new ComponentBBox(this);
+
+	uID = App->GenerateUUID();
+}
+
+GameObject::GameObject(GameObject * goParent)
+{
+	sprintf_s(this->name, "Empty");
+	parent = goParent;
+
 	transform = new ComponentTransform(this);
 	material = new ComponentMaterial(this);
 	material->defaultMat = true;
@@ -167,6 +181,35 @@ void GameObject::AddComponent(Type type)
 		components.push_back(new ComponentCamera(this));
 		break;
 	}
+}
+
+Component * GameObject::AddComponentType(int type)
+{
+	if (type == 4)
+	{
+		ComponentLight* compLight = new ComponentLight(this);
+		components.push_back(compLight);
+		return compLight;
+	}
+	else if (type == 2)
+	{
+		ComponentMaterial* compMat = new ComponentMaterial(this);
+		components.push_back(compMat);
+		return compMat;
+	}
+	else if (type == 1)
+	{
+		ComponentMesh* compMesh = new ComponentMesh(this);
+		components.push_back(compMesh);
+		return compMesh;
+	}
+	else if (type == 3)
+	{
+		ComponentCamera* compCam = new ComponentCamera(this);
+		components.push_back(compCam);
+		return compCam;
+	}
+	return new Component();
 }
 
 Component* GameObject::GetComponentOfType(Type type)
@@ -360,6 +403,8 @@ void GameObject::Save(System * system)
 
 	if (parent != NULL)
 		system->AddString("parentUID", parent->uID);
+	else
+		system->AddString("parentUID", "0");
 
 	system->AddBool("enable", enable);
 
@@ -368,6 +413,45 @@ void GameObject::Save(System * system)
 		(*it)->Save(system);
 	}
 	system->EndArray();
+
+	system->StartArray("def_transform");
+	transform->Save(system);
+	system->EndArray();
+	system->StartArray("def_material");
+	material->Save(system);
+	system->EndArray();
+
 	system->EndObject();
+
+}
+
+void GameObject::Load(System * system, rapidjson::Value & value)
+{
+	sprintf(uID, system->GetString("uID", value));
+
+	enable = system->GetBool("enable", value);
+
+	rapidjson::Value components = value["components"].GetArray();
+	for (rapidjson::Value::ValueIterator it = components.Begin(); it != components.End(); ++it) {
+		Component* component = AddComponentType(system->GetComponentType("compType", (*it)));
+
+		if (component != NULL) {
+			component->Load(system, (*it));
+		}
+	}
+
+	rapidjson::Value def_transform = value["def_transform"].GetArray();
+	for (rapidjson::Value::ValueIterator it = def_transform.Begin(); it != def_transform.End(); ++it)
+	{
+		transform = new ComponentTransform(this);
+		transform->Load(system, (*it));
+	}
+
+	rapidjson::Value def_material = value["def_material"].GetArray();
+	for (rapidjson::Value::ValueIterator it = def_material.Begin(); it != def_material.End(); ++it)
+	{
+		material = new ComponentMaterial(this);
+		material->Load(system, (*it));
+	}
 
 }

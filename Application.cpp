@@ -106,7 +106,7 @@ void Application::Tick()
 	}
 }
 
-const char* Application::GenerateUUID()
+char* Application::GenerateUUID()
 {
 	string uuid = xg::newGuid().str();
 	char* newUUID = new char[strlen(uuid.c_str())];

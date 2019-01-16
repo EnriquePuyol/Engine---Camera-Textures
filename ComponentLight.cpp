@@ -143,3 +143,10 @@ void ComponentLight::Save(System * system)
 
 	system->EndObject();
 }
+
+void ComponentLight::Load(System * system, rapidjson::Value & value)
+{
+	sprintf(uID, system->GetString("uID", value));
+
+	intensity = system->GetFloat("intensity", value);
+}

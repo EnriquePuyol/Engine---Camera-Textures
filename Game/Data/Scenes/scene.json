@@ -1,75 +1,175 @@
 {
-    "primaryCamera": {
-        "compType": "CAMERA",
-        "ownerUID": "fc39752c-2878-4719-ba3f-b8b32f0e0acd",
-        "uID": "b73ba583-d715-4693-b8e9-f62f0ae24392",
-        "cameraType": 0,
-        "frustum.nearPlaneDistance": 0.10000000149011612,
-        "frustum.farPlaneDistance": 100.0,
-        "frustum.pos": {
-            "x": 3.0,
-            "y": 1.5,
-            "z": 9.5
-        },
-        "frustum.front": {
-            "x": 0.0,
-            "y": 0.0,
-            "z": -1.0
-        },
-        "frustum.up": {
-            "x": 0.0,
-            "y": 1.0,
-            "z": 0.0
-        }
-    },
     "GameObjects": [
         {
-            "uID": "5e215009-6df4-48de-9dfa-9ed5c876da15",
+            "uID": "2e5de753-5ad0-4565-aad2-e69e198ccf9c",
             "name": "Root",
+            "parentUID": "0",
             "enable": true,
-            "components": []
-        },
-        {
-            "uID": "3243d78b-4148-4301-8db3-31588b2b1d24",
-            "name": "House",
-            "parentUID": "5e215009-6df4-48de-9dfa-9ed5c876da15",
-            "enable": true,
-            "components": [
+            "components": [],
+            "def_transform": [
                 {
-                    "compType": "MESH",
-                    "ownerUID": "3243d78b-4148-4301-8db3-31588b2b1d24",
-                    "uID": "02c20841-ad12-410c-b5f3-3280d921bdb1",
-                    "id": 0,
-                    "numIndices": 324,
-                    "materialIndex": 0,
-                    "numVert": 324,
-                    "path": "BakerHouse.fbx"
-                },
+                    "compType": "TRANSFORM",
+                    "ownerUID": "2e5de753-5ad0-4565-aad2-e69e198ccf9c",
+                    "uID": "ef90f96a-04a8-4663-bd17-5cc765a63f58",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "eulerRotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    }
+                }
+            ],
+            "def_material": [
                 {
-                    "compType": "MESH",
-                    "ownerUID": "3243d78b-4148-4301-8db3-31588b2b1d24",
-                    "uID": "b487a287-c54a-4ab9-9b9f-5aaa7f806062",
-                    "id": 1,
-                    "numIndices": 2751,
-                    "materialIndex": 0,
-                    "numVert": 2751,
-                    "path": "BakerHouse.fbx"
+                    "compType": "MATERIAL",
+                    "ownerUID": "2e5de753-5ad0-4565-aad2-e69e198ccf9c",
+                    "uID": "319e9318-c180-4ffa-a764-81817b789819",
+                    "matIndex": 0,
+                    "mat": 0,
+                    "diffusePath": "",
+                    "specularPath": "",
+                    "ambientPath": "",
+                    "emissivePath": "",
+                    "diffuse_map": 0,
+                    "diffuse_color": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "k_diffuse": 0.5,
+                    "specular_map": 0,
+                    "specular_color": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusion_map": 0,
+                    "k_ambient": 0.5,
+                    "emissive_map": 0,
+                    "emissive_color": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "defaultMat": true
                 }
             ]
         },
         {
-            "uID": "fc39752c-2878-4719-ba3f-b8b32f0e0acd",
+            "uID": "e493802e-c793-4edd-b275-af0651bb14ce",
+            "name": "Drawer",
+            "parentUID": "2e5de753-5ad0-4565-aad2-e69e198ccf9c",
+            "enable": true,
+            "components": [
+                {
+                    "compType": "MESH",
+                    "ownerUID": "e493802e-c793-4edd-b275-af0651bb14ce",
+                    "uID": "b453862b-37ff-44be-a206-056896d8e961",
+                    "id": 0,
+                    "numIndices": 14805,
+                    "materialIndex": 0,
+                    "numVert": 9773,
+                    "path": "Assets/Models/Drawers/Drawers.fbx"
+                }
+            ],
+            "def_transform": [
+                {
+                    "compType": "TRANSFORM",
+                    "ownerUID": "e493802e-c793-4edd-b275-af0651bb14ce",
+                    "uID": "ffa432dc-1dc6-4d1e-b14c-77e10b8d774f",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "eulerRotation": {
+                        "x": 0.0,
+                        "y": 121.31999969482422,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.0020000000949949028,
+                        "y": 0.0020000000949949028,
+                        "z": 0.0020000000949949028
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.871727466583252,
+                        "z": 0.0,
+                        "w": 0.48999127745628359
+                    }
+                }
+            ],
+            "def_material": [
+                {
+                    "compType": "MATERIAL",
+                    "ownerUID": "e493802e-c793-4edd-b275-af0651bb14ce",
+                    "uID": "44c7c5df-dd06-447e-a6fa-da7b3018ae90",
+                    "matIndex": 0,
+                    "mat": 4,
+                    "diffusePath": "Assets/Textures/Drawers/DrawersDiffuse.png",
+                    "specularPath": "Assets/Textures/Drawers/DrawersSpecular.tif",
+                    "ambientPath": "Assets/Textures/Drawers/DrawersOcclusion.png",
+                    "emissivePath": "",
+                    "diffuse_map": 8,
+                    "diffuse_color": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "k_diffuse": 0.5,
+                    "specular_map": 10,
+                    "specular_color": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusion_map": 9,
+                    "k_ambient": 0.5,
+                    "emissive_map": 0,
+                    "emissive_color": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "defaultMat": true
+                }
+            ]
+        },
+        {
+            "uID": "90ca0af0-9532-47e4-b455-bc240865f9d4",
             "name": "Main camera",
-            "parentUID": "5e215009-6df4-48de-9dfa-9ed5c876da15",
+            "parentUID": "2e5de753-5ad0-4565-aad2-e69e198ccf9c",
             "enable": true,
             "components": [
                 {
                     "compType": "CAMERA",
-                    "ownerUID": "fc39752c-2878-4719-ba3f-b8b32f0e0acd",
-                    "uID": "b73ba583-d715-4693-b8e9-f62f0ae24392",
+                    "ownerUID": "90ca0af0-9532-47e4-b455-bc240865f9d4",
+                    "uID": "32feb9e2-fdd0-4705-959e-31ba4f9abb92",
                     "cameraType": 0,
                     "frustum.nearPlaneDistance": 0.10000000149011612,
-                    "frustum.farPlaneDistance": 100.0,
+                    "frustum.farPlaneDistance": 400.0,
                     "frustum.pos": {
                         "x": 3.0,
                         "y": 1.5,
@@ -86,19 +186,151 @@
                         "z": 0.0
                     }
                 }
+            ],
+            "def_transform": [
+                {
+                    "compType": "TRANSFORM",
+                    "ownerUID": "90ca0af0-9532-47e4-b455-bc240865f9d4",
+                    "uID": "34620350-b51d-47bc-b4f5-7343cf26c14a",
+                    "position": {
+                        "x": 3.0,
+                        "y": 1.5,
+                        "z": 9.5
+                    },
+                    "eulerRotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    }
+                }
+            ],
+            "def_material": [
+                {
+                    "compType": "MATERIAL",
+                    "ownerUID": "90ca0af0-9532-47e4-b455-bc240865f9d4",
+                    "uID": "067febb8-a6de-4f5a-a25f-75ca44f42c12",
+                    "matIndex": 0,
+                    "mat": 0,
+                    "diffusePath": "",
+                    "specularPath": "",
+                    "ambientPath": "",
+                    "emissivePath": "",
+                    "diffuse_map": 0,
+                    "diffuse_color": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "k_diffuse": 0.5,
+                    "specular_map": 0,
+                    "specular_color": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusion_map": 0,
+                    "k_ambient": 0.5,
+                    "emissive_map": 0,
+                    "emissive_color": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "defaultMat": true
+                }
             ]
         },
         {
-            "uID": "fe697b4d-a691-48cc-9687-410d8cc339ab",
+            "uID": "fd95ab55-2455-432e-a06f-5a8e9ea966b3",
             "name": "Light",
-            "parentUID": "5e215009-6df4-48de-9dfa-9ed5c876da15",
+            "parentUID": "2e5de753-5ad0-4565-aad2-e69e198ccf9c",
             "enable": true,
             "components": [
                 {
                     "compType": "LIGHT",
-                    "ownerUID": "fe697b4d-a691-48cc-9687-410d8cc339ab",
-                    "uID": "60a670c6-b232-406b-9779-005dffd9fead",
+                    "ownerUID": "fd95ab55-2455-432e-a06f-5a8e9ea966b3",
+                    "uID": "ff7d1aa2-ae24-4c89-95f3-3d111278b7f3",
                     "intensity": 0.4000000059604645
+                }
+            ],
+            "def_transform": [
+                {
+                    "compType": "TRANSFORM",
+                    "ownerUID": "fd95ab55-2455-432e-a06f-5a8e9ea966b3",
+                    "uID": "093ef9bf-af57-4795-88a7-17dddbf6bdd2",
+                    "position": {
+                        "x": 0.0,
+                        "y": 1.100000023841858,
+                        "z": 4.5
+                    },
+                    "eulerRotation": {
+                        "x": 0.0,
+                        "y": 0.6000000238418579,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0052359639666974548,
+                        "z": 0.0,
+                        "w": 0.9999862909317017
+                    }
+                }
+            ],
+            "def_material": [
+                {
+                    "compType": "MATERIAL",
+                    "ownerUID": "fd95ab55-2455-432e-a06f-5a8e9ea966b3",
+                    "uID": "c804f557-e60a-4b8d-8166-915210a4dce8",
+                    "matIndex": 0,
+                    "mat": 0,
+                    "diffusePath": "",
+                    "specularPath": "",
+                    "ambientPath": "",
+                    "emissivePath": "",
+                    "diffuse_map": 0,
+                    "diffuse_color": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "k_diffuse": 0.5,
+                    "specular_map": 0,
+                    "specular_color": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusion_map": 0,
+                    "k_ambient": 0.5,
+                    "emissive_map": 0,
+                    "emissive_color": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "defaultMat": true
                 }
             ]
         }

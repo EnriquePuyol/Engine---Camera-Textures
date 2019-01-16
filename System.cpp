@@ -25,17 +25,17 @@ void System::AddComponentType(const char* name, Type componentType) {
 	writer->String(name);
 
 	switch (componentType) {
-	case Type::Camera:
-		writer->String("CAMERA");
-		break;
-	case Type::Material:
-		writer->String("MATERIAL");
+	case Type::Transform:
+		writer->String("TRANSFORM");
 		break;
 	case Type::Mesh:
 		writer->String("MESH");
 		break;
-	case Type::Transform:
-		writer->String("TRANSFORM");
+	case Type::Material:
+		writer->String("MATERIAL");
+		break;
+	case Type::Camera:
+		writer->String("CAMERA");
 		break;
 	case Type::Light:
 		writer->String("LIGHT");
@@ -106,20 +106,23 @@ void System::AddQuat(const char* name, math::Quat value) {
 	EndObject();
 }
 
-Type System::GetComponentType(const char* name, rapidjson::Value& value) {
+int System::GetComponentType(const char* name, rapidjson::Value& value) {
 	const char* stringComponentType = value[name].GetString();
 
 	if (strcmp(stringComponentType, "TRANSFORM") == 0) {
-		return Type::Transform;
+		return 0;
 	}
 	if (strcmp(stringComponentType, "MESH") == 0) {
-		return Type::Mesh;
+		return 1;
 	}
 	if (strcmp(stringComponentType, "MATERIAL") == 0) {
-		return Type::Material;
+		return 2;
 	}
 	if (strcmp(stringComponentType, "CAMERA") == 0) {
-		return Type::Camera;
+		return 3;
+	}
+	if (strcmp(stringComponentType, "LIGHT") == 0) {
+		return 4;
 	}
 }
 
@@ -206,7 +209,7 @@ rapidjson::Document System::LoadFromDisk() {
 	rapidjson::Document result = nullptr;
 
 	char* fileBuffer;
-	unsigned lenghBuffer = App->fileSystem->Load("/Library/Scenes/scene.json", &fileBuffer);
+	unsigned lenghBuffer = App->fileSystem->Load("/Data/Scenes/scene.json", &fileBuffer);
 
 	if (fileBuffer) {
 		if (result.Parse<rapidjson::kParseStopWhenDoneFlag>(fileBuffer).HasParseError()) {

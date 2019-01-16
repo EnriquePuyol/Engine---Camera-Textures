@@ -29,6 +29,7 @@ public:
 	void  SetLightTypeFromString(const char* type);
 
 	void Save(System* system) override;
+	void Load(System* system, rapidjson::Value& value) override;
 
 public:
 	LightType lightType;

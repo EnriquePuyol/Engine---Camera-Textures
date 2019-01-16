@@ -21,14 +21,17 @@ public:
 	bool CleanUp() override;
 
 	void CreateGameObject();
+	GameObject*	GetGameObjectByUUID(GameObject* gameObject, char uuidObjectName[37]);
 	void DeleteGameObject();
 
 	// FileSystem
+	void ResetScene();
+	void AddGameObject(System* system, rapidjson::Value& value);
 	//   Save
 	void SaveScene();
 	void SaveAllGameObjects(System* config, GameObject* gameObject);
 	//   Load
-
+	void LoadScene();
 
 public:
 	GameObject* root;

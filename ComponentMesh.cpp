@@ -300,3 +300,17 @@ void ComponentMesh::Save(System * system)
 
 	system->EndObject();
 }
+
+void ComponentMesh::Load(System * system, rapidjson::Value & value)
+{
+	sprintf(uID, system->GetString("uID", value));
+
+	id = system->GetInt("id", value);
+	numIndices = system->GetInt("numIndices", value);
+	materialIndex = system->GetInt("materialIndex", value);
+	numVert = system->GetInt("numVert", value);
+
+	sprintf(path, system->GetString("path", value));
+
+	LoadMesh(path);
+}

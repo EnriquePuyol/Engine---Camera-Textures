@@ -107,6 +107,18 @@ void ComponentTransform::Save(System * system)
 	system->EndObject();
 }
 
+void ComponentTransform::Load(System * system, rapidjson::Value & value)
+{
+	sprintf(uID, system->GetString("uID", value));
+
+	position = system->GetFloat3("position", value);
+	eulerRotation = system->GetFloat3("eulerRotation", value);
+	scale = system->GetFloat3("scale", value);
+	rotation = system->GetQuat("rotation", value);
+
+	UpdateTransform();
+}
+
 void ComponentTransform::UpdateTransform()
 {
 	rotation = Quat::FromEulerXYZ(math::DegToRad(eulerRotation.x), math::DegToRad(eulerRotation.y) , math::DegToRad(eulerRotation.z));
@@ -124,6 +136,9 @@ void ComponentTransform::UpdateTransform()
 
 float3 ComponentTransform::GetWorldPosition()
 {	
+	if (owner == NULL)
+		LOG("fefofbno2");
+
 	if (owner->parent == NULL)
 		return position;
 

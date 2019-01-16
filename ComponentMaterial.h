@@ -48,6 +48,7 @@ public:
 	void ShowMetadata() override;
 
 	void Save(System* system) override;
+	void Load(System* system, rapidjson::Value& value) override;
 
 public:
 	unsigned matIndex = 0;

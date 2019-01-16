@@ -21,7 +21,7 @@ ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent)
 	frustum.front = math::float3(0, 0, -1);
 	frustum.up = math::float3(0, 1, 0);
 	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
+	frustum.farPlaneDistance = 400.0f;
 	frustum.verticalFov = math::pi / 4.0f;
 
 	w = App->window->width;
@@ -196,4 +196,20 @@ void ComponentCamera::Save(System * system)
 	system->AddFloat3("frustum.up", frustum.up);
 
 	system->EndObject();
+}
+
+void ComponentCamera::Load(System * system, rapidjson::Value & value)
+{
+	sprintf(uID, system->GetString("uID", value));
+	int camType = system->GetInt("cameraType", value);
+	if (camType == 0)
+	{
+		cameraType = Primary;
+		App->scene->primaryCamera = this;
+	}
+	frustum.nearPlaneDistance = system->GetFloat("frustum.nearPlaneDistance", value);
+	frustum.farPlaneDistance = system->GetFloat("frustum.farPlaneDistance", value);
+	frustum.pos = system->GetFloat3("frustum.pos", value);
+	frustum.front = system->GetFloat3("frustum.front", value);
+	frustum.up = system->GetFloat3("frustum.up", value);
 }

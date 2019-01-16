@@ -51,6 +51,7 @@ public:
 	void GenerateMeshData(const aiScene* myScene);
 
 	void Save(System* system) override;
+	void Load(System* system, rapidjson::Value& value) override;
 
 public:
 	int id;

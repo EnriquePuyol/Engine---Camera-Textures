@@ -30,7 +30,7 @@ public:
 	bool CleanUp();
 
 	void Tick();
-	const char* GenerateUUID();
+	char* GenerateUUID();
 
 public:
 	ModuleRender* renderer = nullptr;

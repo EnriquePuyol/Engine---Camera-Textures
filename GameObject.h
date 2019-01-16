@@ -23,6 +23,7 @@ class GameObject
 {
 public:
 	GameObject(const char name[40] = "Empty");
+	GameObject(GameObject* goParent);
 	GameObject(GameObject* gameobject, GameObject* parent);
 	~GameObject();
 
@@ -31,6 +32,7 @@ public:
 	void CleanUp();
 	void Delete();
 	void AddComponent(Type type);
+	Component* AddComponentType(int type);
 	Component* GetComponentOfType(Type type);
 	list<Component*> GetAllComponentsOfType(Type type);
 	int	 GetNumComponentsOfType(Type type);
@@ -40,12 +42,13 @@ public:
 	void DrawComponents();
 
 	void Save(System* system);
+	void Load(System* system, rapidjson::Value& value);
 
 public:
 
 	// General info
 	char name[40] = "";
-	const char* uID;
+	char* uID = "";
 	bool selected = false;
 	bool enable = true;
 	NextPreReturn nextPreReturn = GO_NONE;

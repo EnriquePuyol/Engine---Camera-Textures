@@ -113,6 +113,32 @@ void  ModuleScene::CreateGameObject()
 	selectedGO->selected = true;
 }
 
+GameObject * ModuleScene::GetGameObjectByUUID(GameObject * gameObject, char uuidObjectName[37])
+{
+	GameObject* result = nullptr;
+
+	if (result == nullptr && (strcmp(gameObject->uID, uuidObjectName) == 0)) {
+		result = gameObject;
+	}
+	else {
+		for (auto &child : gameObject->childs) {
+			if (child->childs.size() > 0) {
+				result = GetGameObjectByUUID(child, uuidObjectName);
+			}
+
+			if (result == nullptr && (strcmp(child->uID, uuidObjectName) == 0)) {
+				result = child;
+				break;
+			}
+			else if (result != nullptr) {
+				break;
+			}
+		}
+	}
+
+	return result;
+}
+
 void ModuleScene::DeleteGameObject()
 {
 	selectedGO->nextPreReturn = GO_DELETED;
@@ -128,16 +154,47 @@ void ModuleScene::DeleteGameObject()
 	}
 }
 
+void ModuleScene::ResetScene()
+{
+	App->scene->selectedGO = NULL;
+	App->renderer->cameras.clear();
+	App->renderer->lights.clear();
+	App->renderer->meshes.clear();
+	delete root;
+	root = new GameObject("Root");
+}
+
+void ModuleScene::AddGameObject(System * system, rapidjson::Value& value)
+{
+	if (strcmp(system->GetString("parentUID", value), "0") != 0) {
+		const char* parentUuid = system->GetString("parentUID", value);
+		char uuidGameObjectParent[37];
+		sprintf_s(uuidGameObjectParent, parentUuid);
+
+		GameObject* parent = GetGameObjectByUUID(root, uuidGameObjectParent);
+
+		GameObject* gameObject = new GameObject(parent);
+		sprintf(gameObject->name, system->GetString("name", value));
+		gameObject->Load(system, value);
+
+		parent->childs.push_back(gameObject);
+	}
+	else 
+	{
+		root->Load(system, value);
+	}
+}
+
 void ModuleScene::SaveScene()
 {
 	System* system = new System();
 	
 	// Save main camera
-	if (primaryCamera != NULL)
+	/*if (primaryCamera != NULL)
 	{
 		system->AddName("primaryCamera");
 		primaryCamera->Save(system);
-	}
+	}*/
 
 	// Save all gameobjects
 	system->StartArray("GameObjects");
@@ -156,4 +213,30 @@ void ModuleScene::SaveAllGameObjects(System * config, GameObject * gameObject)
 	{
 		SaveAllGameObjects(config, (*it));
 	}
+}
+
+void ModuleScene::LoadScene()
+{
+	ResetScene();
+
+	System* system = new System();
+	rapidjson::Document document = system->LoadFromDisk();
+
+	if (!document.HasParseError())
+	{
+		/*if(primaryCamera != NULL)
+			primaryCamera->Load(system, document["primaryCamera"]);
+		else
+		{
+			//primaryCamera = new GameObject("root");
+		}*/
+
+		rapidjson::Value gameObjects = document["GameObjects"].GetArray();
+		for (rapidjson::Value::ValueIterator it = gameObjects.Begin(); it != gameObjects.End(); ++it) {
+			AddGameObject(system, *it);
+		}
+	}
+
+	delete system;
+	system = NULL;
 }

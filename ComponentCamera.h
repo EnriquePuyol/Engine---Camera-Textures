@@ -40,6 +40,7 @@ public:
 	void  SetCameraTypeFromString(const char* type);
 
 	void Save(System* system) override;
+	void Load(System* system, rapidjson::Value& value) override;
 
 public:
 	CameraType cameraType = Other;
